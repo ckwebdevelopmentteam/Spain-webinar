@@ -72,10 +72,32 @@ const achievementsWithImages = [
   }
 ];
 
+const testimonials = [
+  {
+    src: "/sapain testimonial .mp4",
+    thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    src: "/sapain testimonial 2.mp4",
+    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    src: "/sapain testimonial .mp4",
+    thumbnail: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    src: "/sapain testimonial 2.mp4",
+    thumbnail: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    src: "/sapain testimonial .mp4",
+    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop"
+  }
+];
+
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeDay, setActiveDay] = useState(1);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [activeDeckDay, setActiveDeckDay] = useState(1);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [seatsLeft, setSeatsLeft] = useState(14);
   const [showStickyBar, setShowStickyBar] = useState(false);
@@ -132,12 +154,40 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    if (activeDay !== 1) return;
     const interval = setInterval(() => {
       setCurrentImgIndex((prev) => (prev + 1) % 3);
     }, 3000);
     return () => clearInterval(interval);
-  }, [activeDay]);
+  }, []);
+
+  // Auto-cycle the 3D Card Deck active day every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveDeckDay((prev) => (prev === 1 ? 2 : 1));
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Testimonials States & Effects
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [isTestimonialMuted, setIsTestimonialMuted] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Auto-cycle the Testimonials active card every 5 seconds
+  useEffect(() => {
+    if (!isTestimonialMuted) return; // Pause auto-slider if unmuted
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % 5);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isTestimonialMuted]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -961,7 +1011,7 @@ export default function Home() {
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-20">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#F2F2F2] bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
               Comprehensive Learning
             </span>
@@ -973,196 +1023,458 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Split Layout: Left Navigation, Right Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
-            
-            {/* Left Column: Day Cards (4 Cols) */}
-            <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-28">
-              {webinarData.curriculum.map((dayData) => {
-                const isActive = activeDay === dayData.day;
-                return (
-                  <button
-                    key={dayData.day}
-                    onClick={() => setActiveDay(dayData.day)}
-                    className={`w-full text-left p-6 rounded-2xl transition-all border cursor-pointer group relative overflow-hidden ${
-                      isActive 
-                        ? 'bg-white/[0.04] border-violet-accent shadow-[0_0_30px_rgba(127,0,255,0.15)]' 
-                        : 'bg-white/5 border-white/10 hover:border-white/25 hover:bg-white/[0.07]'
-                    }`}
-                  >
-                    {/* Active pulsing accent line */}
-                    {isActive && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-violet-accent" />
-                    )}
-                    
-                    <div className="flex justify-between items-start mb-4">
-                      <span className={`text-4xl font-extrabold font-display leading-none transition-colors ${isActive ? 'text-violet-accent' : 'text-neutral-600 group-hover:text-neutral-400'}`}>
-                        0{dayData.day}
-                      </span>
-                      <span className={`text-[10px] uppercase font-mono tracking-widest px-2.5 py-1 rounded border transition-colors ${
-                        isActive 
-                          ? 'bg-violet-accent/10 text-violet-accent border-violet-accent/20' 
-                          : 'bg-white/5 text-neutral-400 border-white/10'
-                      }`}>
-                        {dayData.day === 1 ? 'Saturday' : 'Sunday'}
-                      </span>
-                    </div>
-                    
-                    <h3 className="text-lg font-bold text-white font-display mb-1.5">
-                      {dayData.day === 1 ? 'Image Generation' : 'Video Production'}
-                    </h3>
-                    <p className="text-xs text-neutral-400 leading-relaxed font-sans">
-                      {dayData.day === 1 
-                        ? 'Master visual prompting, framing, and character consistency.' 
-                        : 'Translate static art into high-end cinematic video sequences.'}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
+          {/* --- DESKTOP: 3D OVERLAPPING CARD DECK --- */}
+          <div className="hidden lg:block relative w-full max-w-5xl mx-auto h-[660px] mb-12">
 
-            {/* Right Column: Detailed Day Card (8 Cols) */}
-            <div className="lg:col-span-8">
-              <div className="glass-premium p-6 sm:p-8 md:p-10 relative overflow-hidden min-h-[500px]">
-                {/* Large background watermark */}
-                <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none select-none">
-                  <span className="text-[180px] font-extrabold font-display text-white leading-none">
-                    0{activeDay}
+            {/* Day 1 Card */}
+            <motion.div
+              onClick={() => activeDeckDay === 2 && setActiveDeckDay(1)}
+              animate={{
+                x: activeDeckDay === 1 ? '0%' : '-8%',
+                scale: activeDeckDay === 1 ? 1 : 0.92,
+                opacity: activeDeckDay === 1 ? 1 : 0.4,
+                zIndex: activeDeckDay === 1 ? 20 : 10,
+              }}
+              transition={{ type: 'spring', stiffness: 70, damping: 16, mass: 0.8 }}
+              className={`absolute inset-y-0 left-0 w-[90%] glass-premium p-8 rounded-[24px] border border-white/10 flex flex-col justify-between select-none ${activeDeckDay === 2 ? 'cursor-pointer hover:border-white/20 hover:opacity-60' : 'pointer-events-auto'
+                }`}
+            >
+              {/* Card Watermark */}
+              <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none select-none">
+                <span className="text-[120px] font-extrabold font-display text-white leading-none">01</span>
+              </div>
+
+              {/* Day Card Header */}
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-violet-accent font-bold">
+                    Saturday • Masterclass Day 01
                   </span>
+                  <h3 className="text-2xl font-bold font-display text-[#F2F2F2] mt-1">
+                    {webinarData.curriculum[0].title}
+                  </h3>
+                </div>
+                <span className="text-[10px] uppercase font-mono tracking-widest px-2.5 py-1 rounded border bg-white/5 text-neutral-400 border-white/10">
+                  Image Generation
+                </span>
+              </div>
+
+              {/* Day Card Content (2 Cols) */}
+              <div className="grid grid-cols-12 gap-8 my-6 items-center">
+                {/* Left: Key Topics (7 Cols) */}
+                <div className="col-span-7 space-y-4">
+                  <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold block">
+                    Key Topics Covered
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    {webinarData.curriculum[0].topics.map((topic, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 p-3.5 rounded-xl glass-premium glass-premium-hover transition-all duration-300 group/item"
+                      >
+                        <div className="w-5 h-5 rounded bg-violet-accent/10 text-violet-accent border border-violet-accent/20 flex items-center justify-center shrink-0 group-hover/item:bg-violet-accent group-hover/item:text-black transition-colors duration-300">
+                          <Check className="w-3 h-3" />
+                        </div>
+                        <span className="text-[11px] text-neutral-300 font-medium leading-tight group-hover/item:text-white transition-colors">
+                          {topic}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <AnimatePresence mode="wait">
-                  {webinarData.curriculum.map((dayData) => {
-                    if (dayData.day !== activeDay) return null;
-                    return (
-                      <motion.div
-                        key={dayData.day}
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -15 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-8"
-                      >
-                        {/* Day Header */}
-                        <div>
-                          <span className="text-xs uppercase tracking-widest text-violet-accent font-bold">
-                            Masterclass Day 0{dayData.day}
-                          </span>
-                          <h3 className="text-2xl sm:text-3xl font-bold font-display text-[#F2F2F2] mt-1.5 mb-3">
-                            {dayData.title}
-                          </h3>
-                          <p className="text-sm sm:text-base text-neutral-400 leading-relaxed font-sans max-w-2xl">
-                            {dayData.subtitle}
-                          </p>
-                        </div>
-
-                        {/* Theater Mode Visual Presenter */}
-                        <div className="relative w-full h-[220px] sm:h-[340px] md:h-[380px] rounded-2xl overflow-hidden border border-white/10 bg-black group/theater shadow-2xl">
-                          <div className="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-violet-accent animate-ping" />
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-white font-mono">
-                              {dayData.day === 1 ? `Art Showcase • Slide ${currentImgIndex + 1}/3` : 'Cinematic Motion Reel'}
-                            </span>
-                          </div>
-
-                          {dayData.day === 1 ? (
-                            <div className="w-full h-full relative">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={day1Images[currentImgIndex]}
-                                alt="Day 1 Project Preview"
-                                className="w-full h-full object-cover transition-all duration-700"
-                              />
-                              {/* Slide Navigation Indicators */}
-                              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5">
-                                {day1Images.map((_, idx) => (
-                                  <button
-                                    key={idx}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setCurrentImgIndex(idx);
-                                    }}
-                                    className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                                      currentImgIndex === idx ? 'bg-violet-accent w-4' : 'bg-white/35 hover:bg-white/60'
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                          ) : (
-                            <video
-                              src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c022f73b44100b54d76b9e583b3ecdc6&profile_id=139&oauth2_token_id=57447761"
-                              muted
-                              loop
-                              autoPlay
-                              playsInline
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                        </div>
-
-                        {/* Details Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-white/10 pt-8">
-                          {/* Left: Key Topics (7 Cols) */}
-                          <div className="md:col-span-7 space-y-4">
-                            <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold block">
-                              Key Topics Covered
-                            </span>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {dayData.topics.map((topic, i) => (
-                                <div
-                                  key={i}
-                                  className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-violet-accent/30 hover:bg-white/[0.04] hover:shadow-[0_0_15px_rgba(127,0,255,0.05)] transition-all duration-300 group/item"
-                                >
-                                  <div className="w-6 h-6 rounded-lg bg-violet-accent/10 text-violet-accent border border-violet-accent/20 flex items-center justify-center shrink-0 group-hover/item:bg-violet-accent group-hover/item:text-black transition-colors duration-300">
-                                    <Check className="w-3.5 h-3.5" />
-                                  </div>
-                                  <span className="text-xs text-neutral-300 font-medium leading-tight group-hover/item:text-white transition-colors">
-                                    {topic}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Right: Capstone Project (5 Cols) */}
-                          <div className="md:col-span-5 space-y-4">
-                            <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold block">
-                              Day Capstone
-                            </span>
-                            <div className="p-5 rounded-2xl bg-gradient-to-br from-violet-accent/10 to-transparent border border-violet-accent/20 flex flex-col justify-between h-[calc(100%-2rem)]">
-                              <div className="space-y-2">
-                                <span className="text-[9px] uppercase tracking-widest font-bold text-violet-accent px-2 py-0.5 rounded bg-violet-accent/10 border border-violet-accent/20 inline-block">
-                                  Practical Build
-                                </span>
-                                <h4 className="text-sm sm:text-base font-bold text-white font-display">
-                                  {dayData.day === 1 
-                                    ? "Consistent Multi-Scene Character Storyboard" 
-                                    : "Commercial Video Ad Campaign Visual"}
-                                </h4>
-                                <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                                  {dayData.day === 1 
-                                    ? "Create a 6-frame storyboard maintaining the exact same character." 
-                                    : "Assemble, animate, and color grade a 15-second high-fidelity video ad."}
-                                </p>
-                              </div>
-                              <div className="mt-4 pt-4 border-t border-white/5 text-[10px] text-neutral-400 font-mono flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-violet-accent" />
-                                <span>Output review with instructor</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
+                {/* Right: Media Showcase (5 Cols) */}
+                <div className="col-span-5 flex flex-col justify-center">
+                  <div className="relative w-full h-[280px] rounded-2xl overflow-hidden border border-white/10 bg-black group/theater shadow-2xl">
+                    <div className="w-full h-full relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={day1Images[currentImgIndex]}
+                        alt="Day 1 Project Preview"
+                        className="w-full h-full object-cover transition-all duration-700"
+                      />
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/5">
+                        {day1Images.map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (activeDeckDay === 1) setCurrentImgIndex(idx);
+                            }}
+                            className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${currentImgIndex === idx ? 'bg-violet-accent w-3.5' : 'bg-white/35 hover:bg-white/60'
+                              }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              {/* Day Card Capstone */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-violet-accent/10 to-transparent border border-violet-accent/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1 max-w-md">
+                  <span className="text-[9px] uppercase tracking-widest font-bold text-violet-accent">Capstone Project</span>
+                  <h4 className="text-sm font-bold text-white font-display">
+                    Consistent Multi-Scene Character Storyboard
+                  </h4>
+                  <p className="text-xs text-neutral-400 font-sans">
+                    Create a 6-frame storyboard maintaining the exact same character.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="text-left font-mono space-y-1 text-[10px] text-neutral-400">
+                    <div className="flex items-center gap-1.5 text-white">
+                      <Calendar className="w-3.5 h-3.5 text-violet-accent" />
+                      <span>Saturday, July 4</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-violet-accent" />
+                      <span>6:00 PM IST</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsModalOpen(true);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-violet-accent text-black font-bold text-xs hover:shadow-[0_0_25px_rgba(127,0,255,0.5)] hover:scale-[1.02] transition-all duration-300 shrink-0 cursor-pointer"
+                  >
+                    Enroll Now
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 2 Card */}
+            <motion.div
+              onClick={() => activeDeckDay === 1 && setActiveDeckDay(2)}
+              animate={{
+                x: activeDeckDay === 2 ? '10%' : '18%',
+                scale: activeDeckDay === 2 ? 1 : 0.92,
+                opacity: activeDeckDay === 2 ? 1 : 0.4,
+                zIndex: activeDeckDay === 2 ? 20 : 10,
+              }}
+              transition={{ type: 'spring', stiffness: 70, damping: 16, mass: 0.8 }}
+              className={`absolute inset-y-0 left-0 w-[90%] glass-premium p-8 rounded-[24px] border border-white/10 flex flex-col justify-between select-none ${activeDeckDay === 1 ? 'cursor-pointer hover:border-white/20 hover:opacity-60' : 'pointer-events-auto'
+                }`}
+            >
+              {/* Card Watermark */}
+              <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none select-none">
+                <span className="text-[120px] font-extrabold font-display text-white leading-none">02</span>
+              </div>
+
+              {/* Day Card Header */}
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-violet-accent font-bold">
+                    Sunday • Masterclass Day 02
+                  </span>
+                  <h3 className="text-2xl font-bold font-display text-[#F2F2F2] mt-1">
+                    {webinarData.curriculum[1].title}
+                  </h3>
+                </div>
+                <span className="text-[10px] uppercase font-mono tracking-widest px-2.5 py-1 rounded border bg-white/5 text-neutral-400 border-white/10">
+                  Video Production
+                </span>
+              </div>
+
+              {/* Day Card Content (2 Cols) */}
+              <div className="grid grid-cols-12 gap-8 my-6 items-center">
+                {/* Left: Key Topics (7 Cols) */}
+                <div className="col-span-7 space-y-4">
+                  <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold block">
+                    Key Topics Covered
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    {webinarData.curriculum[1].topics.map((topic, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 p-3.5 rounded-xl glass-premium glass-premium-hover transition-all duration-300 group/item"
+                      >
+                        <div className="w-5 h-5 rounded bg-violet-accent/10 text-violet-accent border border-violet-accent/20 flex items-center justify-center shrink-0 group-hover/item:bg-violet-accent group-hover/item:text-black transition-colors duration-300">
+                          <Check className="w-3 h-3" />
+                        </div>
+                        <span className="text-[11px] text-neutral-300 font-medium leading-tight group-hover/item:text-white transition-colors">
+                          {topic}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Media Showcase (5 Cols) */}
+                <div className="col-span-5 flex flex-col justify-center">
+                  <div className="relative w-full h-[280px] rounded-2xl overflow-hidden border border-white/10 bg-black group/theater shadow-2xl">
+                    {activeDeckDay === 2 ? (
+                      <video
+                        src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c022f73b44100b54d76b9e583b3ecdc6&profile_id=139&oauth2_token_id=57447761"
+                        muted
+                        loop
+                        autoPlay
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-950 flex items-center justify-center">
+                        <span className="text-[10px] text-neutral-500 font-mono">Video Paused</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Day Card Capstone */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-violet-accent/10 to-transparent border border-violet-accent/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1 max-w-md">
+                  <span className="text-[9px] uppercase tracking-widest font-bold text-violet-accent">Capstone Project</span>
+                  <h4 className="text-sm font-bold text-white font-display">
+                    Commercial Video Ad Campaign Visual
+                  </h4>
+                  <p className="text-xs text-neutral-400 font-sans">
+                    Assemble, animate, and color grade a 15-second high-fidelity video ad.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="text-left font-mono space-y-1 text-[10px] text-neutral-400">
+                    <div className="flex items-center gap-1.5 text-white">
+                      <Calendar className="w-3.5 h-3.5 text-violet-accent" />
+                      <span>Sunday, July 5</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-violet-accent" />
+                      <span>6:00 PM IST</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsModalOpen(true);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-violet-accent text-black font-bold text-xs hover:shadow-[0_0_25px_rgba(127,0,255,0.5)] hover:scale-[1.02] transition-all duration-300 shrink-0 cursor-pointer"
+                  >
+                    Enroll Now
+                  </button>
+                </div>
+              </div>
+            </motion.div>
 
           </div>
 
+          {/* --- MOBILE/TABLET: STACKED LAYOUT --- */}
+          <div className="lg:hidden block space-y-8 max-w-2xl mx-auto">
+            {webinarData.curriculum.map((dayData) => (
+              <div
+                key={dayData.day}
+                className="glass-premium p-6 sm:p-8 rounded-[24px] border border-white/10 flex flex-col gap-6"
+              >
+                {/* Header */}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-violet-accent font-bold">
+                      Day 0{dayData.day} • {dayData.day === 1 ? 'Saturday' : 'Sunday'}
+                    </span>
+                    <h3 className="text-xl font-bold font-display text-[#F2F2F2] mt-1">
+                      {dayData.title}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-sm text-neutral-400 leading-relaxed font-sans">
+                  {dayData.subtitle}
+                </p>
+
+                {/* Visual Presenter */}
+                <div className="relative w-full h-[200px] sm:h-[260px] rounded-2xl overflow-hidden border border-white/10 bg-black">
+                  {dayData.day === 1 ? (
+                    <div className="w-full h-full relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={day1Images[currentImgIndex]}
+                        alt="Day 1 Project Preview"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                        {day1Images.map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setCurrentImgIndex(idx)}
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${currentImgIndex === idx ? 'bg-violet-accent w-3.5' : 'bg-white/35'
+                              }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <video
+                      src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c022f73b44100b54d76b9e583b3ecdc6&profile_id=139&oauth2_token_id=57447761"
+                      muted
+                      loop
+                      autoPlay
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+
+                {/* Topics Grid */}
+                <div className="space-y-3">
+                  <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold block">
+                    Key Topics Covered
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {dayData.topics.map((topic, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 p-3.5 rounded-xl glass-premium"
+                      >
+                        <div className="w-5 h-5 rounded bg-violet-accent/10 text-violet-accent border border-violet-accent/20 flex items-center justify-center shrink-0">
+                          <Check className="w-3 h-3" />
+                        </div>
+                        <span className="text-xs text-neutral-300 font-medium leading-tight">
+                          {topic}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Capstone */}
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-violet-accent/10 to-transparent border border-violet-accent/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className="text-[9px] uppercase tracking-widest font-bold text-violet-accent block">Capstone Project</span>
+                    <h4 className="text-sm font-bold text-white font-display">
+                      {dayData.day === 1 ? 'Consistent Multi-Scene Character Storyboard' : 'Commercial Video Ad Campaign Visual'}
+                    </h4>
+                    <p className="text-xs text-neutral-400 font-sans leading-relaxed">
+                      {dayData.day === 1
+                        ? 'Create a 6-frame storyboard maintaining the exact same character.'
+                        : 'Assemble, animate, and color grade a 15-second high-fidelity video ad.'}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/5 sm:pt-0 sm:border-t-0">
+                    <div className="text-left font-mono space-y-1 text-[10px] text-neutral-400">
+                      <div className="flex items-center gap-1.5 text-white">
+                        <Calendar className="w-3.5 h-3.5 text-violet-accent" />
+                        <span>{dayData.day === 1 ? 'Saturday, July 4' : 'Sunday, July 5'}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-violet-accent" />
+                        <span>6:00 PM IST</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="px-4 py-2 rounded-xl bg-violet-accent text-black font-bold text-xs hover:shadow-[0_0_25px_rgba(127,0,255,0.5)] hover:scale-[1.02] transition-all duration-300 shrink-0 cursor-pointer w-full sm:w-auto text-center"
+                    >
+                      Enroll Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* SUCCESS STORIES (3D VIDEO TESTIMONIALS DECK) */}
+      <section id="testimonials" className="py-20 bg-[#000000] border-t border-white/10 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-accent/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#F2F2F2] bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+              Student Results
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight text-[#F2F2F2] mt-6 mb-4">
+              Success Stories
+            </h2>
+            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+              See what our students are creating and how this masterclass transformed their creative workflow.
+            </p>
+          </div>
+
+          {/* 3D Overlapping Card Deck */}
+          <div className="relative w-full max-w-5xl mx-auto h-[480px] sm:h-[620px] flex items-center justify-center overflow-hidden">
+            {testimonials.map((t, i) => {
+              // Calculate offset in a loop of 5
+              let offset = i - activeTestimonial;
+              if (offset < -2) offset += 5;
+              if (offset > 2) offset -= 5;
+
+              const isActive = offset === 0;
+
+              return (
+                <motion.div
+                  key={i}
+                  onClick={() => {
+                    if (!isActive) {
+                      setActiveTestimonial(i);
+                      setIsTestimonialMuted(true); // Reset to muted on switch
+                    }
+                  }}
+                  animate={{
+                    x: isMobile ? `${offset * 15}%` : `${offset * 32}%`,
+                    scale: isActive ? 1 : 0.82,
+                    opacity: isActive ? 1 : 0.45,
+                    zIndex: isActive ? 30 : 20 - Math.abs(offset),
+                    rotateY: isActive ? 0 : offset * 12,
+                  }}
+                  transition={{ type: 'spring', stiffness: 70, damping: 16, mass: 0.8 }}
+                  className={`absolute w-[260px] sm:w-[380px] md:w-[440px] glass-premium rounded-[24px] p-2.5 select-none transition-all duration-300 ${
+                    isActive 
+                      ? 'cursor-default shadow-[0_20px_50px_rgba(127,0,255,0.15)] border-white/20' 
+                      : 'cursor-pointer hover:border-white/20 hover:opacity-70 border-white/5'
+                  }`}
+                  style={{
+                    perspective: 1000,
+                    transformStyle: "preserve-3d"
+                  }}
+                >
+                  <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-950">
+                    {isActive ? (
+                      <video
+                        key={t.src} // force re-render when active to ensure autoplay works
+                        src={t.src}
+                        loop
+                        muted={isTestimonialMuted}
+                        playsInline
+                        autoPlay
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.thumbnail}
+                        alt="Testimonial Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+
+                    {/* Mute Button (Only on Active Card) */}
+                    {isActive && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsTestimonialMuted(!isTestimonialMuted);
+                        }}
+                        className="absolute bottom-3 right-3 z-20 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 hover:border-violet-accent/50 flex items-center justify-center text-white backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 cursor-pointer"
+                        title={isTestimonialMuted ? "Unmute" : "Mute"}
+                      >
+                        {isTestimonialMuted ? (
+                          <VolumeX className="w-4 h-4 text-violet-accent" />
+                        ) : (
+                          <Volume2 className="w-4 h-4 text-violet-accent" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -1197,7 +1509,7 @@ export default function Home() {
               <div className="relative h-36 w-full overflow-hidden mt-auto">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1598550476439-6847785fce6e?q=80&w=600&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop"
                   alt={webinarData.audience[0].title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -1220,7 +1532,7 @@ export default function Home() {
               <div className="relative h-36 w-full overflow-hidden mt-auto">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://images.unsplash.com/photo-1561070791-26c113006238?q=80&w=600&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop"
                   alt={webinarData.audience[1].title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -1485,106 +1797,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
-      <section className="py-20 bg-white/5 border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#F2F2F2]">Proven Success</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight text-[#F2F2F2] mt-3 mb-4">
-              What Previous Participants Say
-            </h2>
-            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-              Over 500+ creators, designers, and marketers have upgraded their skills through our masterclass.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {webinarData.testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="glass-panel p-6 rounded-2xl flex flex-col justify-between"
-              >
-                <div>
-                  {/* Star Rating */}
-                  <div className="flex items-center gap-1 mb-4 text-amber-500">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
-                  </div>
-
-                  <p className="text-sm text-neutral-300 italic leading-relaxed mb-6">
-                    &ldquo;{testimonial.review}&rdquo;
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 border-t border-white/10 pt-4">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-10 h-10 rounded-full object-cover border border-white/10 shadow-sm"
-                  />
-                  <div>
-                    <h5 className="text-sm font-bold text-[#F2F2F2] font-display">{testimonial.name}</h5>
-                    <span className="text-[10px] text-neutral-400 block">{testimonial.role}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* FAQS SECTION */}
-      <section id="faqs" className="py-20 md:py-32">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#F2F2F2]">Got Questions?</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight text-[#F2F2F2] mt-3 mb-4">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            {webinarData.faqs.map((faq, index) => {
-              const isOpen = openFaqIndex === index;
-              return (
-                <div
-                  key={index}
-                  className="glass-panel rounded-xl overflow-hidden transition-colors"
-                >
-                  <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                    className="w-full p-5 flex items-center justify-between text-left font-display font-bold text-sm sm:text-base text-[#F2F2F2] hover:text-white transition-colors cursor-pointer"
-                  >
-                    <span>{faq.question}</span>
-                    <ChevronDown className={`w-5 h-5 text-neutral-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-white' : ''}`} />
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                      >
-                        <div className="p-5 pt-0 border-t border-white/10 text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                          {faq.answer}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
 
       {/* FOOTER */}
       <footer className="border-t border-white/10 bg-[#000000]/60 py-12">
