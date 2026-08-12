@@ -34,7 +34,23 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, on
 
   if (!isOpen) return null;
 
-  const onSubmitDetails = () => {
+  const onSubmitDetails = async () => {
+    try {
+      const values = getValues();
+      fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          amount: fee,
+          status: 'pending',
+        }),
+      }).catch((err) => console.error('Error saving initial registration:', err));
+    } catch (e) {
+      console.error(e);
+    }
     setStep(2);
   };
 
