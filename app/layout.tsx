@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,6 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="lazyOnload"
+        />
+      </head>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${cormorantGaramond.variable} antialiased bg-[#000000] text-[#F2F2F2]`}
       >
@@ -40,4 +47,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 

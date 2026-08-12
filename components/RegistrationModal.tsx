@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { X, CheckCircle2, ShieldCheck, CreditCard, QrCode, Sparkles, Calendar, ArrowRight, Loader2, User, Mail, Phone } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, CreditCard, QrCode, Sparkles, Calendar, ArrowRight, User, Mail, Phone } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { RazorpayCheckoutButton } from './RazorpayCheckoutButton';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -21,14 +22,12 @@ interface FormData {
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, fee, originalFee }) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card'>('upi');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [ticketId, setTicketId] = useState('');
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const { register, handleSubmit, getValues, formState: { errors }, reset } = useForm<FormData>();
 
   useEffect(() => {
     if (isOpen) {
       setStep(1);
-      setIsProcessing(false);
       reset();
     }
   }, [isOpen, reset]);
@@ -37,26 +36,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, on
 
   const onSubmitDetails = () => {
     setStep(2);
-  };
-
-  const handlePayment = () => {
-    setIsProcessing(true);
-    // Simulate payment processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      // Generate a mock ticket ID
-      const randomId = 'SA-' + Math.floor(100000 + Math.random() * 900000);
-      setTicketId(randomId);
-      setStep(3);
-      
-      // Burst confetti!
-      confetti({
-        particleCount: 150,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: ['#7F00FF', '#0A0A0A', '#A6A6A6']
-      });
-    }, 2000);
   };
 
   return (
@@ -291,29 +270,34 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, on
 
             {/* Payment Actions */}
             <div className="space-y-3 pt-3 border-t border-white/10">
-              <button
-                type="button"
-                onClick={handlePayment}
-                disabled={isProcessing}
-                className="w-full py-3 bg-[#F2F2F2] hover:bg-white disabled:bg-[#F2F2F2]/50 text-[#000000] font-bold rounded-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-violet-accent/25 transition-all cursor-pointer"
-              >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Processing Payment...
-                  </>
-                ) : (
-                  <>
-                    <ShieldCheck className="w-5 h-5" />
-                    Pay ₹{fee} Securely
-                  </>
-                )}
-              </button>
+              <RazorpayCheckoutButton
+                amount={fee}
+                name="SapAin Edu"
+                description="Masterclass Registration Fee"
+                prefill={{
+                  name: getValues('name'),
+                  email: getValues('email'),
+                  contact: getValues('phone'),
+                }}
+                onSuccess={() => {
+                  const randomId = 'SA-' + Math.floor(100000 + Math.random() * 900000);
+                  setTicketId(randomId);
+                  setStep(3);
+
+                  // Burst confetti!
+                  confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#7F00FF', '#0A0A0A', '#A6A6A6'],
+                  });
+                }}
+                buttonText={`Pay ₹${fee} via Razorpay`}
+              />
               
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                disabled={isProcessing}
                 className="w-full py-2.5 bg-transparent hover:bg-white/5 text-neutral-400 hover:text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
               >
                 Back to Details
@@ -323,7 +307,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, on
             {/* Security Disclaimer */}
             <div className="flex items-center justify-center gap-1.5 text-[10px] text-neutral-400">
               <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
-              <span>SSL Encrypted 256-bit Payment Simulation</span>
+              <span>Secured by Razorpay • 256-bit SSL Encrypted</span>
             </div>
           </div>
         )}
