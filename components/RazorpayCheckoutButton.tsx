@@ -90,7 +90,7 @@ export const RazorpayCheckoutButton: React.FC<RazorpayCheckoutButtonProps> = ({
         throw new Error(orderData.error || 'Failed to create order. Please try again.');
       }
 
-      const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TOmZFfDI3s5f8E';
+      const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_Tbv2mu6iL1NrHX';
 
       // 3. Open Razorpay Checkout Modal (STEP 2)
       const options = {

@@ -37,28 +37,56 @@ export async function POST(request: Request) {
       );
     }
 
-    // Save registration to Neon Database if userDetails is provided
-    if (userDetails && userDetails.name && userDetails.email && userDetails.phone) {
-      try {
-        await initDb();
-        const sql = getDb();
+    // Always attempt to save or update registration in Neon Database
+    try {
+      await initDb();
+      const sql = getDb();
+
+      const userName = userDetails?.name || body.name || 'Verified Customer';
+      const userEmail = userDetails?.email || body.email || 'customer@sapain.edu';
+      const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
+      const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
+
+      // Check if a registration exists for this email/phone or order_id
+      const existing = await sql`
+        SELECT * FROM registrations 
+        WHERE (email = ${userEmail} AND email != 'customer@sapain.edu') 
+           OR (phone = ${userPhone} AND phone != 'N/A') 
+           OR order_id = ${razorpay_order_id}
+        LIMIT 1;
+      `;
+
+      if (existing && existing.length > 0) {
+        // Update existing row to completed with payment details
+        await sql`
+          UPDATE registrations
+          SET status = 'completed',
+              order_id = ${razorpay_order_id},
+              payment_id = ${razorpay_payment_id},
+              signature = ${razorpay_signature},
+              amount = ${amount || 499},
+              ticket_id = COALESCE(ticket_id, ${ticketPassId})
+          WHERE id = ${existing[0].id};
+        `;
+      } else {
+        // Insert new completed registration record
         await sql`
           INSERT INTO registrations (name, email, phone, order_id, payment_id, signature, amount, ticket_id, status)
           VALUES (
-            ${userDetails.name},
-            ${userDetails.email},
-            ${userDetails.phone},
+            ${userName},
+            ${userEmail},
+            ${userPhone},
             ${razorpay_order_id},
             ${razorpay_payment_id},
             ${razorpay_signature},
             ${amount || 499},
-            ${ticket_id || null},
+            ${ticketPassId},
             'completed'
           );
         `;
-      } catch (dbErr) {
-        console.error('Error saving verified registration to Neon DB:', dbErr);
       }
+    } catch (dbErr) {
+      console.error('Error saving verified registration to Neon DB:', dbErr);
     }
 
     return NextResponse.json({

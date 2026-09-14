@@ -1,29 +1,29 @@
-export interface Topic {
-  title: string;
-  description?: string;
+export interface LanguageOption {
+  id: string;
+  name: string;
+  description: string;
+  fee: number;
+  duration: string;
+  platform: string;
+  dates: string;
+  time: string;
+  isPopular?: boolean;
+  whatsappGroupUrl?: string;
 }
 
-export interface CurriculumDay {
-  day: number;
-  title: string;
-  subtitle: string;
-  topics: string[];
-}
-
-export interface AudienceCard {
+export interface WorkshopPillar {
   title: string;
   description: string;
   icon: string;
+  image?: string;
 }
 
-export interface BonusCard {
-  title: string;
-  description: string;
-  value: string;
-  icon: string;
+export interface ToolItem {
+  name: string;
+  badge?: string;
 }
 
-export interface Instructor {
+export interface Founder {
   name: string;
   role: string;
   bio: string;
@@ -31,17 +31,22 @@ export interface Instructor {
   linkedin?: string;
 }
 
-export interface Testimonial {
+export interface Mentor {
   name: string;
   role: string;
-  review: string;
-  rating: number;
+  bio: string;
   image: string;
+  experienceYears: number;
 }
 
 export interface FAQItem {
   question: string;
   answer: string;
+}
+
+export interface WorkflowGuide {
+  number: number;
+  title: string;
 }
 
 export interface WebinarConfig {
@@ -50,208 +55,267 @@ export interface WebinarConfig {
   tagline: string;
   fee: number;
   originalFee: number;
+  durationHours: number;
+  trainingHours: string;
   seatsTotal: number;
-  durationDays: number;
-  hoursPerDay: number;
   mode: string;
+  platform: string;
   dates: string;
   time: string;
-  curriculum: CurriculumDay[];
-  audience: AudienceCard[];
-  bonuses: BonusCard[];
-  achievements: string[];
-  instructors: Instructor[];
-  testimonials: Testimonial[];
+  learnersCount: string;
+  aboutCourse: {
+    lead: string;
+    description: string;
+    audienceSummary: string;
+    toolHighlight: string;
+    outcomeSummary: string;
+  };
+  languages: LanguageOption[];
+  pillars: WorkshopPillar[];
+  tools: ToolItem[];
+  whatsIncluded: string[];
+  targetAudience: {
+    title: string;
+    description: string;
+    icon: string;
+    image?: string;
+  }[];
+  postWorkshopSkills: string[];
+  founders: Founder[];
+  mentor: Mentor;
+  trustedBrands: string[];
+  workflowGuides: WorkflowGuide[];
   faqs: FAQItem[];
 }
 
 export const webinarData: WebinarConfig = {
-  title: "Master the Art of AI Image & Video Generation",
-  subtitle: "Learn how to communicate with AI like a professional creator and transform ideas into stunning visuals and videos.",
-  tagline: "Don't just use AI. Learn how to direct it like a creator.",
-  fee: 499,
+  title: "Advanced AI Image & Cinematic Video Generation Masterclass",
+  subtitle: "Learn to use advanced AI platforms such as Higgsfield and Magnific, along with tools like ChatGPT Astra, ChatGPT Image 2.5, Seedance, and more to create cinematic-style videos and powerful visuals. Explore AI-powered visual storytelling, image and video generation, cinematic content creation, and smarter creative workflows to turn your ideas into professional-quality content.",
+  tagline: "3-hour practical AI workshop • Beginner-friendly",
+  fee: 299,
   originalFee: 2999,
+  durationHours: 3,
+  trainingHours: "2.5 hours live, hands-on training + Live Q&A",
   seatsTotal: 100,
-  durationDays: 2,
-  hoursPerDay: 2,
-  mode: "Online via Zoom",
-  dates: "Upcoming Weekend",
-  time: "6:00 PM - 8:00 PM IST",
-  curriculum: [
+  mode: "Live Online Workshop on Zoom",
+  platform: "Zoom (Join from anywhere)",
+  dates: "Upcoming Weekend Batch",
+  time: "6:00 PM - 9:00 PM IST",
+  learnersCount: "1,000+ learners are already part of the journey.",
+  aboutCourse: {
+    lead: "In the age of AI, skills are becoming more valuable than certificates. As AI continues to transform the creative industry, staying ahead requires more than knowing the basics - it requires mastering the latest tools and techniques and using them effectively.",
+    description: "This 3-hour live online workshop is designed to help you explore advanced AI tools and creative techniques for professional content creation.",
+    audienceSummary: "The workshop is open to beginners, AI enthusiasts, content creators, creative professionals, and anyone with an interest in AI.",
+    toolHighlight: "This is not a basic introduction to AI. You'll explore advanced tools such as ChatGPT Astra, ChatGPT Image 2.5, and Seedance, along with platforms like Magnific and Higgsfield plus practical methods for creating advanced visuals and cinematic-style videos.",
+    outcomeSummary: "By the end of the workshop, you'll have the knowledge and practical skills to create professional-level AI visuals and cinematic videos in minutes, not days."
+  },
+  languages: [
     {
-      day: 1,
-      title: "AI Image Generation MASTERCLASS",
-      subtitle: "Learn the fundamentals of visual prompting and prompt engineering.",
-      topics: [
-        "Structure of powerful prompts",
-        "Cinematic image creation",
-        "Character design",
-        "Product advertisements",
-        "Camera angles & lens selection",
-        "Composition & lighting control",
-        "Color grading techniques",
-        "Consistent characters across scenes",
-        "Advanced prompt frameworks"
-      ]
+      id: "en",
+      name: "English",
+      description: "Learn in English - interactive session with global workflows and case studies.",
+      fee: 299,
+      duration: "3 hrs",
+      platform: "Zoom",
+      dates: "Upcoming Saturday",
+      time: "6:00 PM - 9:00 PM IST",
+      isPopular: true,
+      whatsappGroupUrl: "https://chat.whatsapp.com/FidgNJ08MAX1Jh5Y4Nubw2?s=cl&p=a&mlu=0&ilr=4"
     },
     {
-      day: 2,
-      title: "AI Video Generation & Production",
-      subtitle: "Animate your visuals and build production-ready workflows.",
-      topics: [
-        "Image to video translation",
-        "AI storytelling & storyboarding",
-        "Creating advertisement videos",
-        "Camera movement & motion prompting",
-        "Scene consistency & transitions",
-        "Sound direction & AI voiceovers",
-        "AI video editing pipelines",
-        "Professional creator workflows"
-      ]
+      id: "ml",
+      name: "Malayalam",
+      description: "Learn in Malayalam - interactive session delivered in native language.",
+      fee: 299,
+      duration: "3 hrs",
+      platform: "Zoom",
+      dates: "Upcoming Sunday",
+      time: "6:00 PM - 9:00 PM IST",
+      isPopular: false,
+      whatsappGroupUrl: "https://chat.whatsapp.com/B5yW3uGjrDLAFHWurd6ZBn?s=cl&p=a&mlu=0&ilr=4"
+    },
+    {
+      id: "hi",
+      name: "Hindi",
+      description: "Learn in Hindi - interactive live session for Hindi-speaking creators.",
+      fee: 299,
+      duration: "3 hrs",
+      platform: "Zoom",
+      dates: "Upcoming Weekend",
+      time: "6:00 PM - 9:00 PM IST",
+      isPopular: false,
+      whatsappGroupUrl: "https://chat.whatsapp.com/DBG3P9q7gVh6g7yG9j9StF?s=cl&p=a&mlu=0&ilr=4"
     }
   ],
-  audience: [
+  pillars: [
+    {
+      title: "AI Image Generation",
+      description: "Learn how to turn ideas into compelling, photorealistic and styled AI-generated visuals.",
+      icon: "Sparkles",
+      image: "/pillars/image-generation.png"
+    },
+    {
+      title: "AI Video Generation",
+      description: "Explore how to transform generated visuals into engaging, dynamic video content with camera motion.",
+      icon: "Film",
+      image: "/pillars/video-generation.png"
+    },
+    {
+      title: "Cinematic Storytelling",
+      description: "Learn how to develop an idea into a story and direct cinematic-style video sequences with scene consistency.",
+      icon: "Palette",
+      image: "/pillars/cinematic-storytelling.jpg"
+    }
+  ],
+  tools: [
+    { name: "ChatGPT Astra", badge: "Next-Gen" },
+    { name: "ChatGPT Image 2.5", badge: "Visual Directing" },
+    { name: "Higgsfield (Seedance 2.5)", badge: "Cinematic Motion" },
+    { name: "Minimax H3", badge: "Video Engine" },
+    { name: "Omni Flash", badge: "Realtime Generation" },
+    { name: "Magnific AI", badge: "Ultra Upscaling" },
+    { name: "+ More Creative Tools", badge: "Ecosystem" }
+  ],
+  whatsIncluded: [
+    "2.5 hours of live, hands-on training",
+    "Real-time demonstrations using industry-leading AI tools",
+    "Practical techniques you can apply immediately",
+    "Live Q&A with the instructor",
+    "A Workshop Worth Every Minute"
+  ],
+  targetAudience: [
+    {
+      title: "Beginners",
+      description: "No prior AI experience needed. Start with practical fundamentals and build confidence rapidly.",
+      icon: "Sparkles",
+      image: "/audience/beginners.png"
+    },
+    {
+      title: "AI Enthusiasts",
+      description: "Dive deep into the latest tool releases, breakthroughs, and bleeding-edge generation pipelines.",
+      icon: "Terminal",
+      image: "/audience/ai-enthusiasts.png"
+    },
     {
       title: "Content Creators",
-      description: "Scale your content production and create eye-catching visuals without hiring expensive designers.",
-      icon: "Sparkles"
+      description: "Create eye-catching visuals and viral video sequences without high production costs.",
+      icon: "Share2",
+      image: "/audience/content-creators.jpg"
     },
     {
-      title: "Designers",
-      description: "Supercharge your brainstorming and prototype premium concepts for clients in minutes instead of days.",
-      icon: "Palette"
+      title: "Creative Professionals",
+      description: "Integrate generative AI directly into agency, advertising, and client design deliverables.",
+      icon: "Briefcase",
+      image: "/audience/creative-professionals.jpg"
     },
     {
-      title: "Filmmakers",
-      description: "Storyboard and produce stunning cinematic AI video sequences to bring your stories to life.",
-      icon: "Film"
-    },
-    {
-      title: "Marketing Professionals",
-      description: "Create high-converting ad creatives and social media campaigns that stand out from the competition.",
-      icon: "Megaphone"
-    },
-    {
-      title: "Students",
-      description: "Gain future-proof skills that will make you highly competitive in the modern creative job market.",
-      icon: "GraduationCap"
-    },
-    {
-      title: "Entrepreneurs",
-      description: "Build high-quality brand assets, product mockups, and promo videos for your business at zero cost.",
-      icon: "Briefcase"
-    },
-    {
-      title: "Social Media Creators",
-      description: "Keep your feeds fresh with infinite unique visuals, memes, and viral-worthy video content.",
-      icon: "Share2"
+      title: "Anyone Seeking In-Demand Skills",
+      description: "Position yourself at the forefront of the creative revolution with high-value AI directing abilities.",
+      icon: "GraduationCap",
+      image: "/audience/in-demand-skills.png"
     }
   ],
-  bonuses: [
+  postWorkshopSkills: [
+    "Master advanced prompting techniques",
+    "Create high-quality AI images",
+    "Generate cinematic AI videos",
+    "Create consistent characters & visuals",
+    "Use AI tools at an advanced level",
+    "Build a practical AI creative workflow"
+  ],
+  founders: [
     {
-      title: "Ready-to-use Prompt Templates",
-      description: "A curated library of 500+ copy-paste prompts for cinematic, product, and architectural styles.",
-      value: "₹999",
-      icon: "Terminal"
+      name: "Brijin Raj",
+      role: "Managing Director, Sapain",
+      bio: "Brijin Raj is a creative entrepreneur and business leader with a strong focus on building and scaling creative ventures. As Managing Director of Sapain, he brings together business strategy, creativity, technology, and innovation to build forward-thinking organizations. His leadership centers on building strong teams, developing new opportunities, and shaping the future of creative businesses.",
+      image: "/founders/brijin_raj.jpg"
+    },
+   
+    {
+      name: "Akshay",
+      role: "CEO, Sapain",
+      bio: "Akshay is the CEO of Sapain and an AI enthusiast with a deep interest in the intersection of technology and creativity. He actively explores emerging AI technologies and their practical applications across different fields, with a focus on discovering how AI can enhance creative processes, productivity, and innovation. His vision centers on making emerging technology accessible and useful across creative and professional workflows.",
+      image: "/founders/akshay.jpg"
     },
     {
-      title: "AI Workflow System",
-      description: "Step-by-step cheatsheet of our proprietary pipeline for seamless image-to-video conversion.",
-      value: "₹1,499",
-      icon: "GitBranch"
+      name: "Nandu",
+      role: "COO, Sapain",
+      bio: "Nandu is the Chief Operating Officer at Sapain and a creative-focused team leader with around eight years of experience in the creative industry. He focuses on building efficient systems, improving team collaboration, and creating smooth workflows that support creative production. Alongside operations, he continues to explore emerging creative mediums and technologies to help teams work more efficiently and effectively.",
+      image: "/founders/nandu.jpg"
     },
     {
-      title: "Creator Resources",
-      description: "Access to private drive with cinematic overlays, sound effects, and color-grading LUTs.",
-      value: "₹799",
-      icon: "FolderOpen"
+      name: "Mithun",
+      role: "CEDO, Sapain",
+      bio: "Mithun serves as the Chief Education & Development Officer at Sapain, focusing on integrating AI into creative education and workflows. With around eight years of experience in the creative field, he develops structured syllabuses, learning systems, and educational workflows that connect creativity with emerging technology. His areas of exploration span 2D, 3D, animation, and AI-powered creative processes.",
+      image: "/founders/mithun.jpg"
     },
     {
-      title: "Live Q&A Session",
-      description: "Get direct feedback on your creations from the instructors in a dedicated 30-min Q&A.",
-      value: "Priceless",
-      icon: "MessageSquareText"
-    },
-    {
-      title: "Certificate of Completion",
-      description: "Receive an official, shareable digital certificate from SapAin to showcase your new skills.",
-      value: "₹499",
-      icon: "Award"
+      name: "Kiran",
+      role: "CMO, Sapain",
+      bio: "Kiran is the Chief Marketing Officer at Sapain, specializing in creative marketing and team leadership. With extensive experience leading creative teams, he brings a strong understanding of visual communication, branding, and digital media. He continuously explores emerging creative technologies and mediums, including AI and 3D, to develop new approaches to marketing and creative storytelling.",
+      image: "/founders/kiran.jpg"
     }
   ],
-  achievements: [
-    "Generate professional AI Images with perfect composition",
-    "Create cinematic AI Videos with fluid camera movement",
-    "Design highly specific prompts using professional frameworks",
-    "Build studio-grade advertisement creatives on a budget",
-    "Save hours of manual design and editing work daily",
-    "Create high-performing marketing content that converts",
-    "Maintain consistent characters across multiple scenes",
-    "Produce commercial-ready visuals for high-paying clients"
+  mentor: {
+    name: "Vinayak",
+    role: "Lead Mentor & AI Video Specialist, Sapain",
+    bio: "Hi, I'm Vinayak from Sapain, and I'm excited to be your mentor for this workshop. Sapain is India's leading AI video creator brand, with years of experience researching, experimenting, and developing in the field of AI. Over 7 years, we've worked with emerging AI technologies, explored new creative possibilities, and turned them into real-world solutions for brands and businesses. I currently lead and mentor Sapain's students, teaching them how to apply these tools and workflows in real, practical projects. That experience is what we're bringing into this workshop - giving you access to the tools, techniques, and creative workflows we've learned through years of working with AI.",
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop",
+    experienceYears: 7
+  },
+  trustedBrands: [
+    "Lulu",
+    "Walkaro",
+    "Nesto",
+    "Canara",
+    "Vkc",
+    "Kalyan silks",
+    "Decathlon",
+    "Toyota",
+    "Joy icecreams",
+    "Double Horse",
+    "Popees",
+    "Hykon",
+    "Craze biscuits",
+    "Odyssia",
+    "Swayamvara silks"
   ],
-  instructors: [
-    {
-      name: "Aarav Mehta",
-      role: "Lead AI Visual Artist & Mentor",
-      bio: "Former Creative Director at a top global advertising agency. Over 10 years of experience in visual storytelling, now specializing in Midjourney and generative workflows for enterprise brands.",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop",
-      linkedin: "https://linkedin.com"
-    },
-    {
-      name: "Rohan Sharma",
-      role: "Director & AI Storyteller",
-      bio: "Independent filmmaker and tech enthusiast. Creator of multiple viral AI short films and ad campaigns. Expert in Runway, Luma, and integrating AI into traditional cinematic pipelines.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=256&auto=format&fit=crop",
-      linkedin: "https://linkedin.com"
-    }
-  ],
-  testimonials: [
-    {
-      name: "Neha Kapoor",
-      role: "Freelance Brand Designer",
-      review: "This workshop completely changed my design workflow. I can now present 5 distinct high-quality visual concepts to clients in under an hour. The character consistency section was worth 10x the price!",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=128&auto=format&fit=crop"
-    },
-    {
-      name: "Vikram Malhotra",
-      role: "Founder, D2C Apparel Brand",
-      review: "We shot our entire summer collection launch using Midjourney and Runway after attending this masterclass. The ad creatives look incredibly premium, and our conversion rate went up by 35%!",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=128&auto=format&fit=crop"
-    },
-    {
-      name: "Ananya Sen",
-      role: "Social Media Manager",
-      review: "I was skeptical about AI video, but the step-by-step pipeline taught on Day 2 made it so easy. I've been creating cinematic reels that are getting double the reach of our usual content. Highly recommend!",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=128&auto=format&fit=crop"
-    }
+  workflowGuides: [
+    { number: 1, title: "Your creative AI field guide" },
+    { number: 2, title: "Plan a clear story" },
+    { number: 3, title: "Plan your own creative brief" },
+    { number: 4, title: "Make the first page" },
+    { number: 5, title: "Before you click generate" },
+    { number: 6, title: "Your next seven days" },
+    { number: 7, title: "Prompting with creative intent" },
+    { number: 8, title: "Tell a story in 30 sec" },
+    { number: 9, title: "Use light to tell the story" },
+    { number: 10, title: "Compose for a clear first look" }
   ],
   faqs: [
     {
-      question: "Is this workshop live or pre-recorded?",
-      answer: "This is a 100% live, interactive workshop. You will be able to see live demonstrations, follow along, and ask questions in real time."
+      question: "Do I need any prior AI knowledge?",
+      answer: "No — the workshop is beginner-friendly. We guide you step-by-step from core prompting through advanced cinematic video techniques."
     },
     {
-      question: "Will I get access to recordings if I miss a session?",
-      answer: "Yes, absolutely! All registered participants will receive lifetime access to the high-definition recordings of both days within 24 hours of the live session."
+      question: "Will there be hands-on experience?",
+      answer: "Yes, including live demonstrations, real-time workflows, and direct practical exercises you can follow along with."
     },
     {
-      question: "Do I need any prior design or AI experience?",
-      answer: "No prior experience is needed. We start from absolute scratch, teaching you prompt structures, and gradually move to advanced cinematic and video generation techniques."
+      question: "Who should attend?",
+      answer: "Anyone interested in AI and creative applications, including beginners, visual artists, content creators, marketers, and design professionals."
     },
     {
-      question: "Which AI tools will be covered in this masterclass?",
-      answer: "We will primarily cover Midjourney (v6), Stable Diffusion, Runway Gen-2/Gen-3, Luma Dream Machine, and ChatGPT for prompt engineering. We will focus on tools that offer the highest quality commercial output."
+      question: "Is it live or pre-recorded?",
+      answer: "Live and interactive. You can ask questions in real-time and engage directly with the mentor."
     },
     {
-      question: "How and when will I receive the Zoom link?",
-      answer: "Immediately upon successful registration and payment, you will receive an automated email and WhatsApp confirmation. The Zoom link and calendar invite will be sent to your registered email and phone number."
+      question: "Is there an age limit?",
+      answer: "No, it's open to everyone with a passion for creativity and AI."
     },
     {
-      question: "Will I receive a certificate of completion?",
-      answer: "Yes, you will receive a verified digital certificate of completion from SapAin, which you can showcase on LinkedIn and in your portfolio."
+      question: "How do I stay updated on future workshops?",
+      answer: "Follow Sapain's official social media channels and join our AI community for updates on upcoming sessions, masterclasses, and resources."
     }
   ]
 };

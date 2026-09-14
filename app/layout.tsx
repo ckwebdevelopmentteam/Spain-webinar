@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
+import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
-  subsets: ["latin"],
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  style: ["italic", "normal"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -38,9 +28,18 @@ export default function RootLayout({
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="lazyOnload"
         />
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "yi49m6m9ug");
+          `}
+        </Script>
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${cormorantGaramond.variable} antialiased bg-[#000000] text-[#F2F2F2]`}
+        className={`${inter.variable} antialiased bg-[#000000] text-[#F2F2F2] font-sans`}
       >
         {children}
       </body>

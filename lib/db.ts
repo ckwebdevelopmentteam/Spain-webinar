@@ -11,6 +11,8 @@ export function getDb() {
 export async function initDb() {
   try {
     const sql = getDb();
+
+    // 1. Registrations Table
     await sql`
       CREATE TABLE IF NOT EXISTS registrations (
         id SERIAL PRIMARY KEY,
@@ -26,7 +28,45 @@ export async function initDb() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
+
+    // 2. Batches & Fee Settings Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS batches (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL UNIQUE,
+        fee INTEGER NOT NULL DEFAULT 10000,
+        description TEXT,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // Seed default batches if table is empty
+    const existingBatches = await sql`SELECT COUNT(*) FROM batches;`;
+    if (Number(existingBatches[0].count) === 0) {
+      await sql`
+        INSERT INTO batches (name, fee, description) VALUES
+        ('Batch A', 10000, 'Regular AI Masterclass Batch A'),
+        ('Batch B', 15000, 'Advanced Premium AI Batch B'),
+        ('Batch C', 8000, 'Fast-Track Weekend Batch C');
+      `;
+    }
+
+    // 3. Students Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS students (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        batch_name VARCHAR(100) DEFAULT 'Batch A',
+        total_fee INTEGER NOT NULL DEFAULT 10000,
+        paid_amount INTEGER NOT NULL DEFAULT 0,
+        pending_amount INTEGER NOT NULL DEFAULT 10000,
+        status VARCHAR(50) DEFAULT 'Pending',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
   } catch (error) {
-    console.error('Error initializing database table:', error);
+    console.error('Error initializing database tables:', error);
   }
 }

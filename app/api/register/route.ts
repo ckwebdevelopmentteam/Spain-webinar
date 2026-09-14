@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     const sql = getDb();
     const result = await sql`
       INSERT INTO registrations (name, email, phone, order_id, payment_id, signature, amount, ticket_id, status)
-      VALUES (${name}, ${email}, ${phone}, ${order_id || null}, ${payment_id || null}, ${signature || null}, ${amount || 499}, ${ticket_id || null}, ${status || 'completed'})
+      VALUES (${name}, ${email}, ${phone}, ${order_id || null}, ${payment_id || null}, ${signature || null}, ${amount || 299}, ${ticket_id || null}, ${status || 'completed'})
       RETURNING *;
     `;
 
