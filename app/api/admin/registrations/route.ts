@@ -1,16 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getDb, initDb } from '@/lib/db';
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Sapain123';
+import { verifyAdminRequest } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const pass = request.headers.get('x-admin-password') || searchParams.get('password');
+    const isAuthorized = await verifyAdminRequest(request);
 
-    if (pass !== ADMIN_PASSWORD) {
+    if (!isAuthorized) {
       return NextResponse.json(
-        { error: 'Unauthorized: Invalid admin password', success: false },
+        { error: 'Unauthorized: Invalid or missing admin credentials', success: false },
         { status: 401 }
       );
     }

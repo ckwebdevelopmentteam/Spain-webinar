@@ -66,6 +66,42 @@ export async function initDb() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
+
+    // 4. Admin Users Table (Stores hashed admin credentials)
+    await sql`
+      CREATE TABLE IF NOT EXISTS admin_users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100) NOT NULL UNIQUE,
+        password_hash VARCHAR(512) NOT NULL,
+        salt VARCHAR(128) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // Seed default admin with password 'Sapian123' if not present
+    const existingAdmin = await sql`SELECT id FROM admin_users WHERE username = 'admin' LIMIT 1;`;
+    if (!existingAdmin || existingAdmin.length === 0) {
+      // Import hash function dynamically or inline using Node crypto
+      const cryptoModule = await import('crypto');
+      const salt = cryptoModule.randomBytes(16).toString('hex');
+      const hash = cryptoModule.scryptSync('Sapian123', salt, 64).toString('hex');
+      await sql`
+        INSERT INTO admin_users (username, password_hash, salt)
+        VALUES ('admin', ${hash}, ${salt});
+      `;
+      console.log('[DB] Admin user created with password in database.');
+    }
+
+    // 5. Admin Sessions Table (Stores active authentication tokens)
+    await sql`
+      CREATE TABLE IF NOT EXISTS admin_sessions (
+        id SERIAL PRIMARY KEY,
+        token VARCHAR(128) NOT NULL UNIQUE,
+        expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
   } catch (error) {
     console.error('Error initializing database tables:', error);
   }

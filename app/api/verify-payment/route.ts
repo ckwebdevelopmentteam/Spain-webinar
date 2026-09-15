@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getDb, initDb } from '@/lib/db';
+import { sendPaymentConfirmationEmail } from '@/lib/mailer';
 
 export async function POST(request: Request) {
   try {
@@ -37,15 +38,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const userName = userDetails?.name || body.name || 'Verified Customer';
+    const userEmail = userDetails?.email || body.email || 'customer@sapain.edu';
+    const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
+    const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
+
     // Always attempt to save or update registration in Neon Database
     try {
       await initDb();
       const sql = getDb();
-
-      const userName = userDetails?.name || body.name || 'Verified Customer';
-      const userEmail = userDetails?.email || body.email || 'customer@sapain.edu';
-      const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
-      const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
 
       // Check if a registration exists for this email/phone or order_id
       const existing = await sql`
@@ -87,6 +88,23 @@ export async function POST(request: Request) {
       }
     } catch (dbErr) {
       console.error('Error saving verified registration to Neon DB:', dbErr);
+    }
+
+    // Send branded payment confirmation email with WhatsApp group link & Sapain logo
+    try {
+      const userLanguage = userDetails?.language || body.language || 'English';
+      if (userEmail && userEmail !== 'customer@sapain.edu') {
+        await sendPaymentConfirmationEmail({
+          toEmail: userEmail,
+          userName,
+          ticketId: ticketPassId,
+          paymentId: razorpay_payment_id,
+          amount: amount || 499,
+          language: userLanguage,
+        });
+      }
+    } catch (emailErr) {
+      console.error('Error sending confirmation email:', emailErr);
     }
 
     return NextResponse.json({

@@ -59,7 +59,7 @@ export default function AdminDashboard() {
   // Auth state
   const [passwordInput, setPasswordInput] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [savedPassword, setSavedPassword] = useState('');
+  const [authToken, setAuthToken] = useState('');
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -99,42 +99,42 @@ export default function AdminDashboard() {
 
   // Check sessionStorage on mount
   useEffect(() => {
-    const stored = sessionStorage.getItem('sapain_admin_pass');
+    const stored = sessionStorage.getItem('sapain_admin_token');
     if (stored) {
-      setSavedPassword(stored);
+      setAuthToken(stored);
       fetchData(stored);
     }
   }, []);
 
-  const fetchData = async (pass: string) => {
+  const fetchData = async (token: string) => {
     setLoading(true);
     setAuthError('');
     try {
       // 1. Fetch Students
       const resStudents = await fetch('/api/admin/students', {
-        headers: { 'x-admin-password': pass },
+        headers: { 'x-admin-token': token },
       });
       const dataStudents = await resStudents.json();
 
       // 2. Fetch Batches
       const resBatches = await fetch('/api/admin/batches', {
-        headers: { 'x-admin-password': pass },
+        headers: { 'x-admin-token': token },
       });
       const dataBatches = await resBatches.json();
 
       // 3. Fetch Webinar Registrations
       const resRegs = await fetch('/api/admin/registrations', {
-        headers: { 'x-admin-password': pass },
+        headers: { 'x-admin-token': token },
       });
       const dataRegs = await resRegs.json();
 
       if (resStudents.ok && dataStudents.success) {
         setStudents(dataStudents.data || []);
         setIsAuthenticated(true);
-        sessionStorage.setItem('sapain_admin_pass', pass);
       } else {
-        setAuthError(dataStudents.error || 'Invalid admin password.');
+        setAuthError(dataStudents.error || 'Invalid or expired session. Please log in.');
         setIsAuthenticated(false);
+        sessionStorage.removeItem('sapain_admin_token');
         setLoading(false);
         return;
       }
@@ -160,18 +160,41 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!passwordInput) return;
-    setSavedPassword(passwordInput);
-    fetchData(passwordInput);
+    setLoading(true);
+    setAuthError('');
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.token) {
+        setAuthToken(data.token);
+        sessionStorage.setItem('sapain_admin_token', data.token);
+        setIsAuthenticated(true);
+        fetchData(data.token);
+      } else {
+        setAuthError(data.error || 'Invalid admin credentials.');
+        setIsAuthenticated(false);
+      }
+    } catch (err: unknown) {
+      const e = err as { message?: string };
+      setAuthError(e.message || 'Error communicating with authentication server.');
+      setIsAuthenticated(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('sapain_admin_pass');
+    sessionStorage.removeItem('sapain_admin_token');
     setIsAuthenticated(false);
     setPasswordInput('');
-    setSavedPassword('');
+    setAuthToken('');
   };
 
   const showNotify = (msg: string) => {
@@ -187,7 +210,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': savedPassword,
+          'x-admin-token': authToken,
         },
         body: JSON.stringify(newStudent),
       });
@@ -203,7 +226,7 @@ export default function AdminDashboard() {
           total_fee: batchFees['Batch A'] || 10000,
           paid_amount: 0,
         });
-        fetchData(savedPassword);
+        fetchData(authToken);
       } else {
         alert(data.error || 'Failed to add student');
       }
@@ -223,7 +246,7 @@ export default function AdminDashboard() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': savedPassword,
+          'x-admin-token': authToken,
         },
         body: JSON.stringify({
           id: selectedStudentForPay.id,
@@ -238,7 +261,7 @@ export default function AdminDashboard() {
         setIsPayModalOpen(false);
         setSelectedStudentForPay(null);
         setAdditionalPayment('');
-        fetchData(savedPassword);
+        fetchData(authToken);
       } else {
         alert(data.error || 'Failed to update payment');
       }
@@ -255,14 +278,14 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': savedPassword,
+          'x-admin-token': authToken,
         },
         body: JSON.stringify({ name: batchName, fee: newFee }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         showNotify(`Fee for ${batchName} updated to ₹${newFee.toLocaleString()}!`);
-        fetchData(savedPassword);
+        fetchData(authToken);
       } else {
         alert(data.error || 'Failed to save batch fee');
       }
@@ -356,7 +379,7 @@ export default function AdminDashboard() {
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter password (Sapain123)"
+                placeholder="Enter admin password"
                 className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:bg-white focus:border-violet-600 focus:outline-none transition-all"
                 required
               />
@@ -523,7 +546,7 @@ export default function AdminDashboard() {
 
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => fetchData(savedPassword)}
+              onClick={() => fetchData(authToken)}
               disabled={loading}
               className="px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             >

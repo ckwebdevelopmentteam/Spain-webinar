@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getDb, initDb } from '@/lib/db';
+import { verifyAdminRequest } from '@/lib/auth';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Sapain123';
-
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const isAuthorized = await verifyAdminRequest(request);
+    if (!isAuthorized) {
+      return NextResponse.json({ error: 'Unauthorized', success: false }, { status: 401 });
+    }
+
     await initDb();
     const sql = getDb();
     const batches = await sql`SELECT * FROM batches ORDER BY id ASC;`;
@@ -21,8 +25,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const pass = request.headers.get('x-admin-password');
-    if (pass !== ADMIN_PASSWORD) {
+    const isAuthorized = await verifyAdminRequest(request);
+    if (!isAuthorized) {
       return NextResponse.json({ error: 'Unauthorized', success: false }, { status: 401 });
     }
 

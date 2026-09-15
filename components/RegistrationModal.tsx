@@ -439,32 +439,11 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 </div>
 
                 {/* Access Mode */}
-                <div className="flex items-center justify-between pt-2 border-t border-dashed border-white/10">
+                <div className="pt-2 border-t border-dashed border-white/10">
                   <div className="space-y-1">
                     <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-medium block">Access Mode</span>
                     <span className="text-xs text-white font-medium block">Online via Zoom</span>
                     <span className="text-[9px] text-[#F2F2F2]/85 block mt-0.5 font-normal">Link sent to WhatsApp/Email</span>
-                  </div>
-
-                  <div className="bg-[#F2F2F2] p-1.5 rounded-lg border border-white/10 shadow-sm">
-                    <svg viewBox="0 0 100 100" className="w-14 h-14">
-                      <rect x="0" y="0" width="25" height="25" fill="black" />
-                      <rect x="4" y="4" width="17" height="17" fill="white" />
-                      <rect x="8" y="8" width="9" height="9" fill="black" />
-                      <rect x="75" y="0" width="25" height="25" fill="black" />
-                      <rect x="79" y="4" width="17" height="17" fill="white" />
-                      <rect x="83" y="8" width="9" height="9" fill="black" />
-                      <rect x="0" y="75" width="25" height="25" fill="black" />
-                      <rect x="4" y="79" width="17" height="17" fill="white" />
-                      <rect x="8" y="83" width="9" height="9" fill="black" />
-                      <rect x="40" y="15" width="10" height="10" fill="black" />
-                      <rect x="45" y="45" width="15" height="15" fill="black" />
-                      <rect x="15" y="45" width="15" height="5" fill="black" />
-                      <rect x="68" y="40" width="15" height="10" fill="black" />
-                      <rect x="80" y="65" width="10" height="10" fill="black" />
-                      <rect x="35" y="75" width="15" height="15" fill="black" />
-                      <rect x="60" y="80" width="15" height="10" fill="black" />
-                    </svg>
                   </div>
                 </div>
               </div>
