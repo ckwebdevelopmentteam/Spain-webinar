@@ -228,39 +228,43 @@ export const webinarData: WebinarConfig = {
       name: "Brijin Raj",
       role: "Managing Director, Sapain",
       bio: "Brijin Raj is a creative entrepreneur and business leader with a strong focus on building and scaling creative ventures. As Managing Director of Sapain, he brings together business strategy, creativity, technology, and innovation to build forward-thinking organizations. His leadership centers on building strong teams, developing new opportunities, and shaping the future of creative businesses.",
-      image: "/founders/brijin_raj.jpg"
+      image: "/founders/brijin_raj.jpg",
+      linkedin: "https://www.linkedin.com/in/brijin-raj-02925b239/"
     },
-   
     {
       name: "Akshay",
       role: "CEO, Sapain",
       bio: "Akshay is the CEO of Sapain and an AI enthusiast with a deep interest in the intersection of technology and creativity. He actively explores emerging AI technologies and their practical applications across different fields, with a focus on discovering how AI can enhance creative processes, productivity, and innovation. His vision centers on making emerging technology accessible and useful across creative and professional workflows.",
-      image: "/founders/akshay.jpg"
+      image: "/founders/akshay.jpg",
+      linkedin: "https://www.linkedin.com/in/akshay-krishnan-kp-389247286/"
     },
     {
       name: "Nandu",
       role: "COO, Sapain",
       bio: "Nandu is the Chief Operating Officer at Sapain and a creative-focused team leader with around eight years of experience in the creative industry. He focuses on building efficient systems, improving team collaboration, and creating smooth workflows that support creative production. Alongside operations, he continues to explore emerging creative mediums and technologies to help teams work more efficiently and effectively.",
-      image: "/founders/nandu.jpg"
+      image: "/founders/nandu.jpg",
+      linkedin: "https://www.linkedin.com/in/nandu-p-36b23a19b/"
     },
     {
       name: "Mithun",
       role: "CEDO, Sapain",
       bio: "Mithun serves as the Chief Education & Development Officer at Sapain, focusing on integrating AI into creative education and workflows. With around eight years of experience in the creative field, he develops structured syllabuses, learning systems, and educational workflows that connect creativity with emerging technology. His areas of exploration span 2D, 3D, animation, and AI-powered creative processes.",
-      image: "/founders/mithun.jpg"
+      image: "/founders/mithun.jpg",
+      linkedin: "https://www.linkedin.com/in/midhunsanimator/"
     },
     {
       name: "Kiran",
       role: "CMO, Sapain",
       bio: "Kiran is the Chief Marketing Officer at Sapain, specializing in creative marketing and team leadership. With extensive experience leading creative teams, he brings a strong understanding of visual communication, branding, and digital media. He continuously explores emerging creative technologies and mediums, including AI and 3D, to develop new approaches to marketing and creative storytelling.",
-      image: "/founders/kiran.jpg"
+      image: "/founders/kiran.jpg",
+      linkedin: "https://www.linkedin.com/in/kiranraj-rv-7a6905218/"
     }
   ],
   mentor: {
     name: "Vinayak",
     role: "Lead Mentor & AI Video Specialist, Sapain",
     bio: "Hi, I'm Vinayak from Sapain, and I'm excited to be your mentor for this workshop. Sapain is India's leading AI video creator brand, with years of experience researching, experimenting, and developing in the field of AI. Over 7 years, we've worked with emerging AI technologies, explored new creative possibilities, and turned them into real-world solutions for brands and businesses. I currently lead and mentor Sapain's students, teaching them how to apply these tools and workflows in real, practical projects. That experience is what we're bringing into this workshop - giving you access to the tools, techniques, and creative workflows we've learned through years of working with AI.",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop",
+    image: "/mentor-vinayak-new.jpg",
     experienceYears: 7
   },
   trustedBrands: [

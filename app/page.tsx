@@ -897,7 +897,7 @@ export default function Home() {
                   <img
                     src={webinarData.mentor.image}
                     alt={webinarData.mentor.name}
-                    className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl object-cover border-2 border-white/20 shadow-2xl"
+                    className="w-44 h-44 sm:w-52 sm:h-52 rounded-3xl object-cover object-top border-2 border-white/20 shadow-2xl"
                   />
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-black text-[10px] font-medium tracking-normal shadow-lg whitespace-nowrap">
                     {webinarData.mentor.experienceYears}+ Years in AI
@@ -1213,10 +1213,10 @@ export default function Home() {
       </footer>
 
       {/* FIXED BOTTOM ACTION BAR - Visible throughout the website */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-5 sm:py-7 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 sm:gap-6 min-h-[76px] sm:min-h-[92px]">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-4 sm:py-7 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
+        <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-6 min-h-[68px] sm:min-h-[92px]">
           {/* Fee & Workshop Info */}
-          <div className="flex items-center gap-5 sm:gap-8">
+          <div className="flex items-center gap-4 sm:gap-8">
             <div className="hidden md:block leading-tight">
               <div className="flex items-center gap-2 mb-1">
                 <span className="relative flex h-2.5 w-2.5 shrink-0">
@@ -1232,14 +1232,14 @@ export default function Home() {
 
             <div className="flex flex-col justify-center">
               <span className="text-[11px] uppercase tracking-wider text-neutral-400 font-medium hidden sm:block mb-0.5">Workshop Fee</span>
-              <div className="flex items-center gap-2.5 sm:gap-3 flex-nowrap">
-                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight whitespace-nowrap">
+              <div className="flex items-center gap-1.5 sm:gap-3 flex-nowrap">
+                <span className="text-xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight whitespace-nowrap">
                   ₹{webinarData.fee}
                 </span>
-                <span className="text-sm sm:text-base text-neutral-500 line-through whitespace-nowrap">
+                <span className="text-xs sm:text-base text-neutral-500 line-through whitespace-nowrap">
                   ₹{webinarData.originalFee}
                 </span>
-                <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md whitespace-nowrap shrink-0 leading-tight">
+                <span className="text-[10px] sm:text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md whitespace-nowrap shrink-0 leading-tight">
                   90% OFF
                 </span>
               </div>
@@ -1249,10 +1249,10 @@ export default function Home() {
           {/* Action CTA Button */}
           <button
             onClick={() => openEnrollModal('English')}
-            className="glow-button px-6 py-3.5 sm:px-9 sm:py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm sm:text-base rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2.5 shrink-0 whitespace-nowrap"
+            className="glow-button px-3.5 py-2.5 sm:px-9 sm:py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2.5 shrink-0 whitespace-nowrap"
           >
             <span>Reserve Your Seat</span>
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>

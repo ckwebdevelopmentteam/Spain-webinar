@@ -287,7 +287,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 <input
                   type="text"
                   placeholder="Aarav Sharma"
-                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-base sm:text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
                   {...register('name', { required: 'Name is required' })}
                 />
               </div>
@@ -302,7 +302,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 <input
                   type="email"
                   placeholder="aarav@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-base sm:text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
@@ -323,7 +323,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 <input
                   type="tel"
                   placeholder="+91 98765 43210"
-                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-base sm:text-sm text-white placeholder:text-neutral-500 focus:border-white focus:bg-white/10 focus:ring-1 focus:ring-white/50 focus:outline-none transition-colors"
                   {...register('phone', {
                     required: 'Phone number is required',
                     pattern: {

@@ -234,3 +234,10 @@
   opacity: 0.95;
   filter: brightness(1);
 }
+
+/* Prevent mobile iOS / Android auto-zoom on inputs and modal iframes */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
