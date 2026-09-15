@@ -214,13 +214,13 @@ export default function Home() {
 
       {/* HEADER / NAVIGATION - Fixed throughout the website */}
       <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/10 bg-[#000000]/85 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-3.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
-          <Logo size="md" />
+        <div className="mx-auto max-w-7xl xl:max-w-[1680px] px-3.5 sm:px-6 lg:px-10 xl:px-12 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
+          <Logo size="lg" />
 
           {/* CTA Button */}
           <button
             onClick={() => openEnrollModal('English')}
-            className="glow-button px-3.5 py-1.5 sm:px-5 sm:py-2 bg-[#F2F2F2] text-[#000000] hover:bg-white font-medium text-xs rounded-xl transition-all shadow-lg hover:shadow-white/20 cursor-pointer whitespace-nowrap"
+            className="glow-button px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 bg-[#F2F2F2] text-[#000000] hover:bg-white font-semibold text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 cursor-pointer whitespace-nowrap"
           >
             <span>Reserve Seat • ₹{webinarData.fee}</span>
           </button>
@@ -228,7 +228,7 @@ export default function Home() {
       </header>
 
       {/* HERO SECTION */}
-      <section ref={heroRef} className="relative pt-20 pb-8 md:pt-28 md:pb-12 overflow-hidden bg-[#0c071e]">
+      <section ref={heroRef} className="relative pt-24 sm:pt-28 md:pt-36 lg:pt-40 pb-8 md:pb-12 overflow-hidden bg-[#0c071e]">
         {/* Ambient atmospheric lighting behind doodle */}
         <div className="absolute top-1/4 left-1/4 w-[550px] h-[550px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
@@ -1185,7 +1185,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/10 bg-[#000000]/70 py-12 pb-28 sm:pb-36">
+      <footer className="border-t border-white/10 bg-[#000000]/70 py-12 pb-32 sm:pb-40 md:pb-48">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 border-b border-white/10 pb-8 mb-8">
             <Logo size="lg" />
@@ -1213,17 +1213,17 @@ export default function Home() {
       </footer>
 
       {/* FIXED BOTTOM ACTION BAR - Visible throughout the website */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-2 sm:py-2.5 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
-        <div className="mx-auto max-w-7xl px-3.5 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-6">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-3 sm:py-4.5 md:py-6 lg:py-7 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
+        <div className="mx-auto max-w-7xl xl:max-w-[1680px] px-3.5 sm:px-6 lg:px-10 xl:px-12 flex items-center justify-between gap-3 sm:gap-6">
           {/* Fee & Workshop Info */}
-          <div className="flex items-center gap-4 sm:gap-8">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
             <div className="hidden md:block leading-tight">
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="relative flex h-2 w-2 shrink-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
-                <span className="text-[11px] tracking-wide text-neutral-300 font-medium">Live Masterclass</span>
+                <span className="text-xs tracking-wide text-neutral-300 font-medium">Live Masterclass</span>
               </div>
               <h4 className="text-sm sm:text-base font-semibold text-white">
                 AI Image & Cinematic Video Generation
@@ -1231,12 +1231,12 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col justify-center">
-              <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-medium hidden sm:block mb-0.5">Workshop Fee</span>
-              <div className="flex items-center gap-2 sm:gap-2.5 flex-nowrap">
-                <span className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight whitespace-nowrap">
+              <span className="text-[11px] uppercase tracking-wider text-neutral-400 font-medium hidden sm:block mb-0.5">Workshop Fee</span>
+              <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3 flex-nowrap">
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight whitespace-nowrap">
                   ₹{webinarData.fee}
                 </span>
-                <span className="text-xs sm:text-sm text-neutral-500 line-through whitespace-nowrap">
+                <span className="text-xs sm:text-sm md:text-base text-neutral-500 line-through whitespace-nowrap">
                   ₹{webinarData.originalFee}
                 </span>
                 <span className="text-[10px] sm:text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md whitespace-nowrap shrink-0 leading-tight">
@@ -1249,10 +1249,10 @@ export default function Home() {
           {/* Action CTA Button */}
           <button
             onClick={() => openEnrollModal('English')}
-            className="glow-button px-4 py-2 sm:px-7 sm:py-3 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs sm:text-sm md:text-base rounded-xl sm:rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2.5 shrink-0 whitespace-nowrap"
+            className="glow-button px-4 py-2.5 sm:px-6 sm:py-3.5 md:px-8 md:py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs sm:text-sm md:text-base rounded-xl sm:rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap"
           >
             <span>Reserve Your Seat</span>
-            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
           </button>
         </div>
       </div>
