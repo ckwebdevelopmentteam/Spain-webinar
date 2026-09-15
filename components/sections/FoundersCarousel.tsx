@@ -41,13 +41,14 @@ interface FounderCardItem {
 
 export function FoundersCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPairIndex, setCurrentPairIndex] = useState(0);
+  const currentPairIndexRef = useRef(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Generate alternating Photo and Quote/Bio cards for each founder
+  // Generate paired Photo (image first) on left and Quote (their words) on right for each founder
   const cards: FounderCardItem[] = [];
   webinarData.founders.forEach((founder, idx) => {
-    // 1. Photo Card
+    // 1. Photo Card (person image FIRST)
     cards.push({
       type: 'photo',
       id: `founder-photo-${idx}`,
@@ -57,7 +58,7 @@ export function FoundersCarousel() {
       linkedinUrl: 'https://linkedin.com',
     });
 
-    // 2. Quote / Bio Card
+    // 2. Quote / Bio Card (their words NEXT to it)
     cards.push({
       type: 'quote',
       id: `founder-bio-${idx}`,
@@ -71,51 +72,61 @@ export function FoundersCarousel() {
     });
   });
 
-  const getCardWidth = useCallback(() => {
-    if (!scrollRef.current || !scrollRef.current.firstElementChild) return 320;
-    const firstCard = scrollRef.current.firstElementChild as HTMLElement;
-    return firstCard.offsetWidth + 24; // width + gap-6 (24px)
+  const getPairWidth = useCallback(() => {
+    if (!scrollRef.current) return 600;
+    const children = scrollRef.current.children;
+    if (children.length >= 3) {
+      const first = children[0] as HTMLElement;
+      const third = children[2] as HTMLElement;
+      return third.offsetLeft - first.offsetLeft;
+    }
+    if (children.length >= 1) {
+      const first = children[0] as HTMLElement;
+      return (first.offsetWidth + 20) * 2;
+    }
+    return 600;
   }, []);
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const { scrollLeft } = scrollRef.current;
-    const cardWidth = getCardWidth();
-    const index = Math.round(scrollLeft / cardWidth);
-    setCurrentIndex(Math.min(Math.max(index, 0), cards.length - 1));
+    const pairWidth = getPairWidth();
+    if (pairWidth > 0) {
+      const pairIndex = Math.round(scrollLeft / pairWidth);
+      const clamped = Math.min(Math.max(pairIndex, 0), webinarData.founders.length - 1);
+      setCurrentPairIndex(clamped);
+      currentPairIndexRef.current = clamped;
+    }
   };
 
-  const scrollToIndex = (idx: number) => {
+  const scrollToPair = useCallback((pairIdx: number) => {
     if (!scrollRef.current) return;
-    const cardWidth = getCardWidth();
-    scrollRef.current.scrollTo({
-      left: idx * cardWidth,
-      behavior: 'smooth'
-    });
-    setCurrentIndex(idx);
-  };
+    const children = scrollRef.current.children;
+    const target = children[pairIdx * 2] as HTMLElement;
+    if (target) {
+      const first = children[0] as HTMLElement;
+      scrollRef.current.scrollTo({
+        left: target.offsetLeft - first.offsetLeft,
+        behavior: 'smooth',
+      });
+      setCurrentPairIndex(pairIdx);
+      currentPairIndexRef.current = pairIdx;
+    }
+  }, []);
 
-  const handlePrev = () => {
-    if (!scrollRef.current) return;
-    const cardWidth = getCardWidth();
-    scrollRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-  };
+  const handlePrev = useCallback(() => {
+    const totalFounders = webinarData.founders.length;
+    const prevIdx = (currentPairIndexRef.current - 1 + totalFounders) % totalFounders;
+    scrollToPair(prevIdx);
+  }, [scrollToPair]);
 
   const handleNext = useCallback(() => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    const cardWidth = getCardWidth();
+    const totalFounders = webinarData.founders.length;
+    const nextIdx = (currentPairIndexRef.current + 1) % totalFounders;
+    scrollToPair(nextIdx);
+  }, [scrollToPair]);
 
-    // If reached end, smoothly loop back to start
-    if (scrollLeft + clientWidth >= scrollWidth - 20) {
-      scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-      setCurrentIndex(0);
-    } else {
-      scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
-    }
-  }, [getCardWidth]);
-
-  // Automatic Carousel Autoplay (cycles every 3.5s, pauses on hover)
+  // Automatic Carousel Autoplay (cycles by 2 cards / 1 founder pair every 3.5s, pauses on hover)
   useEffect(() => {
     if (isHovered) return;
 
@@ -221,7 +232,7 @@ export function FoundersCarousel() {
             return (
               <div
                 key={item.id}
-                className="w-[calc(50%-6px)] sm:w-[calc(50%-10px)] lg:w-[calc(25%-18px)] shrink-0 h-[340px] sm:h-[400px] lg:h-[430px] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-7 flex flex-col justify-between shadow-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md group hover:border-white/25 transition-all snap-start text-left"
+                className="w-[calc(50%-6px)] sm:w-[calc(50%-10px)] lg:w-[calc(25%-18px)] shrink-0 h-[340px] sm:h-[400px] lg:h-[430px] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 lg:p-7 flex flex-col justify-between shadow-2xl border border-white/15 bg-white/[0.04] backdrop-blur-md group hover:border-white/25 transition-all text-left"
               >
                 {/* Large Quote Icon matching reference */}
                 <div className="flex items-center justify-between">
@@ -294,13 +305,13 @@ export function FoundersCarousel() {
 
         {/* Pagination Dots */}
         <div className="flex justify-center items-center gap-2 pt-6">
-          {cards.map((_, i) => (
+          {webinarData.founders.map((_, i) => (
             <button
               key={i}
-              onClick={() => scrollToIndex(i)}
-              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => scrollToPair(i)}
+              aria-label={`Go to founder ${i + 1}`}
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                i === currentIndex
+                i === currentPairIndex
                   ? 'w-7 bg-white'
                   : 'w-2 bg-white/30 hover:bg-white/60'
               }`}

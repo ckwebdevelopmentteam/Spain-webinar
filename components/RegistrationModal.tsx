@@ -82,6 +82,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       setErrorMessage(null);
       setLoading(false);
       reset();
+      loadRazorpayScript().catch(() => {});
     }
   }, [isOpen, defaultLanguage, reset]);
 

@@ -21,6 +21,42 @@ import {
   OmniFlashLogo,
   MagnificLogo
 } from '@/components/sections/HeroLogosBanner';
+import SocialCards, { CardItem } from '@/components/ui/card-fan-carousel';
+
+const STUDENT_SUCCESS_STORIES: CardItem[] = [
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445792/video_2026-09-15_09-37-31.mp4",
+    alt: "AI 3D Animation - Little Krishna Story",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445789/video_2026-09-15_09-37-58.mp4",
+    alt: "Student AI Visual Showcase",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445787/video_2026-09-15_09-38-04.mp4",
+    alt: "Cinematic AI Generation",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445649/sapain_testimonial_2.mp4",
+    alt: "Student Testimonial Review",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445792/video_2026-09-15_09-37-31.mp4",
+    alt: "AI Character Creation",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445789/video_2026-09-15_09-37-58.mp4",
+    alt: "AI Filmmaking Project",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445787/video_2026-09-15_09-38-04.mp4",
+    alt: "Hyper-realistic Visuals",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445649/sapain_testimonial_2.mp4",
+    alt: "Student Transformation Journey",
+  },
+];
 
 // Helper to return the official AI tool logo
 const getToolIcon = (name: string, sizeClass = 'w-14 h-14 sm:w-16 sm:h-16') => {
@@ -116,30 +152,6 @@ const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
   </svg>
 );
-
-const testimonials = [
-  {
-    src: "/sapain testimonial .mp4",
-    thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    src: "/sapain testimonial 2.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    src: "/sapain testimonial .mp4",
-    thumbnail: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    src: "/sapain testimonial 2.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    src: "/sapain testimonial .mp4",
-    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop"
-  }
-];
-
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -158,10 +170,6 @@ export default function Home() {
   // Tab States for About Section
   const [activeTab, setActiveTab] = useState<'info' | 'curriculum'>('info');
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
-
-  // Testimonials Slider State
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [isTestimonialMuted, setIsTestimonialMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -172,15 +180,6 @@ export default function Home() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Auto-cycle the Video Testimonials active card every 6 seconds
-  useEffect(() => {
-    if (!isTestimonialMuted) return;
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [isTestimonialMuted]);
 
   const openEnrollModal = (lang = 'English') => {
     setSelectedLanguage(lang);
@@ -968,93 +967,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3D VIDEO TESTIMONIALS DECK */}
-      <section id="testimonials" className="py-20 md:py-28 relative overflow-hidden">
+      {/* SUCCESS STORIES (CARD FAN CAROUSEL) */}
+      <section id="testimonials" className="py-16 md:py-24 relative overflow-hidden bg-black">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <span className="text-xs font-medium tracking-wider text-[#F2F2F2] bg-white/5 px-3 py-1 rounded-full border border-white/10">
+          <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
+            <span className="text-[11px] font-semibold tracking-widest uppercase text-neutral-300 bg-white/5 px-4 py-1.5 rounded-full border border-white/10 shadow-sm inline-block">
               Student Results
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white mt-4 mb-3">
               Success Stories
             </h2>
-            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
               See what our students are creating and how this masterclass transformed their creative workflow.
             </p>
           </div>
 
-          <div className="relative w-full max-w-5xl mx-auto h-[480px] sm:h-[580px] flex items-center justify-center overflow-hidden">
-            {testimonials.map((t, i) => {
-              let offset = i - activeTestimonial;
-              if (offset < -2) offset += 5;
-              if (offset > 2) offset -= 5;
-
-              const isActive = offset === 0;
-
-              return (
-                <motion.div
-                  key={i}
-                  onClick={() => {
-                    if (!isActive) {
-                      setActiveTestimonial(i);
-                      setIsTestimonialMuted(true);
-                    }
-                  }}
-                  animate={{
-                    x: isMobile ? `${offset * 16}%` : `${offset * 32}%`,
-                    scale: isActive ? 1 : 0.82,
-                    opacity: isActive ? 1 : 0.45,
-                    zIndex: isActive ? 30 : 20 - Math.abs(offset),
-                    rotateY: isActive ? 0 : offset * 12,
-                  }}
-                  transition={{ type: 'spring', stiffness: 70, damping: 16, mass: 0.8 }}
-                  className={`absolute w-[260px] sm:w-[360px] md:w-[420px] glass-premium rounded-[24px] p-2.5 select-none transition-all duration-300 ${
-                    isActive
-                      ? 'cursor-default shadow-[0_20px_50px_rgba(255,255,255,0.08)] border-white/30'
-                      : 'cursor-pointer hover:border-white/20 hover:opacity-70 border-white/5'
-                  }`}
-                  style={{
-                    perspective: 1000,
-                    transformStyle: "preserve-3d"
-                  }}
-                >
-                  <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-950">
-                    {isActive ? (
-                      <video
-                        key={t.src}
-                        src={t.src}
-                        loop
-                        muted={isTestimonialMuted}
-                        playsInline
-                        autoPlay
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={t.thumbnail}
-                        alt="Testimonial Preview"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-
-                    {isActive && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsTestimonialMuted(!isTestimonialMuted);
-                        }}
-                        className="absolute bottom-3 right-3 z-20 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/20 flex items-center justify-center text-white backdrop-blur-md transition-all shadow-lg hover:scale-105 cursor-pointer"
-                        title={isTestimonialMuted ? "Unmute" : "Mute"}
-                      >
-                        {isTestimonialMuted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
-                      </button>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+          <SocialCards cards={STUDENT_SUCCESS_STORIES} />
         </div>
       </section>
 
