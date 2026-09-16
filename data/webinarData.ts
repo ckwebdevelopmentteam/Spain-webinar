@@ -8,7 +8,6 @@ export interface LanguageOption {
   dates: string;
   time: string;
   isPopular?: boolean;
-  whatsappGroupUrl?: string;
 }
 
 export interface WorkshopPillar {
@@ -119,8 +118,7 @@ export const webinarData: WebinarConfig = {
       platform: "Zoom",
       dates: "Upcoming Saturday",
       time: "6:00 PM - 9:00 PM IST",
-      isPopular: true,
-      whatsappGroupUrl: "https://chat.whatsapp.com/FidgNJ08MAX1Jh5Y4Nubw2?s=cl&p=a&mlu=0&ilr=4"
+      isPopular: true
     },
     {
       id: "ml",
@@ -131,8 +129,7 @@ export const webinarData: WebinarConfig = {
       platform: "Zoom",
       dates: "Upcoming Sunday",
       time: "6:00 PM - 9:00 PM IST",
-      isPopular: false,
-      whatsappGroupUrl: "https://chat.whatsapp.com/B5yW3uGjrDLAFHWurd6ZBn?s=cl&p=a&mlu=0&ilr=4"
+      isPopular: false
     },
     {
       id: "hi",
@@ -143,8 +140,7 @@ export const webinarData: WebinarConfig = {
       platform: "Zoom",
       dates: "Upcoming Weekend",
       time: "6:00 PM - 9:00 PM IST",
-      isPopular: false,
-      whatsappGroupUrl: "https://chat.whatsapp.com/DBG3P9q7gVh6g7yG9j9StF?s=cl&p=a&mlu=0&ilr=4"
+      isPopular: false
     }
   ],
   pillars: [

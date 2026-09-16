@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getDb, initDb } from '@/lib/db';
 import { sendPaymentConfirmationEmail } from '@/lib/mailer';
+import { getWhatsAppGroup } from '@/lib/whatsapp';
 
 export async function POST(request: Request) {
   try {
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
     const userName = userDetails?.name || body.name || 'Verified Customer';
     const userEmail = userDetails?.email || body.email || 'customer@sapain.edu';
     const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
+    const userLanguage = userDetails?.language || body.language || 'English';
     const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
 
     // Always attempt to save or update registration in Neon Database
@@ -92,7 +94,6 @@ export async function POST(request: Request) {
 
     // Send branded payment confirmation email with WhatsApp group link & Sapain logo
     try {
-      const userLanguage = userDetails?.language || body.language || 'English';
       if (userEmail && userEmail !== 'customer@sapain.edu') {
         await sendPaymentConfirmationEmail({
           toEmail: userEmail,
@@ -107,11 +108,19 @@ export async function POST(request: Request) {
       console.error('Error sending confirmation email:', emailErr);
     }
 
+    const whatsappInfo = getWhatsAppGroup(userLanguage);
+
     return NextResponse.json({
       message: 'Payment verified successfully',
       success: true,
       order_id: razorpay_order_id,
       payment_id: razorpay_payment_id,
+      ticket_id: ticketPassId,
+      whatsappGroup: {
+        title: whatsappInfo.title,
+        buttonText: whatsappInfo.buttonText,
+        url: whatsappInfo.url,
+      },
     });
   } catch (error: unknown) {
     console.error('Error verifying Razorpay payment:', error);

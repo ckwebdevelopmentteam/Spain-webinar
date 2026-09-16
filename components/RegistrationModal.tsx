@@ -40,23 +40,11 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
-const WHATSAPP_GROUPS: Record<string, { title: string; buttonText: string; url: string }> = {
-  malayalam: {
-    title: 'Join Malayalam Batch Group',
-    buttonText: 'Join Malayalam WhatsApp Group',
-    url: 'https://chat.whatsapp.com/B5yW3uGjrDLAFHWurd6ZBn?s=cl&p=a&mlu=0&ilr=4',
-  },
-  hindi: {
-    title: 'Join Hindi Batch Group',
-    buttonText: 'Join Hindi WhatsApp Group',
-    url: 'https://chat.whatsapp.com/DBG3P9q7gVh6g7yG9j9StF?s=cl&p=a&mlu=0&ilr=4',
-  },
-  english: {
-    title: 'Join English Batch Group',
-    buttonText: 'Join English WhatsApp Group',
-    url: 'https://chat.whatsapp.com/FidgNJ08MAX1Jh5Y4Nubw2?s=cl&p=a&mlu=0&ilr=4',
-  },
-};
+interface WhatsAppGroupData {
+  title: string;
+  buttonText: string;
+  url: string;
+}
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   isOpen,
@@ -70,10 +58,8 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [language, setLanguage] = useState(defaultLanguage);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [whatsappGroup, setWhatsappGroup] = useState<WhatsAppGroupData | null>(null);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
-
-  const currentLangKey = (language || '').toLowerCase().trim();
-  const activeWhatsAppGroup = WHATSAPP_GROUPS[currentLangKey] || WHATSAPP_GROUPS['english'];
 
   useEffect(() => {
     if (isOpen) {
@@ -81,6 +67,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       setLanguage(defaultLanguage);
       setErrorMessage(null);
       setLoading(false);
+      setWhatsappGroup(null);
       reset();
       loadRazorpayScript().catch(() => {});
     }
@@ -115,6 +102,16 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
       // 3. Create order via backend endpoint
       const amountInPaise = Math.max(100, Math.round(fee * 100));
+
+      // Track Meta Pixel InitiateCheckout
+      if (typeof window !== 'undefined' && typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
+        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+          value: fee,
+          currency: 'INR',
+          content_name: `${language} Batch Masterclass`,
+        });
+      }
+
       const orderRes = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -174,8 +171,11 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
             const verifyData = await verifyRes.json();
             if (verifyRes.ok && verifyData.success) {
-              const randomId = 'SA-' + Math.floor(100000 + Math.random() * 900000);
-              setTicketId(randomId);
+              const assignedTicketId = verifyData.ticket_id || 'SA-' + Math.floor(100000 + Math.random() * 900000);
+              setTicketId(assignedTicketId);
+              if (verifyData.whatsappGroup) {
+                setWhatsappGroup(verifyData.whatsappGroup);
+              }
               setStep(2); // Direct to Ticket Confirmation
 
               // Confetti burst
@@ -185,6 +185,15 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 origin: { y: 0.6 },
                 colors: ['#FFFFFF', '#A6A6A6', '#000000'],
               });
+
+              // Track Meta Pixel Purchase event
+              if (typeof window !== 'undefined' && typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
+                (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'Purchase', {
+                  value: fee,
+                  currency: 'INR',
+                  content_name: `${language} Batch Masterclass`,
+                });
+              }
             } else {
               setErrorMessage(verifyData.error || 'Payment signature verification failed.');
             }
@@ -449,8 +458,8 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
               </div>
             </div>
 
-            {/* WhatsApp Group Invite Card - shown after payment success based on selected language */}
-            {activeWhatsAppGroup && (
+            {/* WhatsApp Group Invite Card - securely provided only after payment verification */}
+            {whatsappGroup && (
               <div className="mt-6 max-w-sm mx-auto p-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 text-left space-y-3 shadow-lg">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#25D366] text-black flex items-center justify-center shrink-0 shadow-md">
@@ -460,7 +469,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-white">
-                      {activeWhatsAppGroup.title}
+                      {whatsappGroup.title}
                     </h4>
                     <p className="text-[11px] text-neutral-300 leading-normal mt-0.5">
                       Join the official WhatsApp group to receive your live class link, study materials, and direct updates.
@@ -469,12 +478,12 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 </div>
 
                 <a
-                  href={activeWhatsAppGroup.url}
+                  href={whatsappGroup.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-black font-semibold text-sm rounded-lg flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer text-center group"
                 >
-                  <span>{activeWhatsAppGroup.buttonText}</span>
+                  <span>{whatsappGroup.buttonText}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </a>
               </div>

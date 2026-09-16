@@ -11,20 +11,7 @@ export interface SendPaymentConfirmationEmailParams {
   language?: string;
 }
 
-const WHATSAPP_GROUPS: Record<string, { title: string; url: string }> = {
-  malayalam: {
-    title: 'Malayalam Batch WhatsApp Group',
-    url: 'https://chat.whatsapp.com/B5yW3uGjrDLAFHWurd6ZBn?s=cl&p=a&mlu=0&ilr=4',
-  },
-  hindi: {
-    title: 'Hindi Batch WhatsApp Group',
-    url: 'https://chat.whatsapp.com/DBG3P9q7gVh6g7yG9j9StF?s=cl&p=a&mlu=0&ilr=4',
-  },
-  english: {
-    title: 'English Batch WhatsApp Group',
-    url: 'https://chat.whatsapp.com/FidgNJ08MAX1Jh5Y4Nubw2?s=cl&p=a&mlu=0&ilr=4',
-  },
-};
+import { getWhatsAppGroup } from '@/lib/whatsapp';
 
 /**
  * Creates and returns a Nodemailer transporter based on environment variables.
@@ -70,8 +57,7 @@ export async function sendPaymentConfirmationEmail({
   try {
     const transporter = getTransporter();
 
-    const normalizedLang = (language || 'english').toLowerCase().trim();
-    const groupInfo = WHATSAPP_GROUPS[normalizedLang] || WHATSAPP_GROUPS['english'];
+    const groupInfo = getWhatsAppGroup(language);
     const formattedLang = language.charAt(0).toUpperCase() + language.slice(1);
 
     if (!transporter) {
