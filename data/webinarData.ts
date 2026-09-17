@@ -98,7 +98,7 @@ export const webinarData: WebinarConfig = {
   seatsTotal: 100,
   mode: "Live Online Workshop on Zoom",
   platform: "Zoom (Join from anywhere)",
-  dates: "Upcoming Weekend Batch",
+  dates: "Starting from 15 October 2026",
   time: "6:00 PM - 9:00 PM IST",
   learnersCount: "1,000+ learners are already part of the journey.",
   aboutCourse: {
@@ -116,7 +116,7 @@ export const webinarData: WebinarConfig = {
       fee: 299,
       duration: "3 hrs",
       platform: "Zoom",
-      dates: "Upcoming Saturday",
+      dates: "19 October",
       time: "6:00 PM - 9:00 PM IST",
       isPopular: true
     },
@@ -127,7 +127,7 @@ export const webinarData: WebinarConfig = {
       fee: 299,
       duration: "3 hrs",
       platform: "Zoom",
-      dates: "Upcoming Sunday",
+      dates: "15 October",
       time: "6:00 PM - 9:00 PM IST",
       isPopular: false
     },
@@ -138,7 +138,7 @@ export const webinarData: WebinarConfig = {
       fee: 299,
       duration: "3 hrs",
       platform: "Zoom",
-      dates: "Upcoming Weekend",
+      dates: "22 October",
       time: "6:00 PM - 9:00 PM IST",
       isPopular: false
     }

@@ -57,6 +57,12 @@ export async function sendPaymentConfirmationEmail({
   try {
     const transporter = getTransporter();
 
+    const BATCH_DATES: Record<string, string> = {
+      malayalam: '15 October',
+      english: '19 October',
+      hindi: '22 October',
+    };
+    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || '19 October';
     const groupInfo = getWhatsAppGroup(language);
     const formattedLang = language.charAt(0).toUpperCase() + language.slice(1);
 
@@ -140,6 +146,16 @@ export async function sendPaymentConfirmationEmail({
                       <tr>
                         <td style="color: #9ca3af; font-size: 13px;">Selected Batch</td>
                         <td align="right" style="color: #e5e7eb; font-size: 14px; font-weight: 600;">${formattedLang} Batch</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 20px; border-bottom: 1px solid #2d2f36;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="color: #9ca3af; font-size: 13px;">Class Starting Date</td>
+                        <td align="right" style="color: #e5e7eb; font-size: 14px; font-weight: 600;">${batchDate}</td>
                       </tr>
                     </table>
                   </td>
