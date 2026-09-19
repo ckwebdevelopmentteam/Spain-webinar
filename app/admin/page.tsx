@@ -313,10 +313,10 @@ export default function AdminDashboard() {
 
   const exportStudentsCSV = () => {
     if (!students.length) return;
-    const headers = ['ID', 'Date', 'Name', 'Email', 'Phone', 'Batch', 'Total Fee (X)', 'Paid (Y)', 'Pending Due (X-Y)', 'Status'];
+    const headers = ['ID', 'Enrolled Timestamp', 'Name', 'Email', 'Phone', 'Batch', 'Total Fee (X)', 'Paid (Y)', 'Pending Due (X-Y)', 'Status'];
     const rows = filteredStudents.map((s) => [
       s.id,
-      new Date(s.created_at).toLocaleDateString(),
+      `"${new Date(s.created_at).toLocaleString('en-IN')}"`,
       `"${s.name.replace(/"/g, '""')}"`,
       `"${s.email.replace(/"/g, '""')}"`,
       `"${s.phone.replace(/"/g, '""')}"`,
@@ -331,6 +331,31 @@ export default function AdminDashboard() {
     const link = document.createElement('a');
     link.setAttribute('href', encodeURI(csvContent));
     link.setAttribute('download', `students_fees_report_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const exportWebinarCSV = () => {
+    if (!registrations.length) return;
+    const headers = ['ID', 'Booking Timestamp', 'Customer Name', 'Email', 'Phone', 'Amount (INR)', 'Razorpay Order ID', 'Payment ID', 'Ticket ID', 'Status'];
+    const rows = registrations.map((r) => [
+      r.id,
+      `"${new Date(r.created_at).toLocaleString('en-IN')}"`,
+      `"${(r.name || '').replace(/"/g, '""')}"`,
+      `"${(r.email || '').replace(/"/g, '""')}"`,
+      `"${(r.phone || '').replace(/"/g, '""')}"`,
+      r.amount || 299,
+      r.order_id || '',
+      r.payment_id || '',
+      r.ticket_id || '',
+      r.status || 'completed',
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const link = document.createElement('a');
+    link.setAttribute('href', encodeURI(csvContent));
+    link.setAttribute('download', `webinar_modal_registrations_${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -573,6 +598,16 @@ export default function AdminDashboard() {
                 </button>
               </>
             )}
+
+            {activeTab === 'webinar' && (
+              <button
+                onClick={exportWebinarCSV}
+                className="px-3 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Export CSV
+              </button>
+            )}
           </div>
         </header>
 
@@ -758,7 +793,7 @@ export default function AdminDashboard() {
                         <th className="p-4">Paid Amount (Y)</th>
                         <th className="p-4">Pending Due (X - Y)</th>
                         <th className="p-4">Status</th>
-                        <th className="p-4">Enrolled Date</th>
+                        <th className="p-4">Enrolled Timestamp</th>
                         <th className="p-4 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -824,9 +859,23 @@ export default function AdminDashboard() {
                               )}
                             </td>
 
-                            {/* Created Date */}
-                            <td className="p-4 text-slate-400 font-mono text-[11px]">
-                              {new Date(s.created_at).toLocaleDateString()}
+                            {/* Enrolled Timestamp */}
+                            <td className="p-4 font-mono text-[11px]">
+                              <div className="font-semibold text-slate-800">
+                                {new Date(s.created_at).toLocaleDateString('en-IN', {
+                                  day: '2-digit',
+                                  month: 'short',
+                                  year: 'numeric',
+                                })}
+                              </div>
+                              <div className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                                <Clock className="w-3 h-3 text-slate-400" />
+                                {new Date(s.created_at).toLocaleTimeString('en-IN', {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  hour12: true,
+                                })}
+                              </div>
                             </td>
 
                             {/* Actions */}
@@ -907,7 +956,7 @@ export default function AdminDashboard() {
                 <table className="w-full text-left text-xs text-slate-700">
                   <thead className="bg-slate-100 text-slate-500 uppercase tracking-wider font-semibold text-[10px] border-b border-slate-200">
                     <tr>
-                      <th className="p-4">Date / ID</th>
+                      <th className="p-4">Timestamp / ID</th>
                       <th className="p-4">Customer Name</th>
                       <th className="p-4">Contact</th>
                       <th className="p-4">Amount</th>
@@ -925,15 +974,36 @@ export default function AdminDashboard() {
                     ) : (
                       registrations.map((r) => (
                         <tr key={r.id} className="hover:bg-slate-50 transition-colors">
-                          <td className="p-4 font-mono text-slate-500 text-[11px]">
-                            #{r.id} • {new Date(r.created_at).toLocaleDateString()}
+                          <td className="p-4 font-mono text-[11px]">
+                            <div className="flex items-center gap-1.5 font-bold text-slate-900">
+                              <span>#{r.id}</span>
+                              <span className="text-[9px] font-normal px-1.5 py-0.2 rounded bg-violet-50 text-violet-700 border border-violet-200">
+                                Modal Booking
+                              </span>
+                            </div>
+                            <div className="text-slate-800 font-semibold text-xs mt-1">
+                              {new Date(r.created_at).toLocaleDateString('en-IN', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                              })}
+                            </div>
+                            <div className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                              <Clock className="w-3 h-3 text-slate-400" />
+                              {new Date(r.created_at).toLocaleTimeString('en-IN', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true,
+                              })}
+                            </div>
                           </td>
                           <td className="p-4 font-bold text-slate-900">{r.name}</td>
                           <td className="p-4 text-slate-600">
                             <div>{r.email}</div>
                             <div className="font-mono text-[10px] text-slate-400">{r.phone}</div>
                           </td>
-                          <td className="p-4 font-bold text-slate-900">₹{r.amount || 499}</td>
+                          <td className="p-4 font-bold text-slate-900">₹{r.amount || 299}</td>
                           <td className="p-4 font-mono text-[10px] space-y-1">
                             {r.order_id && <div className="text-slate-600">Ord: {r.order_id}</div>}
                             {r.payment_id && <div className="text-emerald-600 font-bold">Pay: {r.payment_id}</div>}
@@ -1079,6 +1149,22 @@ export default function AdminDashboard() {
                       : 'Pending'}
                   </span>
                 </div>
+                <div className="flex justify-between items-center text-[11px] pt-1 border-t border-slate-200">
+                  <span className="text-slate-500 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-slate-400" />
+                    Enrollment Timestamp:
+                  </span>
+                  <span className="font-mono text-slate-700 font-semibold">
+                    {new Date().toLocaleString('en-IN', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}
+                  </span>
+                </div>
               </div>
 
               <div className="pt-2 flex gap-2">
@@ -1132,6 +1218,22 @@ export default function AdminDashboard() {
                 <div className="flex justify-between text-slate-900 font-bold pt-1 border-t border-slate-200">
                   <span>Current Pending Due ($X - Y$):</span>
                   <span className="text-purple-600">₹{selectedStudentForPay.pending_amount.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center text-[11px] pt-1 border-t border-slate-200">
+                  <span className="text-slate-500 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-slate-400" />
+                    Payment Timestamp:
+                  </span>
+                  <span className="font-mono text-slate-700 font-semibold">
+                    {new Date().toLocaleString('en-IN', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}
+                  </span>
                 </div>
               </div>
 

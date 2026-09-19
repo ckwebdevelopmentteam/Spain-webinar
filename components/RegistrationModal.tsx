@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   X, CheckCircle2, ShieldCheck, Sparkles, Calendar,
-  ArrowRight, User, Mail, Phone, Loader2, AlertCircle
+  ArrowRight, User, Mail, Phone, Loader2, AlertCircle, Clock
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -65,6 +65,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [whatsappGroup, setWhatsappGroup] = useState<WhatsAppGroupData | null>(null);
+  const [registrationTimestamp, setRegistrationTimestamp] = useState<string | null>(null);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
   const discountPercent = originalFee > fee ? Math.round(((originalFee - fee) / originalFee) * 100) : 70;
 
@@ -75,6 +76,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       setErrorMessage(null);
       setLoading(false);
       setWhatsappGroup(null);
+      setRegistrationTimestamp(null);
       reset();
       loadRazorpayScript().catch(() => {});
     }
@@ -180,6 +182,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
             if (verifyRes.ok && verifyData.success) {
               const assignedTicketId = verifyData.ticket_id || 'SA-' + Math.floor(100000 + Math.random() * 900000);
               setTicketId(assignedTicketId);
+              setRegistrationTimestamp(verifyData.timestamp || new Date().toISOString());
               if (verifyData.whatsappGroup) {
                 setWhatsappGroup(verifyData.whatsappGroup);
               }
@@ -461,6 +464,35 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                     <span className="text-xs text-white font-medium block">Online via Zoom</span>
                     <span className="text-[9px] text-[#F2F2F2]/85 block mt-0.5 font-normal">Link sent to WhatsApp/Email</span>
                   </div>
+                </div>
+
+                {/* Confirmed Booking Timestamp */}
+                <div className="pt-2 border-t border-dashed border-white/10 flex items-center justify-between text-[10px]">
+                  <span className="text-neutral-400 flex items-center gap-1.5 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                    Confirmed At
+                  </span>
+                  <span className="font-mono text-neutral-200 font-medium text-[11px]">
+                    {registrationTimestamp
+                      ? new Date(registrationTimestamp).toLocaleString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: true,
+                        })
+                      : new Date().toLocaleString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: true,
+                        })}
+                  </span>
                 </div>
               </div>
             </div>

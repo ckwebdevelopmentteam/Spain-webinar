@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Registrations initiated prior to checkout are stored as 'pending'
     const result = await sql`
       INSERT INTO registrations (name, email, phone, order_id, payment_id, signature, amount, ticket_id, status)
-      VALUES (${name}, ${email}, ${phone}, ${order_id || null}, ${payment_id || null}, ${signature || null}, ${amount || 499}, ${ticket_id || null}, 'pending')
+      VALUES (${name}, ${email}, ${phone}, ${order_id || null}, ${payment_id || null}, ${signature || null}, ${amount || 299}, ${ticket_id || null}, 'pending')
       RETURNING *;
     `;
 
@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       success: true,
       message: 'Registration created successfully. Awaiting payment verification.',
       registration: result[0],
+      timestamp: result[0]?.created_at,
     });
   } catch (error: unknown) {
     console.error('Error saving registration to database:', error);

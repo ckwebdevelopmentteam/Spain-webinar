@@ -44,6 +44,7 @@ export async function POST(request: Request) {
     const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
     const userLanguage = userDetails?.language || body.language || 'English';
     const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
+    let savedCreatedAt: string | null = null;
 
     // Always attempt to save or update registration in Neon Database
     try {
@@ -61,19 +62,23 @@ export async function POST(request: Request) {
 
       if (existing && existing.length > 0) {
         // Update existing row to completed with payment details
-        await sql`
+        const updated = await sql`
           UPDATE registrations
           SET status = 'completed',
               order_id = ${razorpay_order_id},
               payment_id = ${razorpay_payment_id},
               signature = ${razorpay_signature},
-              amount = ${amount || 499},
+              amount = ${amount || 299},
               ticket_id = COALESCE(ticket_id, ${ticketPassId})
-          WHERE id = ${existing[0].id};
+          WHERE id = ${existing[0].id}
+          RETURNING created_at;
         `;
+        if (updated && updated.length > 0) {
+          savedCreatedAt = updated[0].created_at;
+        }
       } else {
         // Insert new completed registration record
-        await sql`
+        const inserted = await sql`
           INSERT INTO registrations (name, email, phone, order_id, payment_id, signature, amount, ticket_id, status)
           VALUES (
             ${userName},
@@ -82,11 +87,15 @@ export async function POST(request: Request) {
             ${razorpay_order_id},
             ${razorpay_payment_id},
             ${razorpay_signature},
-            ${amount || 499},
+            ${amount || 299},
             ${ticketPassId},
             'completed'
-          );
+          )
+          RETURNING created_at;
         `;
+        if (inserted && inserted.length > 0) {
+          savedCreatedAt = inserted[0].created_at;
+        }
       }
     } catch (dbErr) {
       console.error('Error saving verified registration to Neon DB:', dbErr);
@@ -100,7 +109,7 @@ export async function POST(request: Request) {
           userName,
           ticketId: ticketPassId,
           paymentId: razorpay_payment_id,
-          amount: amount || 499,
+          amount: amount || 299,
           language: userLanguage,
         });
       }
@@ -116,6 +125,7 @@ export async function POST(request: Request) {
       order_id: razorpay_order_id,
       payment_id: razorpay_payment_id,
       ticket_id: ticketPassId,
+      timestamp: savedCreatedAt || new Date().toISOString(),
       whatsappGroup: {
         title: whatsappInfo.title,
         buttonText: whatsappInfo.buttonText,
