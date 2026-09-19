@@ -79,13 +79,13 @@ export async function initDb() {
       );
     `;
 
-    // Seed default admin with password 'Sapian123' if not present
+    // Seed default admin with password 'Sapain123' if not present
     const existingAdmin = await sql`SELECT id FROM admin_users WHERE username = 'admin' LIMIT 1;`;
     if (!existingAdmin || existingAdmin.length === 0) {
       // Import hash function dynamically or inline using Node crypto
       const cryptoModule = await import('crypto');
       const salt = cryptoModule.randomBytes(16).toString('hex');
-      const hash = cryptoModule.scryptSync('Sapian123', salt, 64).toString('hex');
+      const hash = cryptoModule.scryptSync('Sapain123', salt, 64).toString('hex');
       await sql`
         INSERT INTO admin_users (username, password_hash, salt)
         VALUES ('admin', ${hash}, ${salt});

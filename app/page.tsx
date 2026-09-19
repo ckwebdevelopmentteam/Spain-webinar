@@ -186,6 +186,10 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
+  const discountPercent = webinarData.originalFee > webinarData.fee 
+    ? Math.round(((webinarData.originalFee - webinarData.fee) / webinarData.originalFee) * 100) 
+    : 70;
+
   const getAudienceIcon = (iconName: string) => {
     const iconProps = { className: "w-5 h-5 text-[#F2F2F2]" };
     switch (iconName) {
@@ -315,7 +319,7 @@ export default function Home() {
                       ₹{webinarData.originalFee}
                     </span>
                     <span className="text-[10px] sm:text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-green-300 px-2 py-0.5 rounded-md shadow-sm uppercase tracking-wide">
-                      90% Off
+                      {discountPercent}% Off
                     </span>
                   </div>
                 </div>
@@ -1240,7 +1244,7 @@ export default function Home() {
                   ₹{webinarData.originalFee}
                 </span>
                 <span className="text-[10px] sm:text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md whitespace-nowrap shrink-0 leading-tight">
-                  90% OFF
+                  {discountPercent}% OFF
                 </span>
               </div>
             </div>

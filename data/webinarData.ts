@@ -92,7 +92,7 @@ export const webinarData: WebinarConfig = {
   subtitle: "Learn to use advanced AI platforms such as Higgsfield and Magnific, along with tools like ChatGPT Astra, ChatGPT Image 2.5, Seedance, and more to create cinematic-style videos and powerful visuals. Explore AI-powered visual storytelling, image and video generation, cinematic content creation, and smarter creative workflows to turn your ideas into professional-quality content.",
   tagline: "3-hour practical AI workshop • Beginner-friendly",
   fee: 299,
-  originalFee: 2999,
+  originalFee: 999,
   durationHours: 3,
   trainingHours: "2.5 hours live, hands-on training + Live Q&A",
   seatsTotal: 100,

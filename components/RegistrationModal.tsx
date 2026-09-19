@@ -66,6 +66,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [whatsappGroup, setWhatsappGroup] = useState<WhatsAppGroupData | null>(null);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const discountPercent = originalFee > fee ? Math.round(((originalFee - fee) / originalFee) * 100) : 70;
 
   useEffect(() => {
     if (isOpen) {
@@ -367,7 +368,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   <span className="text-2xl font-semibold text-[#F2F2F2]">₹{fee}</span>
                   <span className="text-xs text-neutral-500 line-through">₹{originalFee}</span>
                   <span className="text-[10px] text-white bg-white/10 border border-white/20 px-1.5 py-0.5 rounded font-normal">
-                    90% Off
+                    {discountPercent}% Off
                   </span>
                 </div>
               </div>

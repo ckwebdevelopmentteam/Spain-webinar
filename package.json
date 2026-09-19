@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:admin": "node --env-file=.env scripts/seed-password.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
