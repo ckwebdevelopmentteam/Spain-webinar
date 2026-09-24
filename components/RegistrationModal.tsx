@@ -84,13 +84,17 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
   const handleModalClose = () => {
     if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      if (url.searchParams.has('payment')) {
-        url.searchParams.delete('payment');
-        url.searchParams.delete('ticket_id');
-        const cleanSearch = url.searchParams.toString();
-        const cleanUrl = url.pathname + (cleanSearch ? `?${cleanSearch}` : '') + url.hash;
-        window.history.replaceState({}, '', cleanUrl);
+      if (window.location.pathname === '/thankyou') {
+        window.history.replaceState({}, '', '/');
+      } else {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('payment') || url.searchParams.has('ticket_id')) {
+          url.searchParams.delete('payment');
+          url.searchParams.delete('ticket_id');
+          const cleanSearch = url.searchParams.toString();
+          const cleanUrl = url.pathname + (cleanSearch ? `?${cleanSearch}` : '') + url.hash;
+          window.history.replaceState({}, '', cleanUrl);
+        }
       }
     }
     onClose();
@@ -98,9 +102,10 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
   useEffect(() => {
     const handlePopState = () => {
-      const url = new URL(window.location.href);
-      if (!url.searchParams.has('payment') && step === 2) {
-        onClose();
+      if (typeof window !== 'undefined') {
+        if (window.location.pathname !== '/thankyou' && step === 2) {
+          onClose();
+        }
       }
     };
     window.addEventListener('popstate', handlePopState);
@@ -213,12 +218,26 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
               }
               setStep(2); // Direct to Ticket Confirmation
 
-              // Update URL to reflect payment success and ticket ID
+              // Update URL to /thankyou without any tokens or query parameters
               if (typeof window !== 'undefined') {
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('payment', 'success');
-                currentUrl.searchParams.set('ticket_id', assignedTicketId);
-                window.history.pushState({ payment: 'success', ticket_id: assignedTicketId }, '', currentUrl.toString());
+                try {
+                  sessionStorage.setItem(
+                    'sapain_ticket_data',
+                    JSON.stringify({
+                      ticketId: assignedTicketId,
+                      name: values.name,
+                      email: values.email,
+                      phone: values.phone,
+                      language: language,
+                      amount: fee,
+                      timestamp: verifyData.timestamp || new Date().toISOString(),
+                      whatsappGroup: verifyData.whatsappGroup,
+                    })
+                  );
+                } catch {
+                  // Ignore sessionStorage error in restricted environments
+                }
+                window.history.pushState({ payment: 'success' }, '', '/thankyou');
               }
 
               // Confetti burst
