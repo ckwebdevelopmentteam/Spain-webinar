@@ -82,6 +82,31 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     }
   }, [isOpen, defaultLanguage, reset]);
 
+  const handleModalClose = () => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('payment')) {
+        url.searchParams.delete('payment');
+        url.searchParams.delete('ticket_id');
+        const cleanSearch = url.searchParams.toString();
+        const cleanUrl = url.pathname + (cleanSearch ? `?${cleanSearch}` : '') + url.hash;
+        window.history.replaceState({}, '', cleanUrl);
+      }
+    }
+    onClose();
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('payment') && step === 2) {
+        onClose();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [step, onClose]);
+
   if (!isOpen) return null;
 
   const handlePayDirectly = async (values: FormData) => {
@@ -188,6 +213,14 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
               }
               setStep(2); // Direct to Ticket Confirmation
 
+              // Update URL to reflect payment success and ticket ID
+              if (typeof window !== 'undefined') {
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('payment', 'success');
+                currentUrl.searchParams.set('ticket_id', assignedTicketId);
+                window.history.pushState({ payment: 'success', ticket_id: assignedTicketId }, '', currentUrl.toString());
+              }
+
               // Confetti burst
               confetti({
                 particleCount: 150,
@@ -196,9 +229,11 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 colors: ['#FFFFFF', '#A6A6A6', '#000000'],
               });
 
-              // Track Meta Pixel Purchase event
+              // Track Meta Pixel Purchase event & PageView for URL-based tracking
               if (typeof window !== 'undefined' && typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
-                (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'Purchase', {
+                const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
+                fb('track', 'PageView');
+                fb('track', 'Purchase', {
                   value: fee,
                   currency: 'INR',
                   content_name: `${language} Batch Masterclass`,
@@ -242,7 +277,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity"
-        onClick={step === 2 ? onClose : undefined}
+        onClick={step === 2 ? handleModalClose : undefined}
       />
 
       {/* Modal Container */}
@@ -251,7 +286,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         {/* Close Button */}
         {step !== 2 && (
           <button
-            onClick={onClose}
+            onClick={handleModalClose}
             className="absolute right-4 top-4 text-neutral-400 hover:text-white transition-colors p-1 rounded-full hover:bg-white/5 cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -532,7 +567,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
             <div className="mt-8 space-y-2 max-w-sm mx-auto">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleModalClose}
                 className="w-full py-2.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-sm rounded-lg transition-colors cursor-pointer"
               >
                 Done & Close
