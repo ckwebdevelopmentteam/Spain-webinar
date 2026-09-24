@@ -221,21 +221,20 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
               // Update URL to /thankyou without any tokens or query parameters
               if (typeof window !== 'undefined') {
                 try {
-                  sessionStorage.setItem(
-                    'sapain_ticket_data',
-                    JSON.stringify({
-                      ticketId: assignedTicketId,
-                      name: values.name,
-                      email: values.email,
-                      phone: values.phone,
-                      language: language,
-                      amount: fee,
-                      timestamp: verifyData.timestamp || new Date().toISOString(),
-                      whatsappGroup: verifyData.whatsappGroup,
-                    })
-                  );
+                  const payload = JSON.stringify({
+                    ticketId: assignedTicketId,
+                    name: values.name,
+                    email: values.email,
+                    phone: values.phone,
+                    language: language,
+                    amount: fee,
+                    timestamp: verifyData.timestamp || new Date().toISOString(),
+                    whatsappGroup: verifyData.whatsappGroup,
+                  });
+                  sessionStorage.setItem('sapain_ticket_data', payload);
+                  localStorage.setItem('sapain_ticket_data', payload);
                 } catch {
-                  // Ignore sessionStorage error in restricted environments
+                  // Ignore storage error in restricted environments
                 }
                 window.history.pushState({ payment: 'success' }, '', '/thankyou');
               }

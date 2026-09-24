@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 interface StoredTicketData {
-  ticketId?: string;
+  ticketId: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -37,48 +37,82 @@ const BATCH_DATES: Record<string, string> = {
 
 export default function ThankYouPage() {
   const [data, setData] = useState<StoredTicketData | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // 1. Trigger celebration confetti
+    let stored: string | null = null;
     try {
-      confetti({
-        particleCount: 160,
-        spread: 90,
-        origin: { y: 0.5 },
-        colors: ['#FFFFFF', '#A6A6A6', '#25D366', '#000000'],
-      });
+      stored =
+        sessionStorage.getItem('sapain_ticket_data') ||
+        localStorage.getItem('sapain_ticket_data');
     } catch {
-      // Ignore if confetti fails
+      // Storage access blocked or restricted
     }
 
-    // 2. Read stored registration data from sessionStorage
+    // If no payment record exists, redirect unauthorized visitor to home immediately
+    if (!stored) {
+      setIsAuthorized(false);
+      window.location.replace('/');
+      return;
+    }
+
     try {
-      const stored = sessionStorage.getItem('sapain_ticket_data');
-      if (stored) {
-        setData(JSON.parse(stored));
+      const parsed = JSON.parse(stored);
+      if (!parsed || !parsed.ticketId) {
+        setIsAuthorized(false);
+        window.location.replace('/');
+        return;
+      }
+
+      setData(parsed);
+      setIsAuthorized(true);
+
+      // Trigger celebration confetti
+      try {
+        confetti({
+          particleCount: 160,
+          spread: 90,
+          origin: { y: 0.5 },
+          colors: ['#FFFFFF', '#A6A6A6', '#25D366', '#000000'],
+        });
+      } catch {
+        // Ignore confetti errors
+      }
+
+      // Track Meta Pixel PageView and Purchase event on /thankyou
+      if (
+        typeof window !== 'undefined' &&
+        typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function'
+      ) {
+        const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
+        fb('track', 'PageView');
+        fb('track', 'Purchase', {
+          value: parsed.amount || 299,
+          currency: 'INR',
+          content_name: `${parsed.language || 'English'} Batch Masterclass`,
+        });
       }
     } catch {
-      // Fallback
-    }
-
-    // 3. Track Meta Pixel PageView and Purchase event on /thankyou
-    if (
-      typeof window !== 'undefined' &&
-      typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function'
-    ) {
-      const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
-      fb('track', 'PageView');
-      fb('track', 'Purchase', {
-        value: 299,
-        currency: 'INR',
-        content_name: 'AI Masterclass Registration',
-      });
+      setIsAuthorized(false);
+      window.location.replace('/');
     }
   }, []);
 
-  const language = data?.language || 'English';
+  // While checking authorization or if unauthorized, do NOT display any content or links
+  if (!isAuthorized || !data) {
+    return (
+      <main className="min-h-screen bg-[#000000] text-[#F2F2F2] flex items-center justify-center p-4">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+          <p className="text-xs text-neutral-400">Verifying booking authorization...</p>
+        </div>
+      </main>
+    );
+  }
+
+  const language = data.language || 'English';
   const languageKey = language.toLowerCase().trim();
-  const ticketId = data?.ticketId || 'SA-CONFIRMED';
+  const ticketId = data.ticketId;
   const batchDate = BATCH_DATES[languageKey] || '19 October';
 
   const defaultWhatsappUrls: Record<string, string> = {
@@ -88,14 +122,14 @@ export default function ThankYouPage() {
   };
 
   const whatsappUrl =
-    data?.whatsappGroup?.url ||
+    data.whatsappGroup?.url ||
     defaultWhatsappUrls[languageKey] ||
     'https://chat.whatsapp.com/invite';
 
   const whatsappTitle =
-    data?.whatsappGroup?.title || `Join ${language} Batch WhatsApp Group`;
+    data.whatsappGroup?.title || `Join ${language} Batch WhatsApp Group`;
   const whatsappButtonText =
-    data?.whatsappGroup?.buttonText || `Join ${language} WhatsApp Group`;
+    data.whatsappGroup?.buttonText || `Join ${language} WhatsApp Group`;
 
   return (
     <main className="min-h-screen bg-[#000000] text-[#F2F2F2] flex flex-col items-center justify-between px-4 py-8 md:py-16 selection:bg-white/20 selection:text-white">
@@ -206,7 +240,7 @@ export default function ThankYouPage() {
             </div>
 
             {/* Attendee Details if Available */}
-            {data?.name && (
+            {data.name && (
               <div className="pt-3 border-t border-dashed border-white/10 flex justify-between items-center text-[11px]">
                 <span className="text-neutral-400">Attendee:</span>
                 <span className="font-medium text-white">{data.name}</span>
@@ -220,7 +254,7 @@ export default function ThankYouPage() {
                 Confirmed At
               </span>
               <span className="font-mono text-neutral-300 font-medium text-[11px]">
-                {data?.timestamp
+                {data.timestamp
                   ? new Date(data.timestamp).toLocaleString('en-IN', {
                       day: '2-digit',
                       month: 'short',
