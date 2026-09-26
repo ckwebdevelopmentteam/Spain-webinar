@@ -89,7 +89,7 @@ export default function ThankYouPage() {
         fb('track', 'Purchase', {
           value: parsed.amount || 299,
           currency: 'INR',
-          content_name: 'Sapain Course Masterclass',
+          content_name: `${parsed.language || 'Sapain Course'} Batch Masterclass`,
         });
       }
     } catch {
@@ -110,8 +110,8 @@ export default function ThankYouPage() {
     );
   }
 
-  const language = 'Malayalam';
-  const languageKey = 'malayalam';
+  const language = data.language || 'Sapain Course';
+  const languageKey = language.toLowerCase().trim();
   const ticketId = data.ticketId;
   const batchDate = BATCH_DATES[languageKey] || '15 October';
 
@@ -120,9 +120,9 @@ export default function ThankYouPage() {
     'https://chat.whatsapp.com/invite';
 
   const whatsappTitle =
-    data.whatsappGroup?.title || 'Join Malayalam Batch WhatsApp Group';
+    data.whatsappGroup?.title || `Join ${language} Batch WhatsApp Group`;
   const whatsappButtonText =
-    data.whatsappGroup?.buttonText || 'Join Malayalam WhatsApp Group';
+    data.whatsappGroup?.buttonText || `Join ${language} WhatsApp Group`;
 
   return (
     <main className="min-h-screen bg-[#000000] text-[#F2F2F2] flex flex-col items-center justify-between px-4 py-8 md:py-16 selection:bg-white/20 selection:text-white">
@@ -233,10 +233,26 @@ export default function ThankYouPage() {
             </div>
 
             {/* Attendee Details if Available */}
-            {data.name && (
-              <div className="pt-3 border-t border-dashed border-white/10 flex justify-between items-center text-[11px]">
-                <span className="text-neutral-400">Attendee:</span>
-                <span className="font-medium text-white">{data.name}</span>
+            {(data.name || data.email || data.phone) && (
+              <div className="pt-3 border-t border-dashed border-white/10 space-y-1.5 text-[11px]">
+                {data.name && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-400">Attendee:</span>
+                    <span className="font-medium text-white">{data.name}</span>
+                  </div>
+                )}
+                {data.email && (
+                  <div className="flex justify-between items-center text-[10px]">
+                    <span className="text-neutral-400">Email:</span>
+                    <span className="font-mono text-neutral-300">{data.email}</span>
+                  </div>
+                )}
+                {data.phone && (
+                  <div className="flex justify-between items-center text-[10px]">
+                    <span className="text-neutral-400">WhatsApp:</span>
+                    <span className="font-mono text-neutral-300">{data.phone}</span>
+                  </div>
+                )}
               </div>
             )}
 

@@ -83,34 +83,8 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   }, [isOpen, defaultLanguage, reset]);
 
   const handleModalClose = () => {
-    if (typeof window !== 'undefined') {
-      if (window.location.pathname === '/thankyou') {
-        window.history.replaceState({}, '', '/');
-      } else {
-        const url = new URL(window.location.href);
-        if (url.searchParams.has('payment') || url.searchParams.has('ticket_id')) {
-          url.searchParams.delete('payment');
-          url.searchParams.delete('ticket_id');
-          const cleanSearch = url.searchParams.toString();
-          const cleanUrl = url.pathname + (cleanSearch ? `?${cleanSearch}` : '') + url.hash;
-          window.history.replaceState({}, '', cleanUrl);
-        }
-      }
-    }
     onClose();
   };
-
-  useEffect(() => {
-    const handlePopState = () => {
-      if (typeof window !== 'undefined') {
-        if (window.location.pathname !== '/thankyou' && step === 2) {
-          onClose();
-        }
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [step, onClose]);
 
   if (!isOpen) return null;
 
@@ -211,18 +185,13 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
             const verifyData = await verifyRes.json();
             if (verifyRes.ok && verifyData.success) {
               const assignedTicketId = verifyData.ticket_id || 'SA-' + Math.floor(100000 + Math.random() * 900000);
-              setTicketId(assignedTicketId);
-              setRegistrationTimestamp(verifyData.timestamp || new Date().toISOString());
-              if (verifyData.whatsappGroup) {
-                setWhatsappGroup(verifyData.whatsappGroup);
-              }
-              setStep(2); // Direct to Ticket Confirmation
 
-              // Update URL to /thankyou without any tokens or query parameters
               if (typeof window !== 'undefined') {
                 try {
                   const payload = JSON.stringify({
                     ticketId: assignedTicketId,
+                    paymentId: response.razorpay_payment_id,
+                    orderId: response.razorpay_order_id,
                     name: values.name,
                     email: values.email,
                     phone: values.phone,
@@ -236,26 +205,21 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                 } catch {
                   // Ignore storage error in restricted environments
                 }
-                window.history.pushState({ payment: 'success' }, '', '/thankyou');
-              }
 
-              // Confetti burst
-              confetti({
-                particleCount: 150,
-                spread: 80,
-                origin: { y: 0.6 },
-                colors: ['#FFFFFF', '#A6A6A6', '#000000'],
-              });
+                // Track Meta Pixel Purchase event before redirecting
+                if (typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
+                  const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
+                  fb('track', 'Purchase', {
+                    value: fee,
+                    currency: 'INR',
+                    content_name: `${language} Batch Masterclass`,
+                  });
+                }
 
-              // Track Meta Pixel Purchase event & PageView for URL-based tracking
-              if (typeof window !== 'undefined' && typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
-                const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
-                fb('track', 'PageView');
-                fb('track', 'Purchase', {
-                  value: fee,
-                  currency: 'INR',
-                  content_name: `${language} Batch Masterclass`,
-                });
+                // Close modal and redirect directly to /thankyou page
+                onClose();
+                window.location.href = '/thankyou';
+                return;
               }
             } else {
               setErrorMessage(verifyData.error || 'Payment signature verification failed.');
