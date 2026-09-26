@@ -110,37 +110,15 @@ export const webinarData: WebinarConfig = {
   },
   languages: [
     {
-      id: "en",
-      name: "English",
-      description: "Learn in English - interactive session with global workflows and case studies.",
-      fee: 299,
-      duration: "3 hrs",
-      platform: "Zoom",
-      dates: "19 October",
-      time: "6:00 PM - 9:00 PM IST",
-      isPopular: true
-    },
-    {
-      id: "ml",
-      name: "Malayalam",
-      description: "Learn in Malayalam - interactive session delivered in native language.",
+      id: "sapain",
+      name: "Sapain Course",
+      description: "Learn directly with Sapain — interactive live masterclass featuring practical, production-ready AI workflows.",
       fee: 299,
       duration: "3 hrs",
       platform: "Zoom",
       dates: "15 October",
       time: "6:00 PM - 9:00 PM IST",
-      isPopular: false
-    },
-    {
-      id: "hi",
-      name: "Hindi",
-      description: "Learn in Hindi - interactive live session for Hindi-speaking creators.",
-      fee: 299,
-      duration: "3 hrs",
-      platform: "Zoom",
-      dates: "22 October",
-      time: "6:00 PM - 9:00 PM IST",
-      isPopular: false
+      isPopular: true
     }
   ],
   pillars: [

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     const body = await request.json().catch(() => ({}));
     const testEmail = body.email || process.env.SMTP_USER;
-    const testLanguage = body.language || 'English';
+    const testLanguage = body.language || 'Sapain Course';
 
     if (!testEmail) {
       return NextResponse.json(

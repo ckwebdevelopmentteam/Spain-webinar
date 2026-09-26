@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const userName = userDetails?.name || body.name || 'Verified Customer';
     const userEmail = userDetails?.email || body.email || 'customer@sapain.edu';
     const userPhone = userDetails?.phone || userDetails?.contact || body.phone || 'N/A';
-    const userLanguage = userDetails?.language || body.language || 'English';
+    const userLanguage = userDetails?.language || body.language || 'Sapain Course';
     const ticketPassId = ticket_id || `SA-${Math.floor(100000 + Math.random() * 900000)}`;
     let savedCreatedAt: string | null = null;
 

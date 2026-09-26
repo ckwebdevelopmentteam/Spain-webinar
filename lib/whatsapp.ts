@@ -5,29 +5,14 @@ export interface WhatsAppGroupInfo {
 }
 
 /**
- * Returns the secure WhatsApp group info for the specified batch language.
+ * Returns the secure WhatsApp group info for the Malayalam batch.
  * Stored and read exclusively from .env on the server side.
+ * Guaranteed to return only the Malayalam group link.
  */
-export function getWhatsAppGroup(language?: string): WhatsAppGroupInfo {
-  const key = (language || '').toLowerCase().trim();
-
-  const groups: Record<string, WhatsAppGroupInfo> = {
-    malayalam: {
-      title: 'Join Malayalam Batch Group',
-      buttonText: 'Join Malayalam WhatsApp Group',
-      url: process.env.WHATSAPP_GROUP_MALAYALAM || '',
-    },
-    hindi: {
-      title: 'Join Hindi Batch Group',
-      buttonText: 'Join Hindi WhatsApp Group',
-      url: process.env.WHATSAPP_GROUP_HINDI || '',
-    },
-    english: {
-      title: 'Join English Batch Group',
-      buttonText: 'Join English WhatsApp Group',
-      url: process.env.WHATSAPP_GROUP_ENGLISH || '',
-    },
+export function getWhatsAppGroup(_language?: string): WhatsAppGroupInfo {
+  return {
+    title: 'Join Sapain Course Group',
+    buttonText: 'Join Sapain WhatsApp Group',
+    url: process.env.WHATSAPP_GROUP_MALAYALAM || process.env.WHATSAPP_GROUP_URL || '',
   };
-
-  return groups[key] || groups['english'];
 }

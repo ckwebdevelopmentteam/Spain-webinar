@@ -52,19 +52,19 @@ export async function sendPaymentConfirmationEmail({
   ticketId,
   paymentId,
   amount,
-  language = 'English',
+  language = 'Sapain Course',
 }: SendPaymentConfirmationEmailParams) {
   try {
     const transporter = getTransporter();
 
     const BATCH_DATES: Record<string, string> = {
       malayalam: '15 October',
-      english: '19 October',
-      hindi: '22 October',
+      sapain: '15 October',
+      'sapain course': '15 October',
     };
-    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || '19 October';
+    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || '15 October';
     const groupInfo = getWhatsAppGroup(language);
-    const formattedLang = language.charAt(0).toUpperCase() + language.slice(1);
+    const formattedLang = language || 'Sapain Course';
 
     if (!transporter) {
       console.warn(

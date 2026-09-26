@@ -31,8 +31,8 @@ interface StoredTicketData {
 
 const BATCH_DATES: Record<string, string> = {
   malayalam: '15 October',
-  english: '19 October',
-  hindi: '22 October',
+  sapain: '15 October',
+  'sapain course': '15 October',
 };
 
 export default function ThankYouPage() {
@@ -89,7 +89,7 @@ export default function ThankYouPage() {
         fb('track', 'Purchase', {
           value: parsed.amount || 299,
           currency: 'INR',
-          content_name: `${parsed.language || 'English'} Batch Masterclass`,
+          content_name: 'Sapain Course Masterclass',
         });
       }
     } catch {
@@ -110,26 +110,19 @@ export default function ThankYouPage() {
     );
   }
 
-  const language = data.language || 'English';
-  const languageKey = language.toLowerCase().trim();
+  const language = 'Malayalam';
+  const languageKey = 'malayalam';
   const ticketId = data.ticketId;
-  const batchDate = BATCH_DATES[languageKey] || '19 October';
-
-  const defaultWhatsappUrls: Record<string, string> = {
-    malayalam: 'https://chat.whatsapp.com/invite',
-    english: 'https://chat.whatsapp.com/invite',
-    hindi: 'https://chat.whatsapp.com/invite',
-  };
+  const batchDate = BATCH_DATES[languageKey] || '15 October';
 
   const whatsappUrl =
     data.whatsappGroup?.url ||
-    defaultWhatsappUrls[languageKey] ||
     'https://chat.whatsapp.com/invite';
 
   const whatsappTitle =
-    data.whatsappGroup?.title || `Join ${language} Batch WhatsApp Group`;
+    data.whatsappGroup?.title || 'Join Malayalam Batch WhatsApp Group';
   const whatsappButtonText =
-    data.whatsappGroup?.buttonText || `Join ${language} WhatsApp Group`;
+    data.whatsappGroup?.buttonText || 'Join Malayalam WhatsApp Group';
 
   return (
     <main className="min-h-screen bg-[#000000] text-[#F2F2F2] flex flex-col items-center justify-between px-4 py-8 md:py-16 selection:bg-white/20 selection:text-white">

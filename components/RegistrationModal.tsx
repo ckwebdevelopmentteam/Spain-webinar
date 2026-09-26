@@ -48,8 +48,8 @@ interface WhatsAppGroupData {
 
 const BATCH_DATES: Record<string, string> = {
   malayalam: '15 October',
-  english: '19 October',
-  hindi: '22 October',
+  sapain: '15 October',
+  'sapain course': '15 October',
 };
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
@@ -57,7 +57,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   onClose,
   fee,
   originalFee,
-  defaultLanguage = 'English'
+  defaultLanguage = 'Sapain Course'
 }) => {
   const [step, setStep] = useState<1 | 2>(1);
   const [ticketId, setTicketId] = useState('');
@@ -330,26 +330,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         {/* Step 1: Registration Form with Direct Razorpay Checkout */}
         {step === 1 && (
           <form onSubmit={handleSubmit(handlePayDirectly)} className="space-y-4">
-            {/* Language Selector */}
-            <div>
-              <label className="block text-xs font-medium text-neutral-300 mb-1.5">Selected Language</label>
-              <div className="grid grid-cols-3 gap-2">
-                {['English', 'Malayalam', 'Hindi'].map((lang) => (
-                  <button
-                    key={lang}
-                    type="button"
-                    onClick={() => setLanguage(lang)}
-                    className={`py-2 px-3 rounded-lg text-xs transition-all border text-center cursor-pointer ${
-                      language.toLowerCase() === lang.toLowerCase()
-                        ? 'bg-[#F2F2F2] text-black border-[#F2F2F2] shadow-sm font-medium'
-                        : 'bg-white/5 text-neutral-400 border-white/10 hover:border-white/20 hover:text-white font-normal'
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             {/* Name */}
             <div>
@@ -499,7 +479,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                     <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">Date</span>
                     <div className="flex items-center gap-1 text-xs text-[#F2F2F2] font-medium mt-1">
                       <Calendar className="w-3.5 h-3.5 text-white" />
-                      <span>{BATCH_DATES[language.toLowerCase().trim()] || '19 October'}</span>
+                      <span>{BATCH_DATES[language.toLowerCase().trim()] || '15 October'}</span>
                     </div>
                   </div>
                   <div>

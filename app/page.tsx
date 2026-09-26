@@ -6,7 +6,7 @@ import {
   Clock, MapPin, Sparkles, Palette, Film,
   GraduationCap, Briefcase, Share2, Terminal, ArrowRight, ChevronDown,
   Check, Play, Pause, Volume2, VolumeX, Users,
-  Globe, CheckCircle2, BookOpen, Video
+  Globe, CheckCircle2, BookOpen, Video, Calendar, ShieldCheck
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
 import { RegistrationModal } from '../components/RegistrationModal';
@@ -154,7 +154,7 @@ const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [selectedLanguage, setSelectedLanguage] = useState('Sapain Course');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
@@ -181,7 +181,7 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const openEnrollModal = (lang = 'English') => {
+  const openEnrollModal = (lang = 'Sapain Course') => {
     setSelectedLanguage(lang);
     setIsModalOpen(true);
   };
@@ -223,7 +223,7 @@ export default function Home() {
 
           {/* CTA Button */}
           <button
-            onClick={() => openEnrollModal('English')}
+            onClick={() => openEnrollModal('Sapain Course')}
             className="glow-button px-5 py-2.5 sm:px-6 sm:py-3 bg-[#F2F2F2] text-[#000000] hover:bg-white font-medium text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 cursor-pointer whitespace-nowrap"
           >
             <span>Reserve Seat • ₹{webinarData.fee}</span>
@@ -325,7 +325,7 @@ export default function Home() {
                 </div>
 
                 <button
-                  onClick={() => openEnrollModal('English')}
+                  onClick={() => openEnrollModal('Malayalam')}
                   className="px-5 sm:px-8 py-3 sm:py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-xs sm:text-sm rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer tracking-normal shrink-0 whitespace-nowrap"
                 >
                   <span>Reserve Your Seat</span>
@@ -503,7 +503,7 @@ export default function Home() {
                 </div>
 
                 <button
-                  onClick={() => openEnrollModal('English')}
+                  onClick={() => openEnrollModal('Sapain Course')}
                   className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.01] cursor-pointer text-center tracking-normal block"
                 >
                   Enroll Now • ₹{webinarData.fee}
@@ -558,88 +558,162 @@ export default function Home() {
       <section id="languages" className="py-20 md:py-28 bg-[#050505] border-b border-white/10 relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs font-medium tracking-wider text-[#F2F2F2] bg-white/5 px-3.5 py-1 rounded-full border border-white/10">
-              Language Preferences Grid
+              Exclusive Live Workshop Batch
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#F2F2F2] mt-4 mb-3">
-              Choose Your Language
+              Sapain Course
             </h2>
             <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-              Select your preferred language batch to learn comfortably, engage in live Q&A, and direct AI like a pro.
+              Interactive live masterclass delivered directly by Sapain. Engage in live Q&amp;A, follow step-by-step workflows, and direct AI like a pro.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="w-full max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto">
             {webinarData.languages.map((lang) => (
               <motion.div
                 key={lang.id}
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
-                className={`glass-premium rounded-3xl p-7 flex flex-col justify-between relative overflow-hidden border ${
-                  lang.isPopular ? 'border-white/30 shadow-[0_0_30px_rgba(255,255,255,0.08)]' : 'border-white/10'
+                className={`glass-premium rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden border ${
+                  lang.isPopular ? 'border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.08)]' : 'border-white/10'
                 }`}
               >
                 {lang.isPopular && (
-                  <div className="absolute top-0 right-0 bg-white text-black font-medium text-[10px] tracking-normal py-1 px-3 rounded-bl-xl">
+                  <div className="absolute top-0 right-0 bg-white text-black font-semibold text-[10px] tracking-wider uppercase py-1 px-3.5 rounded-bl-xl shadow-md">
                     Popular Batch
                   </div>
                 )}
 
-                <div className="space-y-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white">
-                      <Globe className="w-5 h-5" />
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
+                  {/* Left Column: Course Details & What is Included */}
+                  <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/15 shadow-inner shrink-0">
+                          <Sparkles className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">{lang.name}</h3>
+                            <span className="text-[10px] uppercase font-semibold tracking-wider text-black bg-white px-2.5 py-0.5 rounded-full">
+                              Live Masterclass
+                            </span>
+                          </div>
+                          <span className="text-xs text-neutral-400 font-medium">Hands-On Online Interactive Workshop</span>
+                        </div>
+                      </div>
+
+                      <p className="text-sm text-neutral-300 leading-relaxed font-sans">
+                        {lang.description}
+                      </p>
+
+                      {/* Workshop Highlights */}
+                      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-neutral-300">
+                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>3 Hours Live Hands-on Training</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>Interactive Live Q&amp;A</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>10 Workflow Guides Included</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>Lifetime Community Access</span>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-medium text-white">{lang.name}</h3>
-                      <span className="text-xs text-neutral-400">Live Online Workshop</span>
+
+                    {/* Mentor Attribution */}
+                    <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={webinarData.mentor.image}
+                        alt={webinarData.mentor.name}
+                        className="w-10 h-10 rounded-full object-cover border border-white/20 shrink-0"
+                      />
+                      <div className="text-xs">
+                        <span className="text-white font-medium block">Guided by {webinarData.mentor.name}</span>
+                        <span className="text-neutral-400 text-[11px] block">{webinarData.mentor.role}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-neutral-300 leading-relaxed font-sans">
-                    {lang.description}
-                  </p>
+                  {/* Right Column: Schedule, Fee & Action */}
+                  <div className="lg:col-span-5 flex flex-col justify-between bg-white/[0.03] p-5 sm:p-6 lg:p-7 rounded-2xl border border-white/10 space-y-6">
+                    <div className="space-y-4">
+                      {/* Price Header */}
+                      <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
+                        <div>
+                          <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Workshop Fee</span>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <span className="text-3xl sm:text-4xl font-semibold text-white">₹{lang.fee}/-</span>
+                            <span className="text-sm text-neutral-500 line-through">₹{webinarData.originalFee}/-</span>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-semibold text-white bg-white/10 border border-white/20 px-2.5 py-1 rounded-full">
+                          {discountPercent}% Off
+                        </span>
+                      </div>
 
-                  <div className="text-2xl font-semibold text-white">
-                    ₹{lang.fee}/-
+                      {/* Batch Schedule Details */}
+                      <div className="space-y-3 text-xs text-neutral-300">
+                        <div className="flex items-center justify-between">
+                          <span className="text-neutral-400 flex items-center gap-2">
+                            <Calendar className="w-3.5 h-3.5 text-neutral-400" /> Date:
+                          </span>
+                          <span className="font-medium text-white">{lang.dates}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-neutral-400 flex items-center gap-2">
+                            <Clock className="w-3.5 h-3.5 text-neutral-400" /> Time:
+                          </span>
+                          <span className="font-medium text-white">{lang.time}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-neutral-400 flex items-center gap-2">
+                            <Video className="w-3.5 h-3.5 text-neutral-400" /> Platform:
+                          </span>
+                          <span className="font-medium text-white">{lang.platform}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-neutral-400 flex items-center gap-2">
+                            <Sparkles className="w-3.5 h-3.5 text-neutral-400" /> Duration:
+                          </span>
+                          <span className="font-medium text-white">{lang.duration}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CTA Actions */}
+                    <div className="space-y-3 pt-4 border-t border-white/10">
+                      <button
+                        onClick={() => openEnrollModal(lang.name)}
+                        className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm tracking-normal rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <span>Enroll Now • ₹{lang.fee}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+
+                      <a
+                        href="#pillars"
+                        className="block text-center py-1.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors"
+                      >
+                        View More Details
+                      </a>
+
+                      <div className="flex items-center justify-center gap-1.5 text-[11px] text-neutral-400 pt-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Instant Confirmation • Limited Seats</span>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Batch Details list */}
-                  <div className="space-y-2.5 pt-4 border-t border-white/10 text-xs text-neutral-300">
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-400">Date:</span>
-                      <span className="font-medium text-white">{lang.dates}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-400">Time:</span>
-                      <span className="font-medium text-white">{lang.time}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-400">Platform:</span>
-                      <span className="font-medium text-white">{lang.platform}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-400">Duration:</span>
-                      <span className="font-medium text-white">{lang.duration}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8 space-y-3">
-                  <button
-                    onClick={() => openEnrollModal(lang.name)}
-                    className="w-full py-3 bg-[#F2F2F2] hover:bg-white text-black font-medium text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.02] cursor-pointer"
-                  >
-                    Enroll Now
-                  </button>
-
-                  <a
-                    href="#pillars"
-                    className="block text-center py-2 text-xs font-semibold text-neutral-400 hover:text-white transition-colors"
-                  >
-                    View More Details
-                  </a>
                 </div>
               </motion.div>
             ))}
@@ -789,7 +863,7 @@ export default function Home() {
 
                 <div className="pt-4 border-t border-white/10">
                   <button
-                    onClick={() => openEnrollModal('English')}
+                    onClick={() => openEnrollModal('Malayalam')}
                     className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.01] cursor-pointer"
                   >
                     Get Full Access for ₹{webinarData.fee}
@@ -934,7 +1008,7 @@ export default function Home() {
 
                 <div className="pt-4">
                   <button
-                    onClick={() => openEnrollModal('English')}
+                    onClick={() => openEnrollModal('Malayalam')}
                     className="px-6 py-3 bg-[#F2F2F2] hover:bg-white text-black font-medium text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.02] cursor-pointer"
                   >
                     Learn with Vinayak • ₹{webinarData.fee}
@@ -1036,7 +1110,7 @@ export default function Home() {
               </p>
             </div>
             <button
-              onClick={() => openEnrollModal('English')}
+              onClick={() => openEnrollModal('Malayalam')}
               className="px-6 py-3 bg-[#F2F2F2] hover:bg-white text-black font-medium text-xs tracking-normal rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
             >
               Claim Seat & Guides
@@ -1176,7 +1250,7 @@ export default function Home() {
 
             <div className="pt-4">
               <button
-                onClick={() => openEnrollModal('English')}
+                onClick={() => openEnrollModal('Malayalam')}
                 className="px-8 py-4 bg-[#F2F2F2] hover:bg-white text-black font-medium text-sm tracking-normal rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.02] transition-all cursor-pointer inline-flex items-center gap-2"
               >
                 <span>Enroll in Masterclass for ₹{webinarData.fee}</span>
@@ -1196,7 +1270,7 @@ export default function Home() {
 
             <div className="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-neutral-400">
               <a href="#about" className="hover:text-white transition-colors">About</a>
-              <a href="#languages" className="hover:text-white transition-colors">Languages</a>
+              <a href="#languages" className="hover:text-white transition-colors">Batch Info</a>
               <a href="#pillars" className="hover:text-white transition-colors">Curriculum</a>
               <a href="#founders" className="hover:text-white transition-colors">Founders</a>
               <a href="#mentor" className="hover:text-white transition-colors">Mentor</a>
@@ -1252,7 +1326,7 @@ export default function Home() {
 
           {/* Action CTA Button */}
           <button
-            onClick={() => openEnrollModal('English')}
+            onClick={() => openEnrollModal('Malayalam')}
             className="glow-button px-3.5 py-2.5 sm:px-9 sm:py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2.5 shrink-0 whitespace-nowrap"
           >
             <span>Reserve Your Seat</span>
