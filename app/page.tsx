@@ -25,36 +25,44 @@ import SocialCards, { CardItem } from '@/components/ui/card-fan-carousel';
 
 const STUDENT_SUCCESS_STORIES: CardItem[] = [
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445792/video_2026-09-15_09-37-31.mp4",
-    alt: "AI 3D Animation - Little Krishna Story",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020228/video_2026-09-15_09-38-04.mp4",
+    alt: "AI 3D Animation & Cinematic Story",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445789/video_2026-09-15_09-37-58.mp4",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020230/video_2026-09-15_09-37-58.mp4",
     alt: "Student AI Visual Showcase",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445787/video_2026-09-15_09-38-04.mp4",
-    alt: "Cinematic AI Generation",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020226/video_2026-09-15_09-38-13.mp4",
+    alt: "AI Character & Visual Effects",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445649/sapain_testimonial_2.mp4",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020906/sapain_testimonial.mp4",
     alt: "Student Testimonial Review",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445792/video_2026-09-15_09-37-31.mp4",
-    alt: "AI Character Creation",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020920/sapain_testimonial_2.mp4",
+    alt: "Student Transformation Journey",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445789/video_2026-09-15_09-37-58.mp4",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020228/video_2026-09-15_09-38-04.mp4",
+    alt: "Cinematic AI Generation",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020230/video_2026-09-15_09-37-58.mp4",
     alt: "AI Filmmaking Project",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445787/video_2026-09-15_09-38-04.mp4",
-    alt: "Hyper-realistic Visuals",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020226/video_2026-09-15_09-38-13.mp4",
+    alt: "Hyper-realistic Visuals & Motion",
   },
   {
-    videoUrl: "https://res.cloudinary.com/jzw4lrot/video/upload/v1789445649/sapain_testimonial_2.mp4",
-    alt: "Student Transformation Journey",
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020906/sapain_testimonial.mp4",
+    alt: "Creative Workflow Testimonial",
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020920/sapain_testimonial_2.mp4",
+    alt: "Student Success Story",
   },
 ];
 
@@ -351,7 +359,7 @@ export default function Home() {
               >
                 <video
                   ref={heroVideoRef}
-                  src="https://res.cloudinary.com/jzw4lrot/video/upload/v1789378441/SAPAIN-_LANDING_PAGE_VIDEO_cmp.mp4"
+                  src="https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020220/SAPAIN-_LANDING_PAGE_VIDEO_cmp.mp4"
                   autoPlay
                   loop
                   muted={isHeroMuted}

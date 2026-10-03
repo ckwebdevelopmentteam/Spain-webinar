@@ -31,7 +31,7 @@ const TESTIMONIAL_ITEMS: TestimonialItem[] = [
     name: 'Michael Harris',
     role: 'Frontend Development Student',
     thumbnail: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
-    videoSrc: '/sapain testimonial .mp4'
+    videoSrc: 'https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020906/sapain_testimonial.mp4'
   },
   {
     type: 'quote',
@@ -48,7 +48,7 @@ const TESTIMONIAL_ITEMS: TestimonialItem[] = [
     name: 'Ethan Walker',
     role: 'Software Development Student',
     thumbnail: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
-    videoSrc: '/sapain testimonial 2.mp4'
+    videoSrc: 'https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020920/sapain_testimonial_2.mp4'
   },
   {
     type: 'quote',
@@ -65,7 +65,7 @@ const TESTIMONIAL_ITEMS: TestimonialItem[] = [
     name: 'Sophia Chen',
     role: 'AI Video Directing Student',
     thumbnail: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
-    videoSrc: '/sapain testimonial .mp4'
+    videoSrc: 'https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020228/video_2026-09-15_09-38-04.mp4'
   },
   {
     type: 'quote',
@@ -82,7 +82,7 @@ const TESTIMONIAL_ITEMS: TestimonialItem[] = [
     name: 'Arjun Patel',
     role: 'Visual Effects Artist',
     thumbnail: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop',
-    videoSrc: '/sapain testimonial 2.mp4'
+    videoSrc: 'https://res.cloudinary.com/tj0vdpbj/video/upload/v1791020230/video_2026-09-15_09-37-58.mp4'
   },
   {
     type: 'quote',
