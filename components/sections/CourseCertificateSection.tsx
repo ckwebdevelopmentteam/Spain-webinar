@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Award, CheckCircle2, ShieldCheck, Share2, Sparkles, ArrowRight } from 'lucide-react';
+import { Award, CheckCircle2, ShieldCheck, Share2, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface CourseCertificateSectionProps {
@@ -102,16 +102,6 @@ export function CourseCertificateSection({ onEnroll }: CourseCertificateSectionP
                   <div>
                     <h4 className="text-sm font-semibold text-white">LinkedIn & Portfolio Ready</h4>
                     <p className="text-xs text-neutral-400 mt-0.5">Easily shareable on your professional resume, LinkedIn certifications, and portfolio.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 bg-white/[0.03] p-3.5 rounded-xl border border-white/5">
-                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white shrink-0 mt-0.5">
-                    <Sparkles className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white">Includes Unique Learner ID</h4>
-                    <p className="text-xs text-neutral-400 mt-0.5">Authorized by Sapain studio mentors with verifiable student credentials.</p>
                   </div>
                 </div>
               </div>
