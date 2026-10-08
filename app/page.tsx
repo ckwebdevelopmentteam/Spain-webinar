@@ -22,6 +22,8 @@ import {
   MagnificLogo
 } from '@/components/sections/HeroLogosBanner';
 import SocialCards, { CardItem } from '@/components/ui/card-fan-carousel';
+import { ConnectedWorkflowGuides } from '@/components/sections/ConnectedWorkflowGuides';
+import { CourseCertificateSection } from '@/components/sections/CourseCertificateSection';
 
 const STUDENT_SUCCESS_STORIES: CardItem[] = [
   {
@@ -194,8 +196,8 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
-  const discountPercent = webinarData.originalFee > webinarData.fee 
-    ? Math.round(((webinarData.originalFee - webinarData.fee) / webinarData.originalFee) * 100) 
+  const discountPercent = webinarData.originalFee > webinarData.fee
+    ? Math.round(((webinarData.originalFee - webinarData.fee) / webinarData.originalFee) * 100)
     : 70;
 
   const getAudienceIcon = (iconName: string) => {
@@ -414,21 +416,19 @@ export default function Home() {
               <div className="border-b border-white/10 flex gap-6 text-sm font-medium">
                 <button
                   onClick={() => setActiveTab('info')}
-                  className={`pb-4 transition-all border-b-2 cursor-pointer ${
-                    activeTab === 'info'
+                  className={`pb-4 transition-all border-b-2 cursor-pointer ${activeTab === 'info'
                       ? 'border-white text-white'
                       : 'border-transparent text-neutral-400 hover:text-neutral-200'
-                  }`}
+                    }`}
                 >
                   About Course
                 </button>
                 <button
                   onClick={() => setActiveTab('curriculum')}
-                  className={`pb-4 transition-all border-b-2 cursor-pointer ${
-                    activeTab === 'curriculum'
+                  className={`pb-4 transition-all border-b-2 cursor-pointer ${activeTab === 'curriculum'
                       ? 'border-white text-white'
                       : 'border-transparent text-neutral-400 hover:text-neutral-200'
-                  }`}
+                    }`}
                 >
                   What&apos;s Included
                 </button>
@@ -584,9 +584,8 @@ export default function Home() {
                 key={lang.id}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
-                className={`glass-premium rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden border ${
-                  lang.isPopular ? 'border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.08)]' : 'border-white/10'
-                }`}
+                className={`glass-premium rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden border ${lang.isPopular ? 'border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.08)]' : 'border-white/10'
+                  }`}
               >
                 {lang.isPopular && (
                   <div className="absolute top-0 right-0 bg-white text-black font-semibold text-[10px] tracking-wider uppercase py-1 px-3.5 rounded-bl-xl shadow-md">
@@ -801,6 +800,9 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* OFFICIAL COURSE COMPLETION CERTIFICATE */}
+      <CourseCertificateSection onEnroll={() => openEnrollModal('Sapain Course')} />
 
       {/* TOOLS YOU'LL EXPLORE & WHAT'S INCLUDED (PAGE 3 & 4) */}
       <section id="tools" className="py-20 bg-[#050505] border-y border-white/10 relative overflow-hidden">
@@ -1073,60 +1075,7 @@ export default function Home() {
       </section>
 
       {/* 10 FREE WORKFLOW GUIDES (PAGE 6) */}
-      <section id="guides" className="py-20 bg-[#050505] border-t border-white/10 relative">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-medium tracking-wider text-[#F2F2F2]">
-              Here&apos;s Something Extra
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white mt-3 mb-4">
-              10 Free Creative Workflow Guides
-            </h2>
-            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-              Included free with every workshop registration to accelerate your storytelling and directing workflow.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 max-w-6xl mx-auto mb-12">
-            {webinarData.workflowGuides.map((guide) => (
-              <div
-                key={guide.number}
-                className="glass-panel p-5 rounded-2xl border border-white/10 hover:border-white/25 flex flex-col justify-between transition-all"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center font-mono font-medium text-xs text-white">
-                    {guide.number < 10 ? `0${guide.number}` : guide.number}
-                  </span>
-                  <BookOpen className="w-4 h-4 text-neutral-400" />
-                </div>
-                <h4 className="text-xs sm:text-sm font-semibold text-white leading-snug">
-                  {guide.title}
-                </h4>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Banner */}
-          <div className="glass-premium p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
-            <div>
-              <h4 className="text-lg font-medium text-white">
-                Unlock all 10 Guides with your seat
-              </h4>
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1">
-                Instant delivery to your email upon workshop enrollment.
-              </p>
-            </div>
-            <button
-              onClick={() => openEnrollModal('Malayalam')}
-              className="px-6 py-3 bg-[#F2F2F2] hover:bg-white text-black font-medium text-xs tracking-normal rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
-            >
-              Claim Seat & Guides
-            </button>
-          </div>
-
-        </div>
-      </section>
+      <ConnectedWorkflowGuides onClaimSeat={() => openEnrollModal('Malayalam')} />
 
       {/* FREQUENTLY ASKED QUESTIONS (PAGE 6) */}
       <section id="faqs" className="py-20 md:py-32 relative">
@@ -1160,9 +1109,8 @@ export default function Home() {
                       {index + 1}. {faq.question}
                     </span>
                     <ChevronDown
-                      className={`w-5 h-5 text-neutral-400 shrink-0 transition-transform duration-300 ${
-                        isOpen ? 'rotate-180 text-white' : ''
-                      }`}
+                      className={`w-5 h-5 text-neutral-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-white' : ''
+                        }`}
                     />
                   </button>
 

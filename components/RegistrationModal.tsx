@@ -206,13 +206,15 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   // Ignore storage error in restricted environments
                 }
 
-                // Track Meta Pixel Purchase event before redirecting
+                // Track Meta Pixel Purchase event before redirecting (deduplicated via eventID)
                 if (typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function') {
                   const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
                   fb('track', 'Purchase', {
                     value: fee,
                     currency: 'INR',
                     content_name: `${language} Batch Masterclass`,
+                  }, {
+                    eventID: assignedTicketId,
                   });
                 }
 

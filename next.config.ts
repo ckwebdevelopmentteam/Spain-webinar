@@ -26,18 +26,19 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
-  // 6. Content Security Policy with Razorpay & asset support
+  // 6. Content Security Policy with Razorpay, Meta Pixel & Microsoft Clarity support
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://*.razorpay.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://*.razorpay.com https://connect.facebook.net https://www.clarity.ms https://scripts.clarity.ms",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
-      "img-src 'self' data: blob: https:",
+      "img-src 'self' data: blob: https: https://www.facebook.com https://*.clarity.ms https://c.bing.com",
       "media-src 'self' data: blob: https:",
       "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com",
-      "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com",
+      "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com https://www.facebook.com https://connect.facebook.net https://*.clarity.ms https://c.bing.com",
+      "worker-src 'self' blob:",
     ].join("; "),
   },
 ];

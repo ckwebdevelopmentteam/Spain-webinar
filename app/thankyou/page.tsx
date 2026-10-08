@@ -79,17 +79,18 @@ export default function ThankYouPage() {
         // Ignore confetti errors
       }
 
-      // Track Meta Pixel PageView and Purchase event on /thankyou
+      // Track Meta Pixel Purchase event on /thankyou (PageView is handled by layout/MetaPixelTracker)
       if (
         typeof window !== 'undefined' &&
         typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function'
       ) {
         const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
-        fb('track', 'PageView');
         fb('track', 'Purchase', {
           value: parsed.amount || 299,
           currency: 'INR',
           content_name: `${parsed.language || 'Sapain Course'} Batch Masterclass`,
+        }, {
+          eventID: parsed.ticketId,
         });
       }
     } catch {
