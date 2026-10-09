@@ -196,6 +196,60 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
+  const handleTestPixelFlow = () => {
+    const testTicketId = 'TEST-SA-' + Math.floor(100000 + Math.random() * 900000);
+    const testAmount = webinarData.fee || 299;
+    const testLanguage = selectedLanguage || 'Malayalam';
+
+    // 1. Fire InitiateCheckout on Meta Pixel
+    if (
+      typeof window !== 'undefined' &&
+      typeof (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq === 'function'
+    ) {
+      const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
+      fb('track', 'InitiateCheckout', {
+        content_name: `${testLanguage} Batch Masterclass (Testing Flow)`,
+        currency: 'INR',
+        value: testAmount,
+      });
+      console.log('🎯 [Meta Pixel Test] Fired: InitiateCheckout', {
+        content_name: `${testLanguage} Batch Masterclass (Testing Flow)`,
+        currency: 'INR',
+        value: testAmount,
+      });
+    }
+
+    // 2. Set valid mock ticket authorization data in sessionStorage & localStorage
+    const payload = JSON.stringify({
+      ticketId: testTicketId,
+      paymentId: 'pay_test_' + Date.now(),
+      orderId: 'order_test_' + Date.now(),
+      name: 'Pixel Tester',
+      email: 'tester@sapain.edu',
+      phone: '+91 99999 99999',
+      language: testLanguage,
+      amount: testAmount,
+      timestamp: new Date().toISOString(),
+      whatsappGroup: {
+        title: `Join ${testLanguage} Batch WhatsApp Group`,
+        buttonText: `Join ${testLanguage} WhatsApp Group`,
+        url: 'https://chat.whatsapp.com/invite/test-link',
+      },
+    });
+
+    try {
+      sessionStorage.setItem('sapain_ticket_data', payload);
+      localStorage.setItem('sapain_ticket_data', payload);
+    } catch (e) {
+      console.error('Storage access error:', e);
+    }
+
+    // 3. Navigate to /thankyou where PageView and Purchase will trigger
+    setTimeout(() => {
+      window.location.href = '/thankyou';
+    }, 150);
+  };
+
   const discountPercent = webinarData.originalFee > webinarData.fee
     ? Math.round(((webinarData.originalFee - webinarData.fee) / webinarData.originalFee) * 100)
     : 70;
@@ -1238,9 +1292,17 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-neutral-400">
             <p>&copy; {new Date().getFullYear()} Sapain AI. All rights reserved.</p>
-            <div className="flex gap-6">
+            <div className="flex items-center gap-6">
               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <button
+                type="button"
+                onClick={handleTestPixelFlow}
+                title="Test Meta Pixel triggers (/thankyou flow)"
+                className="hover:text-white text-neutral-500 transition-colors cursor-pointer text-[11px] font-normal"
+              >
+                hi
+              </button>
             </div>
           </div>
         </div>

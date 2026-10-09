@@ -92,6 +92,12 @@ export default function ThankYouPage() {
         }, {
           eventID: parsed.ticketId,
         });
+        console.log('🎯 [Meta Pixel] Tracked: Purchase', {
+          value: parsed.amount || 299,
+          currency: 'INR',
+          content_name: `${parsed.language || 'Sapain Course'} Batch Masterclass`,
+          eventID: parsed.ticketId,
+        });
       }
     } catch {
       setIsAuthorized(false);
