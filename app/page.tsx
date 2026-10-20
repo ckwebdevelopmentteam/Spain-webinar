@@ -6,10 +6,10 @@ import {
   Clock, MapPin, Sparkles, Palette, Film,
   GraduationCap, Briefcase, Share2, Terminal, ArrowRight, ChevronDown,
   Check, Play, Pause, Volume2, VolumeX, Users,
-  Globe, CheckCircle2, BookOpen, Video, Calendar, ShieldCheck
+  Globe, CheckCircle2, BookOpen, Video, Calendar, ShieldCheck,
+  Download, FileText, Eye
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
-import { RegistrationModal } from '../components/RegistrationModal';
 import { webinarData } from '../data/webinarData';
 import { FoundersCarousel } from '@/components/sections/FoundersCarousel';
 import {
@@ -163,8 +163,6 @@ const WhatsappIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('Sapain Course');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
@@ -190,11 +188,6 @@ export default function Home() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const openEnrollModal = (lang = 'Sapain Course') => {
-    setSelectedLanguage(lang);
-    setIsModalOpen(true);
-  };
 
   const discountPercent = webinarData.originalFee > webinarData.fee
     ? Math.round(((webinarData.originalFee - webinarData.fee) / webinarData.originalFee) * 100)
@@ -232,12 +225,13 @@ export default function Home() {
           <Logo size="lg" />
 
           {/* CTA Button */}
-          <button
-            onClick={() => openEnrollModal('Sapain Course')}
-            className="glow-button px-5 py-2.5 sm:px-6 sm:py-3 bg-[#F2F2F2] text-[#000000] hover:bg-white font-medium text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 cursor-pointer whitespace-nowrap"
+          <a
+            href="#brochures"
+            className="glow-button px-5 py-2.5 sm:px-6 sm:py-3 bg-[#F2F2F2] text-[#000000] hover:bg-white font-medium text-xs sm:text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 cursor-pointer whitespace-nowrap inline-flex items-center gap-2"
           >
-            <span>Reserve Seat • ₹{webinarData.fee}</span>
-          </button>
+            <Download className="w-4 h-4" />
+            <span>Download Brochures</span>
+          </a>
         </div>
       </header>
 
@@ -309,38 +303,39 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Pricing & CTA Button (Side-by-side on mobile and desktop) */}
+              {/* Course Brochures Download Actions */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="pt-2 flex flex-row items-center justify-between sm:justify-start gap-3 sm:gap-6 flex-wrap"
+                className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 flex-wrap"
               >
-                {/* Highlighted Pricing Container */}
-                <div className="shrink-0 px-4 py-2.5 rounded-2xl bg-white/[0.08] border border-white/20 backdrop-blur-md shadow-[0_0_30px_rgba(139,92,246,0.3)] flex flex-col justify-center">
-                  <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-neutral-300 font-medium block">
-                    Join for just
-                  </span>
-                  <div className="flex items-baseline gap-2 mt-0.5">
-                    <span className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                      ₹{webinarData.fee}
-                    </span>
-                    <span className="text-xs sm:text-sm text-neutral-400 line-through decoration-neutral-500">
-                      ₹{webinarData.originalFee}
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-bold text-black bg-gradient-to-r from-emerald-400 to-green-300 px-2 py-0.5 rounded-md shadow-sm uppercase tracking-wide">
-                      {discountPercent}% Off
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => openEnrollModal('Malayalam')}
-                  className="px-5 sm:px-8 py-3 sm:py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-xs sm:text-sm rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer tracking-normal shrink-0 whitespace-nowrap"
+                <a
+                  href="#brochures"
+                  className="px-6 sm:px-8 py-3.5 sm:py-4 bg-[#F2F2F2] hover:bg-white text-[#000000] font-semibold text-xs sm:text-sm rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.01] transition-all flex items-center justify-center gap-2.5 cursor-pointer tracking-normal shrink-0 whitespace-nowrap"
                 >
-                  <span>Reserve Your Seat</span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
+                  <Download className="w-4 h-4 text-black" />
+                  <span>Download Course Brochures</span>
+                </a>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href="/sapain%20online%20brochure.pdf"
+                    download="Sapain Online Course Brochure.pdf"
+                    className="flex-1 sm:flex-initial px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-xs text-neutral-200 hover:text-white transition-all flex items-center justify-center gap-2"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-neutral-400" />
+                    <span>Online PDF</span>
+                  </a>
+                  <a
+                    href="/sapain%20brochure%20(offline%20course).pdf"
+                    download="Sapain Offline Course Brochure.pdf"
+                    className="flex-1 sm:flex-initial px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-xs text-neutral-200 hover:text-white transition-all flex items-center justify-center gap-2"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-neutral-400" />
+                    <span>Offline PDF</span>
+                  </a>
+                </div>
               </motion.div>
 
               {/* Social Proof Quote */}
@@ -498,41 +493,86 @@ export default function Home() {
             {/* Right Sticky Sidebar */}
             <div className="lg:sticky lg:top-24 space-y-6">
 
-              {/* Pricing Card */}
-              <div className="glass-premium p-6 rounded-3xl space-y-6">
-                <div className="space-y-1.5">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-semibold text-white">₹{webinarData.fee}.00</span>
-                    <span className="text-sm text-neutral-500 line-through">₹{webinarData.originalFee}.00</span>
-                  </div>
-                  <span className="text-xs text-neutral-400 block font-semibold">
-                    Enrollment validity: Full Lifetime Access
+              {/* Course Brochures Card */}
+              <div className="glass-premium p-6 rounded-3xl space-y-5 border border-white/15">
+                <div className="space-y-1">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-neutral-400 block">
+                    Curriculum & Programs
                   </span>
+                  <h4 className="text-xl font-medium text-white">Course Brochures</h4>
+                  <p className="text-xs text-neutral-400 leading-relaxed">
+                    Download the comprehensive syllabuses for both our Online and Offline course programs.
+                  </p>
                 </div>
 
-                <button
-                  onClick={() => openEnrollModal('Sapain Course')}
-                  className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-sm rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.01] cursor-pointer text-center tracking-normal block"
-                >
-                  Enroll Now • ₹{webinarData.fee}
-                </button>
+                <div className="space-y-3">
+                  {/* Online Brochure Link */}
+                  <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-white/20 transition-all space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-white">Online Course Brochure</span>
+                      <span className="text-[10px] font-mono text-neutral-400 bg-white/5 px-2 py-0.5 rounded">7 Pages • PDF</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="/sapain%20online%20brochure.pdf"
+                        download="Sapain Online Course Brochure.pdf"
+                        className="flex-1 py-2 px-3 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download</span>
+                      </a>
+                      <a
+                        href="/sapain%20online%20brochure.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-xs rounded-lg transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View</span>
+                      </a>
+                    </div>
+                  </div>
 
-                <div className="space-y-3 pt-6 border-t border-white/10 text-xs sm:text-sm text-neutral-300">
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-white" />
-                    <span>3 Hours Live Hands-on Training</span>
+                  {/* Offline Brochure Link */}
+                  <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-white/20 transition-all space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-white">Offline Course Brochure</span>
+                      <span className="text-[10px] font-mono text-neutral-400 bg-white/5 px-2 py-0.5 rounded">13 Pages • PDF</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="/sapain%20brochure%20(offline%20course).pdf"
+                        download="Sapain Offline Course Brochure.pdf"
+                        className="flex-1 py-2 px-3 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download</span>
+                      </a>
+                      <a
+                        href="/sapain%20brochure%20(offline%20course).pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-xs rounded-lg transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View</span>
+                      </a>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Sparkles className="w-4 h-4 text-white" />
-                    <span>Beginner to Advanced Directing</span>
+                </div>
+
+                <div className="space-y-2.5 pt-4 border-t border-white/10 text-xs text-neutral-300">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>Complete tool stack & module breakdown</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Video className="w-4 h-4 text-white" />
-                    <span>Live Interactive Zoom Workshop</span>
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>Official certification criteria included</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <BookOpen className="w-4 h-4 text-white" />
-                    <span>10 Free Workflow Guides Included</span>
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>Classroom & Online options available</span>
                   </div>
                 </div>
               </div>
@@ -562,168 +602,172 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LANGUAGE PREFERENCES GRID (PAGES 2 & 3) */}
-      <section id="languages" className="py-20 md:py-28 bg-[#050505] border-b border-white/10 relative">
+      {/* COURSE PROGRAMS & DOWNLOADABLE BROCHURES */}
+      <section id="brochures" className="py-20 md:py-28 bg-[#050505] border-b border-white/10 relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-xs font-medium tracking-wider text-[#F2F2F2] bg-white/5 px-3.5 py-1 rounded-full border border-white/10">
-              Exclusive Live Workshop Batch
+          <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+            <span className="text-xs font-medium tracking-wider text-[#F2F2F2] bg-white/5 px-3.5 py-1 rounded-full border border-white/10 uppercase font-mono">
+              Course Syllabuses &amp; Curriculums
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#F2F2F2] mt-4 mb-3">
-              Sapain Course
+              Download Course Brochures
             </h2>
             <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-              Interactive live masterclass delivered directly by Sapain. Engage in live Q&amp;A, follow step-by-step workflows, and direct AI like a pro.
+              The previous live batch has concluded. Explore our upcoming Online and Offline courses with detailed curriculum, tool stacks, and production directing workflows in our official brochures.
             </p>
           </div>
 
-          <div className="w-full max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto">
-            {webinarData.languages.map((lang) => (
-              <motion.div
-                key={lang.id}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3 }}
-                className={`glass-premium rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden border ${lang.isPopular ? 'border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.08)]' : 'border-white/10'
-                  }`}
-              >
-                {lang.isPopular && (
-                  <div className="absolute top-0 right-0 bg-white text-black font-semibold text-[10px] tracking-wider uppercase py-1 px-3.5 rounded-bl-xl shadow-md">
-                    Popular Batch
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
-                  {/* Left Column: Course Details & What is Included */}
-                  <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/15 shadow-inner shrink-0">
-                          <Sparkles className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">{lang.name}</h3>
-                            <span className="text-[10px] uppercase font-semibold tracking-wider text-black bg-white px-2.5 py-0.5 rounded-full">
-                              Live Masterclass
-                            </span>
-                          </div>
-                          <span className="text-xs text-neutral-400 font-medium">Hands-On Online Interactive Workshop</span>
-                        </div>
-                      </div>
-
-                      <p className="text-sm text-neutral-300 leading-relaxed font-sans">
-                        {lang.description}
-                      </p>
-
-                      {/* Workshop Highlights */}
-                      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-neutral-300">
-                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>3 Hours Live Hands-on Training</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>Interactive Live Q&amp;A</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>10 Workflow Guides Included</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>Lifetime Community Access</span>
-                        </div>
-                      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Online Course Brochure Card */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="glass-premium rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-white/15 flex flex-col justify-between"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/15 shadow-inner shrink-0">
+                      <Video className="w-6 h-6 text-white" />
                     </div>
-
-                    {/* Mentor Attribution */}
-                    <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={webinarData.mentor.image}
-                        alt={webinarData.mentor.name}
-                        className="w-10 h-10 rounded-full object-cover border border-white/20 shrink-0"
-                      />
-                      <div className="text-xs">
-                        <span className="text-white font-medium block">Guided by {webinarData.mentor.name}</span>
-                        <span className="text-neutral-400 text-[11px] block">{webinarData.mentor.role}</span>
-                      </div>
+                    <div>
+                      <span className="text-[10px] uppercase font-semibold tracking-wider text-black bg-white px-2.5 py-0.5 rounded-full inline-block mb-1">
+                        Online Program
+                      </span>
+                      <h3 className="text-2xl font-semibold text-white tracking-tight">Online Course Brochure</h3>
                     </div>
                   </div>
+                  <span className="text-[11px] font-mono text-neutral-400 bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg shrink-0">
+                    7 Pages • PDF
+                  </span>
+                </div>
 
-                  {/* Right Column: Schedule, Fee & Action */}
-                  <div className="lg:col-span-5 flex flex-col justify-between bg-white/[0.03] p-5 sm:p-6 lg:p-7 rounded-2xl border border-white/10 space-y-6">
-                    <div className="space-y-4">
-                      {/* Price Header */}
-                      <div className="flex items-baseline justify-between border-b border-white/10 pb-4">
-                        <div>
-                          <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Workshop Fee</span>
-                          <div className="flex items-baseline gap-2 mt-1">
-                            <span className="text-3xl sm:text-4xl font-semibold text-white">₹{lang.fee}/-</span>
-                            <span className="text-sm text-neutral-500 line-through">₹{webinarData.originalFee}/-</span>
-                          </div>
-                        </div>
-                        <span className="text-[11px] font-semibold text-white bg-white/10 border border-white/20 px-2.5 py-1 rounded-full">
-                          {discountPercent}% Off
-                        </span>
-                      </div>
+                <p className="text-sm text-neutral-300 leading-relaxed font-sans">
+                  Master cutting-edge AI image generation, high-res upscaling, and cinematic video workflows from anywhere in the world with live interactive sessions and hands-on guidance.
+                </p>
 
-                      {/* Batch Schedule Details */}
-                      <div className="space-y-3 text-xs text-neutral-300">
-                        <div className="flex items-center justify-between">
-                          <span className="text-neutral-400 flex items-center gap-2">
-                            <Calendar className="w-3.5 h-3.5 text-neutral-400" /> Date:
-                          </span>
-                          <span className="font-medium text-white">{lang.dates}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-neutral-400 flex items-center gap-2">
-                            <Clock className="w-3.5 h-3.5 text-neutral-400" /> Time:
-                          </span>
-                          <span className="font-medium text-white">{lang.time}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-neutral-400 flex items-center gap-2">
-                            <Video className="w-3.5 h-3.5 text-neutral-400" /> Platform:
-                          </span>
-                          <span className="font-medium text-white">{lang.platform}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-neutral-400 flex items-center gap-2">
-                            <Sparkles className="w-3.5 h-3.5 text-neutral-400" /> Duration:
-                          </span>
-                          <span className="font-medium text-white">{lang.duration}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* CTA Actions */}
-                    <div className="space-y-3 pt-4 border-t border-white/10">
-                      <button
-                        onClick={() => openEnrollModal(lang.name)}
-                        className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm tracking-normal rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-2"
-                      >
-                        <span>Enroll Now • ₹{lang.fee}</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-
-                      <a
-                        href="#pillars"
-                        className="block text-center py-1.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors"
-                      >
-                        View More Details
-                      </a>
-
-                      <div className="flex items-center justify-center gap-1.5 text-[11px] text-neutral-400 pt-1">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Instant Confirmation • Limited Seats</span>
-                      </div>
-                    </div>
+                {/* Highlights */}
+                <div className="space-y-2.5 text-xs text-neutral-300 pt-2">
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>7-Page Detailed Syllabus &amp; Workflow Roadmap</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Live Interactive Online Sessions &amp; Direct Mentorship</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>10 Production Workflow Directing Guides Included</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Official Verified Certificate of Completion</span>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+
+              {/* Actions */}
+              <div className="pt-6 mt-6 border-t border-white/10 space-y-3">
+                <a
+                  href="/sapain%20online%20brochure.pdf"
+                  download="Sapain Online Course Brochure.pdf"
+                  className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm tracking-normal rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.01] cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Online Brochure (PDF)</span>
+                </a>
+
+                <div className="flex items-center justify-between text-xs text-neutral-400 px-1 pt-1">
+                  <a
+                    href="/sapain%20online%20brochure.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Preview in new tab</span>
+                  </a>
+                  <span className="font-mono text-[11px]">Size: 15 MB</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Offline Course Brochure Card */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="glass-premium rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-white/25 shadow-[0_0_40px_rgba(255,255,255,0.06)] flex flex-col justify-between"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/15 shadow-inner shrink-0">
+                      <GraduationCap className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase font-semibold tracking-wider text-black bg-white px-2.5 py-0.5 rounded-full inline-block mb-1">
+                        Offline Program
+                      </span>
+                      <h3 className="text-2xl font-semibold text-white tracking-tight">Offline Course Brochure</h3>
+                    </div>
+                  </div>
+                  <span className="text-[11px] font-mono text-neutral-400 bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg shrink-0">
+                    13 Pages • PDF
+                  </span>
+                </div>
+
+                <p className="text-sm text-neutral-300 leading-relaxed font-sans">
+                  Immersive classroom and studio-based training with high-performance production workstations, hands-on directing mentorship, and collaborative creative projects.
+                </p>
+
+                {/* Highlights */}
+                <div className="space-y-2.5 text-xs text-neutral-300 pt-2">
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>13-Page Comprehensive Curriculum &amp; Studio Catalog</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>In-Person Studio Workstation &amp; Hardware Access</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Commercial AI Short-Film Directing &amp; Production</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 bg-white/[0.04] p-2.5 rounded-xl border border-white/5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Portfolio Review &amp; Direct Career Placement Guidance</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="pt-6 mt-6 border-t border-white/10 space-y-3">
+                <a
+                  href="/sapain%20brochure%20(offline%20course).pdf"
+                  download="Sapain Offline Course Brochure.pdf"
+                  className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm tracking-normal rounded-xl transition-all shadow-lg hover:shadow-white/20 hover:scale-[1.01] cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Offline Brochure (PDF)</span>
+                </a>
+
+                <div className="flex items-center justify-between text-xs text-neutral-400 px-1 pt-1">
+                  <a
+                    href="/sapain%20brochure%20(offline%20course).pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Preview in new tab</span>
+                  </a>
+                  <span className="font-mono text-[11px]">Size: 6.8 MB</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
         </div>
@@ -802,7 +846,7 @@ export default function Home() {
       </section>
 
       {/* OFFICIAL COURSE COMPLETION CERTIFICATE */}
-      <CourseCertificateSection onEnroll={() => openEnrollModal('Sapain Course')} />
+      <CourseCertificateSection />
 
       {/* TOOLS YOU'LL EXPLORE & WHAT'S INCLUDED (PAGE 3 & 4) */}
       <section id="tools" className="py-20 bg-[#050505] border-y border-white/10 relative overflow-hidden">
@@ -872,12 +916,13 @@ export default function Home() {
                 </ul>
 
                 <div className="pt-4 border-t border-white/10">
-                  <button
-                    onClick={() => openEnrollModal('Malayalam')}
-                    className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-medium text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.01] cursor-pointer"
+                  <a
+                    href="#brochures"
+                    className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-[#000000] font-semibold text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.01] cursor-pointer flex items-center justify-center gap-2"
                   >
-                    Get Full Access for ₹{webinarData.fee}
-                  </button>
+                    <span>Download Course Brochures</span>
+                    <Download className="w-3.5 h-3.5 text-black" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -1017,12 +1062,13 @@ export default function Home() {
                 </div>
 
                 <div className="pt-4">
-                  <button
-                    onClick={() => openEnrollModal('Malayalam')}
-                    className="px-6 py-3 bg-[#F2F2F2] hover:bg-white text-black font-medium text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.02] cursor-pointer"
+                  <a
+                    href="#brochures"
+                    className="px-6 py-3 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs tracking-normal rounded-xl transition-all shadow-md hover:scale-[1.02] cursor-pointer inline-flex items-center gap-2"
                   >
-                    Learn with Vinayak • ₹{webinarData.fee}
-                  </button>
+                    <span>Explore Course Curriculum</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-black" />
+                  </a>
                 </div>
               </div>
 
@@ -1075,7 +1121,7 @@ export default function Home() {
       </section>
 
       {/* 10 FREE WORKFLOW GUIDES (PAGE 6) */}
-      <ConnectedWorkflowGuides onClaimSeat={() => openEnrollModal('Malayalam')} />
+      <ConnectedWorkflowGuides />
 
       {/* FREQUENTLY ASKED QUESTIONS (PAGE 6) */}
       <section id="faqs" className="py-20 md:py-32 relative">
@@ -1205,13 +1251,13 @@ export default function Home() {
             </div>
 
             <div className="pt-4">
-              <button
-                onClick={() => openEnrollModal('Malayalam')}
-                className="px-8 py-4 bg-[#F2F2F2] hover:bg-white text-black font-medium text-sm tracking-normal rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.02] transition-all cursor-pointer inline-flex items-center gap-2"
+              <a
+                href="#brochures"
+                className="px-8 py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-sm tracking-normal rounded-xl shadow-xl hover:shadow-white/20 hover:scale-[1.02] transition-all cursor-pointer inline-flex items-center gap-2"
               >
-                <span>Enroll in Masterclass for ₹{webinarData.fee}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                <span>Download Course Brochures</span>
+                <Download className="w-4 h-4 text-black" />
+              </a>
             </div>
           </div>
 
@@ -1226,7 +1272,7 @@ export default function Home() {
 
             <div className="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-neutral-400">
               <a href="#about" className="hover:text-white transition-colors">About</a>
-              <a href="#languages" className="hover:text-white transition-colors">Batch Info</a>
+              <a href="#brochures" className="hover:text-white transition-colors">Brochures</a>
               <a href="#pillars" className="hover:text-white transition-colors">Curriculum</a>
               <a href="#founders" className="hover:text-white transition-colors">Founders</a>
               <a href="#mentor" className="hover:text-white transition-colors">Mentor</a>
@@ -1247,58 +1293,45 @@ export default function Home() {
       </footer>
 
       {/* FIXED BOTTOM ACTION BAR - Visible throughout the website */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-4 sm:py-7 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
-        <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-6 min-h-[68px] sm:min-h-[92px]">
-          {/* Fee & Workshop Info */}
-          <div className="flex items-center gap-4 sm:gap-8">
-            <div className="hidden md:block leading-tight">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="relative flex h-2.5 w-2.5 shrink-0">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/15 bg-black/95 backdrop-blur-2xl py-3.5 sm:py-5 shadow-[0_-12px_40px_rgba(0,0,0,0.95)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-6 min-h-[58px] sm:min-h-[68px]">
+          {/* Program Info */}
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div className="leading-tight">
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="text-xs tracking-wide text-neutral-300 font-medium">Live Masterclass</span>
+                <span className="text-[11px] uppercase tracking-wider text-neutral-300 font-medium font-mono">Course Syllabuses</span>
               </div>
-              <h4 className="text-sm sm:text-base font-semibold text-white">
-                AI Image & Cinematic Video Generation
+              <h4 className="text-xs sm:text-sm font-medium text-white line-clamp-1">
+                Sapain AI Masterclass • Download Official Course Brochures
               </h4>
-            </div>
-
-            <div className="flex flex-col justify-center">
-              <span className="text-[11px] uppercase tracking-wider text-neutral-400 font-medium hidden sm:block mb-0.5">Workshop Fee</span>
-              <div className="flex items-center gap-1.5 sm:gap-3 flex-nowrap">
-                <span className="text-xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight whitespace-nowrap">
-                  ₹{webinarData.fee}
-                </span>
-                <span className="text-xs sm:text-base text-neutral-500 line-through whitespace-nowrap">
-                  ₹{webinarData.originalFee}
-                </span>
-                <span className="text-[10px] sm:text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md whitespace-nowrap shrink-0 leading-tight">
-                  {discountPercent}% OFF
-                </span>
-              </div>
             </div>
           </div>
 
-          {/* Action CTA Button */}
-          <button
-            onClick={() => openEnrollModal('Malayalam')}
-            className="glow-button px-3.5 py-2.5 sm:px-9 sm:py-4 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl shadow-xl hover:shadow-white/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2.5 shrink-0 whitespace-nowrap"
-          >
-            <span>Reserve Your Seat</span>
-            <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
-          </button>
+          {/* Action Download Buttons */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <a
+              href="/sapain%20online%20brochure.pdf"
+              download="Sapain Online Course Brochure.pdf"
+              className="px-3 py-2 sm:px-4 sm:py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium text-xs rounded-xl transition-all flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Online <span className="hidden sm:inline">Brochure</span></span>
+            </a>
+            <a
+              href="/sapain%20brochure%20(offline%20course).pdf"
+              download="Sapain Offline Course Brochure.pdf"
+              className="glow-button px-3.5 py-2 sm:px-5 sm:py-2.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs rounded-xl transition-all shadow-lg hover:shadow-white/25 flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Offline <span className="hidden sm:inline">Brochure</span></span>
+            </a>
+          </div>
         </div>
       </div>
-
-      {/* REGISTRATION MODAL */}
-      <RegistrationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        fee={webinarData.fee}
-        originalFee={webinarData.originalFee}
-        defaultLanguage={selectedLanguage}
-      />
     </div>
   );
 }

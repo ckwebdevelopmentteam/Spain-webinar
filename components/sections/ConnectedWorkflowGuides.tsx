@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Sparkles, ArrowRight, CheckCircle2, Download } from 'lucide-react';
 import { webinarData } from '@/data/webinarData';
 
 interface ConnectedWorkflowGuidesProps {
-  onClaimSeat: () => void;
+  onClaimSeat?: () => void;
 }
 
 export function ConnectedWorkflowGuides({ onClaimSeat }: ConnectedWorkflowGuidesProps) {
@@ -338,19 +338,19 @@ export function ConnectedWorkflowGuides({ onClaimSeat }: ConnectedWorkflowGuides
               </span>
             </div>
             <h4 className="text-lg sm:text-xl font-medium text-white">
-              Unlock all 10 Workflow Guides with your seat
+              Explore all 10 Workflow Guides in our Course Curriculum
             </h4>
             <p className="text-xs sm:text-sm text-neutral-400 mt-1">
-              Instant delivery to your email upon workshop enrollment.
+              Full breakdown and step-by-step directing guides included in our official course brochures.
             </p>
           </div>
-          <button
-            onClick={onClaimSeat}
+          <a
+            href="#brochures"
             className="relative z-10 px-6 py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs tracking-normal rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] shrink-0 cursor-pointer flex items-center gap-2"
           >
-            <span>Claim Seat & Guides</span>
-            <CheckCircle2 className="w-4 h-4 text-black" />
-          </button>
+            <span>Download Course Brochures</span>
+            <Download className="w-4 h-4 text-black" />
+          </a>
         </div>
 
       </div>

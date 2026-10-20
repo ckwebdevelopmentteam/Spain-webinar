@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Award, CheckCircle2, ShieldCheck, Share2, ArrowRight } from 'lucide-react';
+import { Award, CheckCircle2, ShieldCheck, Share2, ArrowRight, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface CourseCertificateSectionProps {
-  onEnroll: () => void;
+  onEnroll?: () => void;
 }
 
 export function CourseCertificateSection({ onEnroll }: CourseCertificateSectionProps) {
@@ -108,13 +108,13 @@ export function CourseCertificateSection({ onEnroll }: CourseCertificateSectionP
 
               {/* Action Button */}
               <div className="pt-4 border-t border-white/10">
-                <button
-                  onClick={onEnroll}
+                <a
+                  href="#brochures"
                   className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs tracking-normal rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.18)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <span>Enroll Now to Earn Certificate</span>
-                  <ArrowRight className="w-4 h-4 text-black" />
-                </button>
+                  <span>Download Brochure to View Syllabus</span>
+                  <Download className="w-4 h-4 text-black" />
+                </a>
               </div>
 
             </div>
