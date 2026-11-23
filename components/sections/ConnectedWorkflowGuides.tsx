@@ -344,13 +344,14 @@ export function ConnectedWorkflowGuides({ onClaimSeat }: ConnectedWorkflowGuides
               Full breakdown and step-by-step directing guides included in our official course brochures.
             </p>
           </div>
-          <a
-            href="#brochures"
+          <button
+            type="button"
+            onClick={onClaimSeat}
             className="relative z-10 px-6 py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs tracking-normal rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] shrink-0 cursor-pointer flex items-center gap-2"
           >
-            <span>Download Course Brochures</span>
-            <Download className="w-4 h-4 text-black" />
-          </a>
+            <span>Reserve Seat &amp; Get Guides</span>
+            <CheckCircle2 className="w-4 h-4 text-black" />
+          </button>
         </div>
 
       </div>

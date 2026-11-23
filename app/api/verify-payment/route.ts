@@ -68,7 +68,7 @@ export async function POST(request: Request) {
               order_id = ${razorpay_order_id},
               payment_id = ${razorpay_payment_id},
               signature = ${razorpay_signature},
-              amount = ${amount || 299},
+              amount = ${amount || 120},
               ticket_id = COALESCE(ticket_id, ${ticketPassId})
           WHERE id = ${existing[0].id}
           RETURNING created_at;
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
             ${razorpay_order_id},
             ${razorpay_payment_id},
             ${razorpay_signature},
-            ${amount || 299},
+            ${amount || 120},
             ${ticketPassId},
             'completed'
           )
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
           userName,
           ticketId: ticketPassId,
           paymentId: razorpay_payment_id,
-          amount: amount || 299,
+          amount: amount || 120,
           language: userLanguage,
         });
       }

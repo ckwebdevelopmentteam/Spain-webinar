@@ -47,9 +47,9 @@ interface WhatsAppGroupData {
 }
 
 const BATCH_DATES: Record<string, string> = {
-  malayalam: '15 October',
-  sapain: '15 October',
-  'sapain course': '15 October',
+  malayalam: 'Tuesday, 1 December 2026',
+  sapain: 'Tuesday, 1 December 2026',
+  'sapain course': 'Tuesday, 1 December 2026',
 };
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
@@ -148,7 +148,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         amount: orderData.amount,
         currency: orderData.currency || 'INR',
         name: 'SapAin Edu',
-        description: `${language} Batch - Advanced AI Image & Cinematic Video Masterclass`,
+        description: `Make Explainer Videos with Claude - Live Workshop`,
         order_id: orderData.order_id || orderData.id,
         prefill: {
           name: values.name,
@@ -435,7 +435,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                     </span>
                   </div>
                   <h4 className="text-sm font-medium text-white mt-0.5 leading-snug">
-                    Advanced AI Image & Cinematic Video Generation Masterclass
+                    Make Explainer Videos with Claude
                   </h4>
                 </div>
 
@@ -445,13 +445,13 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                     <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">Date</span>
                     <div className="flex items-center gap-1 text-xs text-[#F2F2F2] font-medium mt-1">
                       <Calendar className="w-3.5 h-3.5 text-white" />
-                      <span>{BATCH_DATES[language.toLowerCase().trim()] || '15 October'}</span>
+                      <span>{BATCH_DATES[language.toLowerCase().trim()] || 'Tuesday, 1 December 2026'}</span>
                     </div>
                   </div>
                   <div>
                     <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-medium block">Timing</span>
                     <span className="text-xs text-[#F2F2F2] font-medium mt-1 block">
-                      6:00 PM - 9:00 PM IST
+                      7:00 PM IST (2 Hours)
                     </span>
                   </div>
                 </div>

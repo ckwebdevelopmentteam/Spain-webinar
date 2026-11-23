@@ -30,9 +30,9 @@ interface StoredTicketData {
 }
 
 const BATCH_DATES: Record<string, string> = {
-  malayalam: '15 October',
-  sapain: '15 October',
-  'sapain course': '15 October',
+  malayalam: 'Tuesday, 1 December 2026',
+  sapain: 'Tuesday, 1 December 2026',
+  'sapain course': 'Tuesday, 1 December 2026',
 };
 
 export default function ThankYouPage() {
@@ -86,16 +86,16 @@ export default function ThankYouPage() {
       ) {
         const fb = (window as unknown as { fbq: (...args: unknown[]) => void }).fbq;
         fb('track', 'Purchase', {
-          value: parsed.amount || 299,
+          value: parsed.amount || 120,
           currency: 'INR',
-          content_name: `${parsed.language || 'Sapain Course'} Batch Masterclass`,
+          content_name: `${parsed.language || 'Sapain Course'} Workshop`,
         }, {
           eventID: parsed.ticketId,
         });
         console.log('🎯 [Meta Pixel] Tracked: Purchase', {
-          value: parsed.amount || 299,
+          value: parsed.amount || 120,
           currency: 'INR',
-          content_name: `${parsed.language || 'Sapain Course'} Batch Masterclass`,
+          content_name: `${parsed.language || 'Sapain Course'} Workshop`,
           eventID: parsed.ticketId,
         });
       }
@@ -120,7 +120,7 @@ export default function ThankYouPage() {
   const language = data.language || 'Sapain Course';
   const languageKey = language.toLowerCase().trim();
   const ticketId = data.ticketId;
-  const batchDate = BATCH_DATES[languageKey] || '15 October';
+  const batchDate = BATCH_DATES[languageKey] || 'Tuesday, 1 December 2026';
 
   const whatsappUrl =
     data.whatsappGroup?.url ||
@@ -207,7 +207,7 @@ export default function ThankYouPage() {
                 </span>
               </div>
               <h2 className="text-sm sm:text-base font-medium text-white leading-snug">
-                Advanced AI Image & Cinematic Video Generation Masterclass
+                Make Explainer Videos with Claude
               </h2>
             </div>
 
@@ -224,7 +224,7 @@ export default function ThankYouPage() {
                 <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold block">Timing</span>
                 <div className="flex items-center gap-1.5 text-xs text-[#F2F2F2] font-medium mt-1">
                   <Clock className="w-3.5 h-3.5 text-white" />
-                  <span>6:00 PM - 9:00 PM IST</span>
+                  <span>7:00 PM IST (2 Hours)</span>
                 </div>
               </div>
             </div>

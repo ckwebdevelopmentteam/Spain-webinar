@@ -37,7 +37,7 @@ export function CourseCertificateSection({ onEnroll }: CourseCertificateSectionP
 
         {/* Main Certificate Showcase Card */}
         <div className="max-w-6xl mx-auto glass-premium rounded-3xl p-6 sm:p-10 lg:p-12 border border-white/15 relative overflow-hidden">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
             {/* Left: Certificate Image Preview */}
@@ -108,13 +108,14 @@ export function CourseCertificateSection({ onEnroll }: CourseCertificateSectionP
 
               {/* Action Button */}
               <div className="pt-4 border-t border-white/10">
-                <a
-                  href="#brochures"
+                <button
+                  type="button"
+                  onClick={onEnroll}
                   className="w-full py-3.5 bg-[#F2F2F2] hover:bg-white text-black font-semibold text-xs tracking-normal rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.18)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <span>Download Brochure to View Syllabus</span>
-                  <Download className="w-4 h-4 text-black" />
-                </a>
+                  <span>Reserve Seat &amp; Earn Certificate</span>
+                  <ArrowRight className="w-4 h-4 text-black" />
+                </button>
               </div>
 
             </div>

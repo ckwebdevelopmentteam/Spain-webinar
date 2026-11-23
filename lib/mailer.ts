@@ -58,11 +58,11 @@ export async function sendPaymentConfirmationEmail({
     const transporter = getTransporter();
 
     const BATCH_DATES: Record<string, string> = {
-      malayalam: '15 October',
-      sapain: '15 October',
-      'sapain course': '15 October',
+      malayalam: 'Tuesday, 1 December 2026',
+      sapain: 'Tuesday, 1 December 2026',
+      'sapain course': 'Tuesday, 1 December 2026',
     };
-    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || '15 October';
+    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || 'Tuesday, 1 December 2026';
     const groupInfo = getWhatsAppGroup(language);
     const formattedLang = language || 'Sapain Course';
 
@@ -125,7 +125,7 @@ export async function sendPaymentConfirmationEmail({
                 Welcome to Sapain, ${userName}! 🎨
               </h1>
               <p style="margin: 0 0 24px 0; color: #9ca3af; font-size: 15px; line-height: 1.6;">
-                Thank you for enrolling in the <strong style="color: #ffffff;">Advanced AI Image &amp; Cinematic Video Masterclass</strong>. Your seat is officially reserved.
+                Thank you for enrolling in <strong style="color: #ffffff;">Make Explainer Videos with Claude</strong>. Your seat is officially reserved.
               </p>
 
               <!-- Ticket & Payment Summary Card -->
@@ -239,7 +239,7 @@ export async function sendPaymentConfirmationEmail({
     const mailOptions = {
       from: fromAddress,
       to: toEmail,
-      subject: `Registration Confirmed! Advanced AI Masterclass (${formattedLang} Batch) - Sapain Edu`,
+      subject: `Registration Confirmed! Make Explainer Videos with Claude (${formattedLang}) - Sapain Edu`,
       html: htmlContent,
       attachments,
     };

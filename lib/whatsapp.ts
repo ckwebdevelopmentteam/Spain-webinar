@@ -11,8 +11,8 @@ export interface WhatsAppGroupInfo {
  */
 export function getWhatsAppGroup(_language?: string): WhatsAppGroupInfo {
   return {
-    title: 'Join Sapain Course Group',
-    buttonText: 'Join Sapain WhatsApp Group',
-    url: process.env.WHATSAPP_GROUP_MALAYALAM || process.env.WHATSAPP_GROUP_URL || '',
+    title: 'Join Sapain Workshop Community',
+    buttonText: 'Join WhatsApp Group',
+    url: process.env.WHATSAPP_GROUP_URL || process.env.WHATSAPP_GROUP_MALAYALAM || 'https://chat.whatsapp.com/D77iUr390404BkaR0Rjl63',
   };
 }
