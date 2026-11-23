@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Clock, MapPin, Sparkles, Palette, Film,
-  GraduationCap, Briefcase, Share2, Terminal, ArrowRight, ChevronDown,
-  Check, Play, Pause, Volume2, VolumeX, Users,
-  Globe, CheckCircle2, BookOpen, Video, Calendar, ShieldCheck
+  ArrowRight, ChevronDown,
+  Check, Volume2, VolumeX, Users,
+  CheckCircle2, Video, Calendar, ShieldCheck
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
 import { RegistrationModal } from '../components/RegistrationModal';
