@@ -22,6 +22,7 @@ import {
 } from '@/components/sections/HeroLogosBanner';
 import SocialCards, { CardItem } from '@/components/ui/card-fan-carousel';
 import { ConnectedWorkflowGuides } from '@/components/sections/ConnectedWorkflowGuides';
+import { ClaudeMarquee } from '@/components/sections/ClaudeMarquee';
 import {
   ClaudeSonnetIcon,
   ClaudeCodeIcon,
@@ -399,7 +400,8 @@ export default function Home() {
 
       </section>
 
-      {/* LANGUAGE PREFERENCES GRID (PAGES 2 & 3) */}
+      {/* CLAUDE MARQUEE STRIP */}
+      <ClaudeMarquee />
       <section id="languages" className="py-20 md:py-28 bg-[#050505] border-b border-white/10 relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -722,9 +724,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MEET THE FOUNDERS SECTION (Testimonials Carousel Style, No 'View all' Button) */}
-      <FoundersCarousel />
-
       {/* MEET YOUR MENTOR (PAGE 5 & 6) */}
       <section id="mentor" className="py-20 md:py-32 relative">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -785,6 +784,9 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* MEET THE FOUNDERS SECTION (Testimonials Carousel Style, No 'View all' Button) */}
+      <FoundersCarousel />
 
       {/* TRUSTED BY LEADING BRANDS (PAGE 6) */}
       <section className="py-10 sm:py-14 bg-[#050505] border-y border-white/10 relative">
@@ -982,8 +984,8 @@ export default function Home() {
               <a href="#about" className="hover:text-white transition-colors">About</a>
               <a href="#languages" className="hover:text-white transition-colors">Batch Info</a>
               <a href="#pillars" className="hover:text-white transition-colors">Curriculum</a>
-              <a href="#founders" className="hover:text-white transition-colors">Founders</a>
               <a href="#mentor" className="hover:text-white transition-colors">Mentor</a>
+              <a href="#founders" className="hover:text-white transition-colors">Founders</a>
               <a href="#guides" className="hover:text-white transition-colors">Free Guides</a>
               <a href="#faqs" className="hover:text-white transition-colors">FAQs</a>
               <a href="#community" className="hover:text-white transition-colors">Community</a>
