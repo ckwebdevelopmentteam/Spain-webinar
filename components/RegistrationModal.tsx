@@ -47,9 +47,9 @@ interface WhatsAppGroupData {
 }
 
 const BATCH_DATES: Record<string, string> = {
-  malayalam: 'Tuesday, 1 December 2026',
-  sapain: 'Tuesday, 1 December 2026',
-  'sapain course': 'Tuesday, 1 December 2026',
+  malayalam: 'Tuesday, 8 December 2026',
+  sapain: 'Tuesday, 8 December 2026',
+  'sapain course': 'Tuesday, 8 December 2026',
 };
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
@@ -445,7 +445,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                     <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">Date</span>
                     <div className="flex items-center gap-1 text-xs text-[#F2F2F2] font-medium mt-1">
                       <Calendar className="w-3.5 h-3.5 text-white" />
-                      <span>{BATCH_DATES[language.toLowerCase().trim()] || 'Tuesday, 1 December 2026'}</span>
+                      <span>{BATCH_DATES[language.toLowerCase().trim()] || 'Tuesday, 8 December 2026'}</span>
                     </div>
                   </div>
                   <div>

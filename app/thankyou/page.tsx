@@ -30,9 +30,9 @@ interface StoredTicketData {
 }
 
 const BATCH_DATES: Record<string, string> = {
-  malayalam: 'Tuesday, 1 December 2026',
-  sapain: 'Tuesday, 1 December 2026',
-  'sapain course': 'Tuesday, 1 December 2026',
+  malayalam: 'Tuesday, 8 December 2026',
+  sapain: 'Tuesday, 8 December 2026',
+  'sapain course': 'Tuesday, 8 December 2026',
 };
 
 export default function ThankYouPage() {
@@ -120,7 +120,7 @@ export default function ThankYouPage() {
   const language = data.language || 'Sapain Course';
   const languageKey = language.toLowerCase().trim();
   const ticketId = data.ticketId;
-  const batchDate = BATCH_DATES[languageKey] || 'Tuesday, 1 December 2026';
+  const batchDate = BATCH_DATES[languageKey] || 'Tuesday, 8 December 2026';
 
   const whatsappUrl =
     data.whatsappGroup?.url ||

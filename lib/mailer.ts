@@ -58,11 +58,11 @@ export async function sendPaymentConfirmationEmail({
     const transporter = getTransporter();
 
     const BATCH_DATES: Record<string, string> = {
-      malayalam: 'Tuesday, 1 December 2026',
-      sapain: 'Tuesday, 1 December 2026',
-      'sapain course': 'Tuesday, 1 December 2026',
+      malayalam: 'Tuesday, 8 December 2026',
+      sapain: 'Tuesday, 8 December 2026',
+      'sapain course': 'Tuesday, 8 December 2026',
     };
-    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || 'Tuesday, 1 December 2026';
+    const batchDate = BATCH_DATES[(language || '').toLowerCase().trim()] || 'Tuesday, 8 December 2026';
     const groupInfo = getWhatsAppGroup(language);
     const formattedLang = language || 'Sapain Course';
 

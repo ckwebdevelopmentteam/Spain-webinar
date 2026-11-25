@@ -1016,7 +1016,7 @@ export default function Home() {
                 <span className="text-xs tracking-wide text-neutral-300 font-medium">Live Masterclass</span>
               </div>
               <h4 className="text-xs sm:text-sm font-medium text-white line-clamp-1">
-                Make Explainer Videos with Claude • Tuesday, 1 Dec 2026
+                Make Explainer Videos with Claude • Tuesday, 8 Dec 2026
               </h4>
             </div>
 

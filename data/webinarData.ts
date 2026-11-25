@@ -98,7 +98,7 @@ export const webinarData: WebinarConfig = {
   seatsTotal: 100,
   mode: "Live Online Workshop on Zoom",
   platform: "Zoom Online",
-  dates: "Tuesday, 1 December 2026",
+  dates: "Tuesday, 8 December 2026",
   time: "7:00 PM IST",
   learnersCount: "1,000+ learners are already part of the journey.",
   aboutCourse: {
@@ -116,7 +116,7 @@ export const webinarData: WebinarConfig = {
       fee: 120,
       duration: "2 hrs",
       platform: "Zoom Online",
-      dates: "Tuesday, 1 December 2026",
+      dates: "Tuesday, 8 December 2026",
       time: "7:00 PM IST",
       isPopular: true
     }
@@ -289,7 +289,7 @@ export const webinarData: WebinarConfig = {
     },
     {
       question: "When is the live workshop scheduled?",
-      answer: "The session takes place on Tuesday, 1 December 2026 at 7:00 PM IST (2 hours live on Zoom Online) for ₹120."
+      answer: "The session takes place on Tuesday, 8 December 2026 at 7:00 PM IST (2 hours live on Zoom Online) for ₹120."
     },
     {
       question: "Have questions or need support?",
